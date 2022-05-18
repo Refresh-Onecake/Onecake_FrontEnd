@@ -1,0 +1,12 @@
+{
+  "name": "oncakefrontend",
+  "displayName": "oncake_frontend",
+  "expo": {
+    "name": "oncake_frontend",
+    "slug": "oncake_frontend",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

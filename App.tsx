@@ -1,11 +1,18 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import {StyleSheet } from 'react-native';
+import HomeNavigator from './src/screens/HomeNavigator';
+import { RecoilRoot, atom, useRecoilValue, useSetRecoilState } from 'recoil';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Text>Open up App.tsx to start working on your app!</Text>
-		</View>
+		<SafeAreaProvider>
+			<RecoilRoot>
+				<NavigationContainer>
+					<HomeNavigator/>
+				</NavigationContainer>
+			</RecoilRoot>
+		</SafeAreaProvider>
 	);
 }
 

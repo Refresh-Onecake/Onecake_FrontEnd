@@ -10,8 +10,8 @@ import { EventEmitter, Subscription } from 'expo-modules-core';
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
 		shouldShowAlert: true,
-		shouldPlaySound: false,
-		shouldSetBadge: false,
+		shouldPlaySound: true,
+		shouldSetBadge: true,
 	}),
 });
 
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({});
 async function schedulePushNotification() {
 	await Notifications.scheduleNotificationAsync({
 		content: {
+			sound: 'default',
 			title: 'You\'ve got mail! 📬',
 			body: 'Here is the notification body',
 			data: { data: 'goes here' },

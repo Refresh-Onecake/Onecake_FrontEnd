@@ -2,6 +2,19 @@
   "name": "oncakefrontend",
   "displayName": "oncake_frontend",
   "expo": {
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ]
+    ],
     "name": "oncake_frontend",
     "slug": "oncake_frontend",
     "version": "1.0.0",

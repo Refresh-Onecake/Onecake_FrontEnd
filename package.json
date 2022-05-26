@@ -24,7 +24,9 @@
     "react-native-screens": "~3.11.1",
     "react-native-unimodules": "~0.13.3",
     "react-native-web": "0.17.7",
-    "recoil": "^0.7.3-alpha.2"
+    "recoil": "^0.7.3-alpha.2",
+    "expo-notifications": "~0.15.2",
+    "expo-device": "~4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

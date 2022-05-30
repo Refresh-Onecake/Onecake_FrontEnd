@@ -1,11 +1,9 @@
 
 import {Button, Platform, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import { Constants } from 'react-native-unimodules';
-import { EventEmitter, Subscription } from 'expo-modules-core';
+import { Subscription } from 'expo-modules-core';
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -23,7 +21,23 @@ const Progress = () => {
 	const responseListener = useRef<Subscription>();
 	
 	useEffect(() => {
-		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+		registerForPushNotificationsAsync().then(token => {
+			// fetch(PUSH_ENDPOINT, {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		Accept: 'application/json',
+			// 		'Content-Type': 'application/json',
+			// 	},
+			// 	body: JSON.stringify({
+			// 		token: {
+			// 			value: token,
+			// 		}
+			// 	}),
+			// })
+			// 	.then(() => console.log('send!'))
+			// 	.catch((err) => console.log(err));
+			setExpoPushToken(token);
+		});
 	
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
@@ -112,3 +126,4 @@ async function registerForPushNotificationsAsync() {
 
 	return token;
 }
+

@@ -1,12 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 const MyPage = () => {
-	return (
-		<SafeAreaView>
-			<Text>MyPage</Text>
-		</SafeAreaView>
-	);
+  return (
+    <View>
+      <Text>MyPage</Text>
+    </View>
+  );
 };
 
 export default MyPage;

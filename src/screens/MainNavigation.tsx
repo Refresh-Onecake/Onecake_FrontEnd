@@ -8,6 +8,7 @@ import Stores from './Stores';
 import Order from './Order';
 import Contact from './Contact';
 import MyPage from './MyPage';
+import SignUp from './SignUp';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +16,8 @@ const MainNavigation = () => {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
-        name="홈"
-        component={Home}
+        name="회원가입"
+        component={SignUp}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />

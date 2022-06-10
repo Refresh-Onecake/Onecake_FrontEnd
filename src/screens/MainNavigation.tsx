@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import AntIcon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Home from './Home';
 import Stores from './Stores';
 import Order from './Order';
@@ -20,11 +19,7 @@ const MainNavigation = () => {
         component={Home}
         options={{
           tabBarIcon: ({color, size}) => (
-            <FontAwesomeIcon
-              name="house-chimney-heart"
-              color={color}
-              size={size}
-            />
+            <Icon name="home" color={color} size={size} />
           ),
         }}
       />
@@ -33,7 +28,7 @@ const MainNavigation = () => {
         component={Stores}
         options={{
           tabBarIcon: ({color, size}) => (
-            <FontAwesomeIcon name="store" color={color} size={size} />
+            <Icon name="home" color={color} size={size} />
           ),
         }}
       />
@@ -42,11 +37,7 @@ const MainNavigation = () => {
         component={Order}
         options={{
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="mdiCalendarMonthOutline"
-              color={color}
-              size={size}
-            />
+            <Icon name="home" color={color} size={size} />
           ),
         }}
       />
@@ -55,7 +46,7 @@ const MainNavigation = () => {
         component={Contact}
         options={{
           tabBarIcon: ({color, size}) => (
-            <FontAwesomeIcon name="comment-dots" color={color} size={size} />
+            <Icon name="home" color={color} size={size} />
           ),
         }}
       />
@@ -64,11 +55,7 @@ const MainNavigation = () => {
         component={MyPage}
         options={{
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="mdiAccountCircleOutline "
-              color={color}
-              size={size}
-            />
+            <Icon name="home" color={color} size={size} />
           ),
         }}
       />

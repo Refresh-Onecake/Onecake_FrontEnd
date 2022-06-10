@@ -10,6 +10,7 @@ target 'Onecake_FrontEnd' do
   # Flags change depending on the env values.
   flags = get_default_flags()
 
+  
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
@@ -17,8 +18,8 @@ target 'Onecake_FrontEnd' do
     :fabric_enabled => flags[:fabric_enabled],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
+    
   )
-
   target 'Onecake_FrontEndTests' do
     inherit! :complete
     # Pods for testing

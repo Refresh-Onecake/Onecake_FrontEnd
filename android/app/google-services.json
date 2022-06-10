@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "527185262052",
+    "project_id": "onecake-864e9",
+    "storage_bucket": "onecake-864e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527185262052:android:8808b9c27561dfb65e43f1",
+        "android_client_info": {
+          "package_name": "com.onecake_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527185262052-k0lutkekpciu6u17j23cg7snr37a6rts.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onecake_frontend",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "527185262052-coh9f6isch8t11hc20hkh98bnc3jto1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ_HtMWp_EuczrDp1U0eDWEbYIoHf5o8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527185262052-coh9f6isch8t11hc20hkh98bnc3jto1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

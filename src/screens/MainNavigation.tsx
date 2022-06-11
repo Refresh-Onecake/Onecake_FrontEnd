@@ -9,6 +9,7 @@ import Order from './Order';
 import Contact from './Contact';
 import MyPage from './MyPage';
 import SignUp from './SignUp';
+import SignIn from './SignIn';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,13 +27,22 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name="가게"
-        component={Stores}
+        component={SignIn}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="가게"
+        component={Stores}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+        }}
+      /> */}
       <Tab.Screen
         name="주문"
         component={Order}

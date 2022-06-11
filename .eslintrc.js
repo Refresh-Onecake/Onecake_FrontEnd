@@ -14,6 +14,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['path/to/your/tsconfig/file'],
+  },
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
   overrides: [
     {

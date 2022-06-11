@@ -28,6 +28,10 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
       },
+      parserOptions: {
+        project: ['tsconfig.json'],
+        createDefaultProgram: true,
+      },
     },
   ],
 };

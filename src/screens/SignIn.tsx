@@ -4,21 +4,28 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useForm} from 'react-hook-form';
 import React, {useState} from 'react';
+// import { env } from '.env';
 
 const SignIn = () => {
   const {register, handleSubmit, getValues} = useForm();
-
   const URL = 'http://15.165.27.120:8080';
-
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  interface userData {
+    user_id: string;
+    password: string;
+    accessToken: string;
+    refreshToken: string;
+    TokenExpires: number;
+  }
   const doSignIn = async () => {
     try {
-      const data = await axios.post(URL + '/api/v1/auth/login', {
+      const data = await axios.post<userData>(URL + '/api/v1/auth/login', {
         user_id: id,
         password: password,
       });
+      console.log(data.data.accessToken);
     } catch (e) {
       console.log(e);
     }

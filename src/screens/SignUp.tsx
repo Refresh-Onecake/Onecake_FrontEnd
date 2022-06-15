@@ -1,11 +1,5 @@
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+//prettier-ignore
+import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
@@ -15,9 +9,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {regEx} from '../utils';
 import {AppStyles} from '../AppStyles';
-import App from '../../App';
+import {Value} from 'react-native-reanimated';
 const TEST_PHONE_NUMBER = '+82 010-4183-2998';
-
 export type IFormInputs = {
   name: string;
   id: string;
@@ -26,17 +19,36 @@ export type IFormInputs = {
 };
 
 const SignUp = () => {
-  const [confirm, setConfirm] =
-    useState<FirebaseAuthTypes.ConfirmationResult>();
+  //문자 인증 관련 상태
+  //prettier-ignore
+  const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult>();
   const [code, setCode] = useState<string>('');
   const [validatedPhoneAuth, setValidatedPhoneAuth] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [selectedCountry, setSelectedCountry] = useState('국제 코드');
+  //prettier-ignore
+  const [validPhoneNumberText, setValidPhoneNumberText] = useState<boolean>(false);
+
+  // 유효성 검사 및 회원가입 폼 관련 상태
+  const [checkNameIcon, setCheckNameIcon] = useState<boolean>(false);
+  const [checkIdIcon, setCheckIdIcon] = useState<boolean>(false);
+  const [passwdIcon, setPasswdIcon] = useState<boolean>(false);
+  const [validPasswdText, setValidPasswdText] = useState<boolean>(false);
+  const [confirmPasswdIcon, setConfirmPasswdIcon] = useState<boolean>(false);
+  const [confirmPasswdText, setConfirmPasswdText] = useState<boolean>(false);
+
+  // 약관동의 관련상태
+  const [checkedTermAll, setCheckedTermAll] = useState<boolean>(false);
+  const [checkedOneCakeTerm, setCheckedOneCakeTerm] = useState<boolean>(false);
+  const [checkedPrivacyTerm, setCheckedPrivacyTerm] = useState<boolean>(false);
+
   const convertPhoneNumber = (phoneNumber: string) => {
     const tmpNumber = phoneNumber.replace(/[-\s]/gi, '');
     const prevNum = tmpNumber.substring(0, 3);
     const nextNum = tmpNumber.substring(4, tmpNumber.length);
     return prevNum + nextNum;
   };
+
   const confirmCode = async () => {
     try {
       await confirm
@@ -72,19 +84,6 @@ const SignUp = () => {
       confirmPasswd: '',
     },
   });
-
-  // 유효성 검사 및 회원가입 폼 관련 상태
-  const [checkNameIcon, setCheckNameIcon] = useState<boolean>(false);
-  const [checkIdIcon, setCheckIdIcon] = useState<boolean>(false);
-  const [passwdIcon, setPasswdIcon] = useState<boolean>(false);
-  const [validPasswdText, setValidPasswdText] = useState<boolean>(false);
-  const [confirmPasswdIcon, setConfirmPasswdIcon] = useState<boolean>(false);
-  const [confirmPasswdText, setConfirmPasswdText] = useState<boolean>(false);
-
-  // 약관동의 관련상태
-  const [checkedTermAll, setCheckedTermAll] = useState<boolean>(false);
-  const [checkedOneCakeTerm, setCheckedOneCakeTerm] = useState<boolean>(false);
-  const [checkedPrivacyTerm, setCheckedPrivacyTerm] = useState<boolean>(false);
 
   // onChange되었을 때 이름을 위한 유효성 검사
   useEffect(() => {
@@ -141,7 +140,8 @@ const SignUp = () => {
     confirmPasswdText && clearErrors('confirmPasswd');
   }, [confirmPasswdText, clearErrors]);
 
-  const onSubmit = data => {
+  // 회원가입 제출
+  const onSubmit = (data: IFormInputs) => {
     console.log(data);
     if (checkedOneCakeTerm === false || checkedPrivacyTerm === false) {
       Alert.alert(
@@ -154,6 +154,8 @@ const SignUp = () => {
           },
         ],
       );
+    } else {
+      // TODO: API 통신이 들어갈 곳.
     }
   };
 
@@ -169,9 +171,16 @@ const SignUp = () => {
     setCheckedTermAll(!checkedTermAll);
   };
 
+  // 입력한 전화번호가 010-4183-2998과 같은 형태인지 검증
+  useEffect(() => {
+    regEx.regPhoneNumber.test(phoneNumber)
+      ? setValidPhoneNumberText(true)
+      : setValidPhoneNumberText(false);
+  }, [phoneNumber]);
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView>
+        {/* TODO: 회원가입 폼 컴포넌트 */}
         <View style={styles.signUpWrapper}>
           <View style={styles.header}>
             <Text style={styles.h1}>회원가입</Text>
@@ -353,7 +362,60 @@ const SignUp = () => {
             )}
           </View>
         </View>
+        {/* TODO: 문자인증 컴포넌트 */}
+        <View style={[styles.signUpWrapper, {marginTop: 6}]}>
+          <Text style={styles.inputText}>휴대폰 번호</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignContent: 'center',
+              alignItems: 'center',
+            }}>
+            {/* TODO: Dropdown */}
+            <View
+              style={[styles.phoneNumberInputWrap, {flex: 1, marginRight: 10}]}>
+              <TouchableOpacity style={styles.dropdown}>
+                <Text>{selectedCountry}</Text>
+                <TouchableOpacity
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => setConfirmPasswdIcon(!confirmPasswdIcon)}>
+                  <Icon name="chevron-down" size={AppStyles.IconSize.small} />
+                </TouchableOpacity>
+              </TouchableOpacity>
+              <TextInput
+                style={[styles.textInput]}
+                keyboardType="number-pad"
+                placeholder="전화번호"
+                selectionColor={'lightgray'}
+                onChangeText={setPhoneNumber}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  borderRadius: 5,
+                  paddingHorizontal: 11,
+                  paddingVertical: 6,
+                },
+              ]}>
+              <Text
+                style={{
+                  color: AppStyles.color.white,
+                  fontSize: AppStyles.font.small,
+                }}>
+                인증 받기
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {!validPhoneNumberText && (
+            <Text style={styles.errorText}>
+              - 를 포함하여 입력해주세요.(예시 : 010-0000-0000)
+            </Text>
+          )}
+        </View>
 
+        {/* TODO: 약관 동의 컴포넌트 */}
         <View style={[styles.signUpWrapper, {marginTop: 6}]}>
           <Text style={[styles.h1, {marginBottom: AppStyles.padding.screen}]}>
             약관 동의
@@ -417,7 +479,15 @@ const SignUp = () => {
             </View>
           </View>
           <TouchableOpacity
-            style={styles.submitBtn}
+            style={[
+              styles.btn,
+              {
+                flex: 1,
+                height: 56,
+                borderRadius: 12,
+                marginTop: AppStyles.padding.screen,
+              },
+            ]}
             onPress={handleSubmit(onSubmit)}>
             <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
           </TouchableOpacity>
@@ -485,7 +555,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 14,
     fontWeight: '500',
-    lineHeight: 14.4,
+
     color: AppStyles.color.black,
     opacity: 0.5,
   },
@@ -513,19 +583,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  submitBtn: {
-    flex: 1,
-    flexDirection: 'row',
+  btn: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: AppStyles.padding.screen,
     backgroundColor: AppStyles.color.pink,
-    height: 56,
-    borderRadius: 12,
+    // height: 56,
+    // borderRadius: 12,
   },
   submitBtnText: {
     fontWeight: '700',
     fontSize: 15,
     color: AppStyles.color.white,
+  },
+  // 문자 인증 관련
+  phoneNumberInputWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: AppStyles.color.border,
+  },
+  dropdown: {
+    backgroundColor: AppStyles.color.lightGray,
+    flexDirection: 'row',
+    paddingHorizontal: 7,
+    borderRadius: 14,
+    marginRight: 10,
   },
 });

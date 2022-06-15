@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigation = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator screenOptions={{headerShown: false,}}>
       <Tab.Screen
         name="회원가입"
         component={SignUp}

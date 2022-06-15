@@ -15,7 +15,8 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['path/to/your/tsconfig/file'],
+    project: ['./tsconfig.json'],
+    createDefaultProgram: true,
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
   overrides: [

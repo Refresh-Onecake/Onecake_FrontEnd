@@ -1,16 +1,22 @@
 import axios from 'axios';
-import {StyleSheet, TextInput, TouchableOpacity, Text} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Text,
+} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useForm} from 'react-hook-form';
+import Modal from 'react-native-simple-modal';
 import React, {useState} from 'react';
-// import { env } from '.env';
 
-const SignIn = () => {
-  const {register, handleSubmit, getValues} = useForm();
+const SignIn = ({navigation}) => {
   const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [visible, setVisible] = useState<boolean>(false);
 
   interface userData {
     user_id: string;
@@ -19,15 +25,20 @@ const SignIn = () => {
     refreshToken: string;
     TokenExpires: number;
   }
+
   const doSignIn = async () => {
     try {
-      const data = await axios.post<userData>(URL + '/api/v1/auth/login', {
+      const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
         user_id: id,
         password: password,
       });
-      console.log(data.data.accessToken);
+      await AsyncStorage.multiSet([
+        ['AccessToken', data.accessToken],
+        ['RefreshToken', data.refreshToken],
+      ]);
     } catch (e) {
-      console.log(e);
+      setVisible(true);
+      return <Text>아아아</Text>;
     }
   };
 
@@ -48,6 +59,14 @@ const SignIn = () => {
       <TouchableOpacity style={styles.loginBtn} onPress={doSignIn}>
         <Text style={{color: '#ffffff'}}>로그인</Text>
       </TouchableOpacity>
+      <View style={styles.text}>
+        <Text onPress={() => navigation.navigate('SelectUserType')}>
+          회원가입
+        </Text>
+        <Text onPress={() => navigation.navigate('FindPwd')}>
+          비밀번호 찾기
+        </Text>
+      </View>
     </SafeAreaProvider>
   );
 };
@@ -73,5 +92,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF3196',
+  },
+  text: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });

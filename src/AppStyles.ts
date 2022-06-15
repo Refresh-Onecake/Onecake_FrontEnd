@@ -11,7 +11,15 @@ export const AppStyles = {
     screen: 32.06,
   },
   IconSize: {
-    inputIcon: 15,
-    checkIcon: 18,
+    small: 15,
+    middle: 18,
+    large: 20,
+    xlarge: 24,
+  },
+  font: {
+    small: 12,
+    middle: 15,
+    large: 20,
+    xlarge: 24,
   },
 };

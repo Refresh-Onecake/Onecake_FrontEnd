@@ -1,5 +1,5 @@
 import {
-  Button,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {regEx} from '../utils';
 import {AppStyles} from '../AppStyles';
-import {Value} from 'react-native-reanimated';
+import App from '../../App';
 const TEST_PHONE_NUMBER = '+82 010-4183-2998';
 
 export type IFormInputs = {
@@ -64,7 +64,7 @@ const SignUp = () => {
   };
 
   //prettier-ignore
-  const {control, handleSubmit, watch, formState: {errors}} = useForm<IFormInputs>({
+  const {control, handleSubmit, watch, clearErrors ,formState: {errors}} = useForm<IFormInputs>({
       defaultValues: {
       name: '',
       id: '',
@@ -73,12 +73,19 @@ const SignUp = () => {
     },
   });
 
+  // 유효성 검사 및 회원가입 폼 관련 상태
   const [checkNameIcon, setCheckNameIcon] = useState<boolean>(false);
   const [checkIdIcon, setCheckIdIcon] = useState<boolean>(false);
   const [passwdIcon, setPasswdIcon] = useState<boolean>(false);
   const [validPasswdText, setValidPasswdText] = useState<boolean>(false);
   const [confirmPasswdIcon, setConfirmPasswdIcon] = useState<boolean>(false);
   const [confirmPasswdText, setConfirmPasswdText] = useState<boolean>(false);
+
+  // 약관동의 관련상태
+  const [checkedTermAll, setCheckedTermAll] = useState<boolean>(false);
+  const [checkedOneCakeTerm, setCheckedOneCakeTerm] = useState<boolean>(false);
+  const [checkedPrivacyTerm, setCheckedPrivacyTerm] = useState<boolean>(false);
+
   // onChange되었을 때 이름을 위한 유효성 검사
   useEffect(() => {
     const subscription = watch((value, {name, type}) => {
@@ -129,8 +136,37 @@ const SignUp = () => {
     return () => subscription.unsubscribe();
   }, [validPasswdText, checkIdIcon, watch]);
 
+  //검증 후 에러가 있어서 다시 비밀번호를 입력하였을 때
+  useEffect(() => {
+    confirmPasswdText && clearErrors('confirmPasswd');
+  }, [confirmPasswdText, clearErrors]);
+
   const onSubmit = data => {
     console.log(data);
+    if (checkedOneCakeTerm === false || checkedPrivacyTerm === false) {
+      Alert.alert(
+        '약관 동의',
+        '원케이크 이용약관 및 개인정보 수집 및 이용에 동의해주세요.',
+        [
+          {
+            text: '확인',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+  };
+
+  // 이용약관 전체 동의 시
+  const handleCheckTermAll = () => {
+    if (checkedTermAll) {
+      setCheckedOneCakeTerm(false);
+      setCheckedPrivacyTerm(false);
+    } else {
+      setCheckedOneCakeTerm(true);
+      setCheckedPrivacyTerm(true);
+    }
+    setCheckedTermAll(!checkedTermAll);
   };
 
   return (
@@ -163,7 +199,7 @@ const SignUp = () => {
                     <View style={styles.iconWrapper}>
                       <Icon
                         name="check-bold"
-                        size={AppStyles.IconSize.inputIcon}
+                        size={AppStyles.IconSize.small}
                         color={
                           checkNameIcon
                             ? AppStyles.color.pink
@@ -202,7 +238,7 @@ const SignUp = () => {
                     <View style={styles.iconWrapper}>
                       <Icon
                         name="check-bold"
-                        size={AppStyles.IconSize.inputIcon}
+                        size={AppStyles.IconSize.small}
                         color={
                           checkIdIcon
                             ? AppStyles.color.pink
@@ -246,7 +282,7 @@ const SignUp = () => {
                       onPress={() => setPasswdIcon(!passwdIcon)}>
                       <Icon
                         name="eye-off-outline"
-                        size={AppStyles.IconSize.inputIcon}
+                        size={AppStyles.IconSize.small}
                         color={
                           passwdIcon
                             ? AppStyles.color.pink
@@ -294,7 +330,7 @@ const SignUp = () => {
                       onPress={() => setConfirmPasswdIcon(!confirmPasswdIcon)}>
                       <Icon
                         name="eye-off-outline"
-                        size={AppStyles.IconSize.inputIcon}
+                        size={AppStyles.IconSize.small}
                         color={
                           confirmPasswdIcon
                             ? AppStyles.color.pink
@@ -319,46 +355,71 @@ const SignUp = () => {
         </View>
 
         <View style={[styles.signUpWrapper, {marginTop: 6}]}>
-          <Text style={styles.h1}>약관 동의</Text>
+          <Text style={[styles.h1, {marginBottom: AppStyles.padding.screen}]}>
+            약관 동의
+          </Text>
           <View>
             <View style={styles.termHeader}>
-              <TouchableOpacity style={styles.iconWrapper}>
+              <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => handleCheckTermAll()}>
                 <Icon
                   name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.checkIcon}
+                  size={AppStyles.IconSize.large}
+                  color={
+                    checkedTermAll ? AppStyles.color.pink : AppStyles.color.gray
+                  }
                 />
               </TouchableOpacity>
               <Text style={styles.h2}>전체 동의합니다.</Text>
             </View>
             <View style={styles.termModalWrap}>
-              <View style={styles.iconWrapper}>
+              <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => setCheckedOneCakeTerm(!checkedOneCakeTerm)}>
                 <Icon
                   name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.checkIcon}
-                />
-              </View>
-              <Text style={styles.h3}>[필수] 원케이크 이용약관 동의</Text>
-              <TouchableOpacity style={styles.iconWrapper}>
-                <Icon
-                  name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.checkIcon}
+                  size={AppStyles.IconSize.large}
+                  color={
+                    checkedOneCakeTerm
+                      ? AppStyles.color.pink
+                      : AppStyles.color.gray
+                  }
                 />
               </TouchableOpacity>
+              <Text style={[styles.h3, {flex: 1}]}>
+                [필수] 원케이크 이용약관 동의
+              </Text>
+              <View style={styles.iconWrapper}>
+                <Icon name="chevron-right" size={AppStyles.IconSize.xlarge} />
+              </View>
             </View>
             <View style={styles.termModalWrap}>
-              <View style={styles.iconWrapper}>
+              <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => setCheckedPrivacyTerm(!checkedPrivacyTerm)}>
                 <Icon
                   name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.checkIcon}
+                  size={AppStyles.IconSize.large}
+                  color={
+                    checkedPrivacyTerm
+                      ? AppStyles.color.pink
+                      : AppStyles.color.gray
+                  }
                 />
+              </TouchableOpacity>
+              <Text style={[styles.h3, {flex: 1}]}>
+                [필수] 개인정보 수집 및 이용에 동의
+              </Text>
+              <View style={styles.iconWrapper}>
+                <Icon name="chevron-right" size={AppStyles.IconSize.xlarge} />
               </View>
-              <Text style={styles.h3}>[필수] 개인정보 수집 및 이용에 동의</Text>
             </View>
           </View>
           <TouchableOpacity
             style={styles.submitBtn}
             onPress={handleSubmit(onSubmit)}>
-            <Text>원케이크 시작하기</Text>
+            <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -450,15 +511,21 @@ const styles = StyleSheet.create({
   termModalWrap: {
     paddingTop: 14,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   submitBtn: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: AppStyles.padding.screen,
     backgroundColor: AppStyles.color.pink,
     height: 56,
     borderRadius: 12,
+  },
+  submitBtnText: {
+    fontWeight: '700',
+    fontSize: 15,
+    color: AppStyles.color.white,
   },
 });

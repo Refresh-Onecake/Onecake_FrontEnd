@@ -10,6 +10,7 @@ export const AppStyles = {
   },
   padding: {
     screen: 32.06,
+    large: 52.06,
   },
   IconSize: {
     small: 15,

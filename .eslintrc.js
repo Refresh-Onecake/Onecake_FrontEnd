@@ -15,7 +15,8 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['path/to/your/tsconfig/file'],
+    project: ['./tsconfig.json'],
+    createDefaultProgram: true,
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
   overrides: [
@@ -23,10 +24,16 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       rules: {
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['error'],
-        '@typescript-eslint/no-shadow': ['error'],
+        '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-shadow': 'off',
         'no-shadow': 'off',
         'no-undef': 'off',
+        '@typescript-eslint/no-misused-promises': [
+          'off',
+          {
+            checksConditionals: false,
+          },
+        ],
       },
     },
   ],

@@ -4,15 +4,21 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import SignUp from './SignUp';
 import SignIn from './SignIn';
+import SelectUserType from './SelectUserType';
 import MainNavigation from './MainNavigation';
 
 const Stack = createStackNavigator();
 
-const AuthNavigation = () => {
+const AuthNavigation = ({navigation}: {navigation: any}) => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="SignIn" component={SignIn} navigation={navigation} />
+      <Stack.Screen name="SignUp" component={SignUp} navigation={navigation} />
+      <Stack.Screen
+        name="SelectUserType"
+        component={SelectUserType}
+        navigation={navigation}
+      />
       <Stack.Screen name="MainNavigation" component={MainNavigation} />
     </Stack.Navigator>
   );

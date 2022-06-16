@@ -1,5 +1,5 @@
 //prettier-ignore
-import {Alert, Button, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
@@ -7,13 +7,13 @@ import {useForm, Controller} from 'react-hook-form';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
+import {useMutation} from 'react-query';
 
 import {regEx} from '../utils';
-import {AppStyles} from '../AppStyles';
+import {AppStyles} from '../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../utils';
-import App from '../../App';
-
-const TEST_PHONE_NUMBER = '+82 010-4183-2998';
+import {appKeys, queryKeys} from '../enum';
+import {fetchSignUp, ISignUpRsp, ISignUp} from '../services';
 export type IFormInputs = {
   name: string;
   id: string;
@@ -57,6 +57,15 @@ const SignUp = () => {
     setModalVisible(!isModalVisible);
   };
 
+  // 회원가입 query
+  const signUpQuery = useMutation((user: ISignUp) => fetchSignUp(user), {
+    onSuccess: data => {
+      console.log(data);
+    },
+    onError: errors => {
+      console.log(errors);
+    },
+  });
   // 모달 내에서 아이템을 클릭했을 때 핸들러
   const handleRenderItemClick = ({name, dial_code, code}: ICountryCode) => {
     const selectedObject = {
@@ -209,8 +218,26 @@ const SignUp = () => {
           },
         ],
       );
+    } else if (!confirmPasswdText) {
+      Alert.alert('문자 인증', '문자 인증을 올바르게 해 주세요.', [
+        {
+          text: '확인',
+          style: 'cancel',
+        },
+      ]);
     } else {
       // TODO: API 통신이 들어갈 곳.
+      const signUpUser: ISignUp = {
+        user_id: data.id,
+        password: data.password,
+        name: data.name,
+        phone_number: phoneNumber,
+        member_type: appKeys.consumer,
+      };
+
+      console.log(signUpUser);
+
+      signUpQuery.mutate(signUpUser);
     }
   };
 

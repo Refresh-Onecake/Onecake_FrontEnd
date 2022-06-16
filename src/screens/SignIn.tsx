@@ -12,7 +12,7 @@ import {useForm} from 'react-hook-form';
 import Modal from 'react-native-simple-modal';
 import React, {useState} from 'react';
 
-const SignIn = ({navigation}) => {
+const SignIn = ({navigation}: {navigation: any}) => {
   const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -36,6 +36,8 @@ const SignIn = ({navigation}) => {
         ['AccessToken', data.accessToken],
         ['RefreshToken', data.refreshToken],
       ]);
+      console.log(data.accessToken);
+      navigation.navigate('MainNavigation');
     } catch (e) {
       setVisible(true);
       return <Text>아아아</Text>;

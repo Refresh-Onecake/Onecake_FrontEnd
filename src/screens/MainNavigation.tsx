@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigation = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator screenOptions={{headerShown: false,}}>
       <Tab.Screen
         name="홈"
         component={Home}

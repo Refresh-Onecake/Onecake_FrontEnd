@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export type ISignUp = {
   user_id: string;
@@ -12,6 +13,14 @@ export type ISignUpRsp = {
   success: string;
   message: string;
 };
+
+export interface userData {
+  id: string;
+  password: string;
+  accessToken: string;
+  refreshToken: string;
+  TokenExpires: number;
+}
 
 export const apiClient = axios.create({
   baseURL: 'http://15.165.27.120:8080',
@@ -36,4 +45,21 @@ export const fetchSignUp = async ({
   });
 
   return data;
+};
+
+export const doSignIn = async ({id, password}: userData, {navigation}) => {
+  try {
+    const {data} = await apiClient.post<userData>('/api/v1/auth/login', {
+      user_id: id,
+      password: password,
+    });
+    // await AsyncStorage.multiSet([
+    //   ['AccessToken', data.accessToken],
+    //   ['RefreshToken', data.refreshToken],
+    // ]);
+    console.log(data.accessToken);
+    navigation.navigate('MainNavigation');
+  } catch (e) {
+    console.log('로그인 오류');
+  }
 };

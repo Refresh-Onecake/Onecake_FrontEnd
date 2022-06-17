@@ -1,5 +1,7 @@
+import {StackScreenProps} from '@react-navigation/stack';
 import axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
+import {UseFormUnregister} from 'react-hook-form';
+import {RootStackParamList} from '../types';
 
 export type ISignUp = {
   user_id: string;
@@ -14,13 +16,13 @@ export type ISignUpRsp = {
   message: string;
 };
 
-export interface userData {
+export type IUserData = {
   id: string;
   password: string;
   accessToken: string;
   refreshToken: string;
   TokenExpires: number;
-}
+};
 
 export const apiClient = axios.create({
   baseURL: 'http://15.165.27.120:8080',
@@ -47,9 +49,17 @@ export const fetchSignUp = async ({
   return data;
 };
 
-export const doSignIn = async ({id, password}: userData, {navigation}) => {
+export type ISignIn = {
+  id: IUserData['id'];
+  password: IUserData['password'];
+};
+
+export const doSignIn = async (
+  {id, password}: ISignIn,
+  {navigation}: StackScreenProps<RootStackParamList>,
+) => {
   try {
-    const {data} = await apiClient.post<userData>('/api/v1/auth/login', {
+    const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
       user_id: id,
       password: password,
     });

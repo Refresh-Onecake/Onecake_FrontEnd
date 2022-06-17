@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import SelectUserType from './SelectUserType';
+import FindPwd from './FindPwd';
 import MainNavigation from './MainNavigation';
 
 const Stack = createStackNavigator();
@@ -17,6 +18,11 @@ const AuthNavigation = ({navigation}: {navigation: any}) => {
       <Stack.Screen
         name="SelectUserType"
         component={SelectUserType}
+        navigation={navigation}
+      />
+      <Stack.Screen
+        name="FindPwd"
+        component={FindPwd}
         navigation={navigation}
       />
       <Stack.Screen name="MainNavigation" component={MainNavigation} />

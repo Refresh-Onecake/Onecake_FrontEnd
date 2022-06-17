@@ -34,12 +34,12 @@ const SignIn = ({navigation}: {navigation: any}) => {
         user_id: id,
         password: password,
       });
-      // await AsyncStorage.multiSet([
-      //   ['AccessToken', data.accessToken],
-      //   ['RefreshToken', data.refreshToken],
-      // ]);
-      // console.log(data.accessToken);
-      // navigation.navigate('MainNavigation');
+      await AsyncStorage.multiSet([
+        ['AccessToken', data.accessToken],
+        ['RefreshToken', data.refreshToken],
+      ]);
+      console.log(data.accessToken);
+      navigation.navigate('MainNavigation');
     } catch (e) {
       setVisible(true);
       return <Text>아아아</Text>;
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3196',
   },
   texts: {
+    width: 270,
     marginTop: 31,
     flexDirection: 'row',
     justifyContent: 'space-evenly',

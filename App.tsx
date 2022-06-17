@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 //prettier-ignore
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil';
@@ -11,14 +10,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
 import MainNavigation from './src/screens/MainNavigation';
-import AuthNavigation from './src/screens/AuthNavigation';
+import AuthNavigation from './src/screens/auth/AuthNavigation';
 import AsyncStorage from '@react-native-community/async-storage';
 
-//Create a client
+//checkTokens
 const queryClient = new QueryClient();
 export default function App() {
   const Stack = createStackNavigator();
   const [accessToken, setAccessToken] = useState<string | null>('');
+
   const getAccessToken = async () => {
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -41,23 +41,29 @@ export default function App() {
   });
 
   return (
-  <QueryClientProvider client={queryClient}>
-    <RecoilRoot>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}>
-            {accessToken == null ? (
-              <Stack.Screen name="AuthNavigation" component={AuthNavigation} />
-            ) : (
-              <Stack.Screen name="MainNavigation" component={MainNavigation} />
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </RecoilRoot>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}>
+              {accessToken == null ? (
+                <Stack.Screen
+                  name="AuthNavigation"
+                  component={AuthNavigation}
+                />
+              ) : (
+                <Stack.Screen
+                  name="MainNavigation"
+                  component={MainNavigation}
+                />
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 }

@@ -1,18 +1,24 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import React from 'react';
+import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 
 const SelectUserType = ({navigation}) => {
-  const goToSignUp = () => {
-    navigation.navigate('SignUp');
+  const goToSignUp = (userType: string) => {
+    console.log(userType);
+    navigation.navigate('SignUp', userType);
   };
   return (
     <SafeAreaProvider style={styles.wrapper}>
-      <TouchableOpacity onPress={goToSignUp} style={styles.typeBtn}>
+      <TouchableOpacity
+        onPress={() => goToSignUp(appKeys.consumer)}
+        style={styles.typeBtn}>
         <Text>소비자</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={goToSignUp} style={styles.typeBtn}>
+      <TouchableOpacity
+        onPress={() => goToSignUp(appKeys.seller)}
+        style={styles.typeBtn}>
         <Text>판매자</Text>
       </TouchableOpacity>
     </SafeAreaProvider>

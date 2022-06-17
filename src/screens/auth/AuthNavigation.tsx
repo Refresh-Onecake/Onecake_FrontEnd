@@ -6,7 +6,7 @@ import SignUp from './SignUp';
 import SignIn from './SignIn';
 import SelectUserType from './SelectUserType';
 import FindPwd from './FindPwd';
-import MainNavigation from './MainNavigation';
+import MainNavigation from '../MainNavigation';
 
 const Stack = createStackNavigator();
 

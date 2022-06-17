@@ -9,11 +9,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {useMutation} from 'react-query';
 
-import {regEx} from '../utils';
-import {AppStyles} from '../styles/AppStyles';
-import {countryCodes, ICountryCode} from '../utils';
-import {appKeys, queryKeys} from '../enum';
-import {fetchSignUp, ISignUpRsp, ISignUp} from '../services';
+import {regEx} from '../../utils';
+import {AppStyles} from '../../styles/AppStyles';
+import {countryCodes, ICountryCode} from '../../utils';
+import {appKeys, queryKeys} from '../../enum';
+import {fetchSignUp, ISignUpRsp, ISignUp} from '../../services';
 export type IFormInputs = {
   name: string;
   id: string;

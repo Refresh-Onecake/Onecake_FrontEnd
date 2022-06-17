@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {useForm} from 'react-hook-form';
 import Modal from 'react-native-simple-modal';
 import React, {useState} from 'react';
-import {AppStyles} from '../styles/AppStyles';
+import {AppStyles} from '../../styles/AppStyles';
 
 const SignIn = ({navigation}: {navigation: any}) => {
   const URL = 'http://15.165.27.120:8080';

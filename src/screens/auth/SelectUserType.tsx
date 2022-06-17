@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import React from 'react';
-import {AppStyles} from '../styles/AppStyles';
+import {AppStyles} from '../../styles/AppStyles';
 
 const SelectUserType = ({navigation}) => {
   const goToSignUp = () => {

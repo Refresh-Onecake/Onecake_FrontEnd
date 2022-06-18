@@ -15,6 +15,7 @@ import {AppStyles} from '../../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../../utils';
 import {fetchSignUp, ISignUp} from '../../services';
 import {RootStackParamList} from '../navigator';
+import {appKeys} from '../../enum';
 
 export type IFormInputs = {
   name: string;
@@ -65,10 +66,21 @@ const SignUp: FC<Props> = ({route, navigation}) => {
   // 회원가입 query
   const signUpQuery = useMutation((user: ISignUp) => fetchSignUp(user), {
     onSuccess: data => {
-      console.log(data);
+      userType === appKeys.consumer
+        ? navigation.navigate('EnterStore')
+        : navigation.navigate('MainNavigation');
     },
     onError: errors => {
-      console.log(errors);
+      Alert.alert(
+        '회원가입 실패',
+        '다시 한번 시도해주시거나 관리자에게 문의해주세요.',
+        [
+          {
+            text: '확인',
+            style: 'cancel',
+          },
+        ],
+      );
     },
   });
   // 모달 내에서 아이템을 클릭했을 때 핸들러
@@ -461,8 +473,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
               alignItems: 'center',
             }}>
             {/* 국제번호 선택 컴포넌트 */}
-            <View
-              style={[styles.phoneNumberInputWrap, {flex: 1, marginRight: 10}]}>
+            <View style={styles.phoneNumberInputWrap}>
               <TouchableOpacity style={styles.dropdown} onPress={toggleModal}>
                 <Text>
                   {selectedCountry.dial_code} {selectedCountry.code}
@@ -714,11 +725,11 @@ const styles = StyleSheet.create({
   },
   inputFlex: {
     flexDirection: 'row',
+    height: 40,
   },
   inputText: {
     fontSize: 14,
     fontWeight: '500',
-
     color: AppStyles.color.black,
     opacity: 0.5,
   },
@@ -760,6 +771,9 @@ const styles = StyleSheet.create({
   },
   // 문자 인증 관련
   phoneNumberInputWrap: {
+    flex: 1,
+    marginRight: 10,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,

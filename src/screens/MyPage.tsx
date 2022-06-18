@@ -1,14 +1,17 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {AppStyles} from '../styles/AppStyles';
 
 const MyPage = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.view}>
       <Text>MyPage</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default MyPage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  view: {flex: 1, backgroundColor: AppStyles.color.white},
+});

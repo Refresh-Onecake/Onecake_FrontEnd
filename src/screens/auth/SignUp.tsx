@@ -14,7 +14,8 @@ import {regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../../utils';
 import {fetchSignUp, ISignUp} from '../../services';
-import {RootStackParamList} from '../../types';
+import {RootStackParamList} from '../navigator';
+
 export type IFormInputs = {
   name: string;
   id: string;

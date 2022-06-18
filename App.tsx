@@ -8,9 +8,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainNavigation from './src/screens/MainNavigation';
-import AuthNavigation from './src/screens/auth/AuthNavigation';
-import {RootStackParamList} from './src/types/navigationStackTypes';
+
+import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
+import {MainNavigator, StackNavigator} from './src/screens/navigator';
 //checkTokens
 const queryClient = new QueryClient();
 export default function App() {
@@ -29,9 +29,9 @@ export default function App() {
 
   useEffect(() => {
     try {
+      void getAccessToken();
       setTimeout(() => {
         SplashScreen.hide();
-        void getAccessToken();
       }, 2000); //스플래시 활성화 시간 2초
     } catch (e) {
       console.log(e);
@@ -43,7 +43,7 @@ export default function App() {
       <RecoilRoot>
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
-            {accessToken ? <MainNavigation /> : <AuthNavigation />}
+            {accessToken ? <MainNavigator /> : <StackNavigator />}
           </NavigationContainer>
         </SafeAreaView>
       </RecoilRoot>

@@ -3,9 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil';
 //prettier-ignore
 import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider} from 'react-query';
-import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,26 +41,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <SafeAreaProvider>
+        <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}>
-              {accessToken == null ? (
-                <Stack.Screen
-                  name="AuthNavigation"
-                  component={AuthNavigation}
-                />
-              ) : (
-                <Stack.Screen
-                  name="MainNavigation"
-                  component={MainNavigation}
-                />
-              )}
-            </Stack.Navigator>
+            {accessToken ? <MainNavigation /> : <AuthNavigation />}
           </NavigationContainer>
-        </SafeAreaProvider>
+        </SafeAreaView>
       </RecoilRoot>
     </QueryClientProvider>
   );

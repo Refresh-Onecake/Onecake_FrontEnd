@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  SafeAreaView,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -47,7 +48,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   };
 
   return (
-    <SafeAreaProvider style={styles.signInWrapper}>
+    <SafeAreaView style={styles.signInWrapper}>
       <View
         style={{
           width: 87,
@@ -89,7 +90,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           비밀번호 찾기
         </Text>
       </View>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 
@@ -98,7 +99,9 @@ export default SignIn;
 const styles = StyleSheet.create({
   signInWrapper: {
     backgroundColor: AppStyles.color.white,
+    flex: 1,
     justifyContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
   },
   inputWrapper: {

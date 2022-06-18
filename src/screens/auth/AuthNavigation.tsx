@@ -13,7 +13,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const AuthNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName="SignIn">
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="SelectUserType" component={SelectUserType} />

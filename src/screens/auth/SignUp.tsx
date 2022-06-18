@@ -1,5 +1,5 @@
 //prettier-ignore
-import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
@@ -13,8 +13,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../../utils';
-import {appKeys, queryKeys} from '../../enum';
-import {fetchSignUp, ISignUpRsp, ISignUp} from '../../services';
+import {fetchSignUp, ISignUp} from '../../services';
 import {RootStackParamList} from '../../types';
 export type IFormInputs = {
   name: string;
@@ -237,7 +236,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
         password: data.password,
         name: data.name,
         phone_number: phoneNumber,
-        member_type: appKeys.consumer,
+        member_type: userType,
       };
 
       console.log(signUpUser);
@@ -266,7 +265,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
   }, [phoneNumber]);
 
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         {/* 회원가입 폼 컴포넌트 */}
         <View style={styles.signUpWrapper}>
@@ -656,7 +655,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 

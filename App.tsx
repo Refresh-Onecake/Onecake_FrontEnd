@@ -8,15 +8,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainNavigation from './src/screens/MainNavigation';
 import AuthNavigation from './src/screens/auth/AuthNavigation';
-import AsyncStorage from '@react-native-community/async-storage';
-
+import {RootStackParamList} from './src/types/navigationStackTypes';
 //checkTokens
 const queryClient = new QueryClient();
 export default function App() {
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList>();
   const [accessToken, setAccessToken] = useState<string | null>('');
 
   const getAccessToken = async () => {

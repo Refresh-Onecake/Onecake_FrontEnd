@@ -1,13 +1,19 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import React from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
+
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 
-const SelectUserType = ({navigation}) => {
+import {RootStackParamList} from '../../types';
+
+const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const goToSignUp = (userType: string) => {
     console.log(userType);
-    navigation.navigate('SignUp', userType);
+    navigation.navigate('SignUp', {
+      userType: userType,
+    });
   };
   return (
     <SafeAreaProvider style={styles.wrapper}>

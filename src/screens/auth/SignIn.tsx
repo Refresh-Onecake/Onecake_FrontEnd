@@ -7,13 +7,13 @@ import {
   Text,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-community/async-storage';
-import {useForm} from 'react-hook-form';
-import Modal from 'react-native-simple-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-
-const SignIn = ({navigation}: {navigation: any}) => {
+import {RootStackParamList} from '../../types';
+import {StackScreenProps} from '@react-navigation/stack';
+const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');

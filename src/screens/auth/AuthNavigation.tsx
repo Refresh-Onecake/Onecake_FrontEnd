@@ -7,29 +7,17 @@ import SignIn from '../auth/SignIn';
 import SelectUserType from '../auth/SelectUserType';
 import FindPwd from '../auth/FindPwd';
 import MainNavigation from '../MainNavigation';
+import {RootStackParamList} from '../../types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
-const AuthNavigation = ({navigation}: {navigation: any}, userType: string) => {
+const AuthNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="SignIn" component={SignIn} navigation={navigation} />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        navigation={navigation}
-        userType={userType}
-      />
-      <Stack.Screen
-        name="SelectUserType"
-        component={SelectUserType}
-        navigation={navigation}
-      />
-      <Stack.Screen
-        name="FindPwd"
-        component={FindPwd}
-        navigation={navigation}
-      />
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="SelectUserType" component={SelectUserType} />
+      <Stack.Screen name="FindPwd" component={FindPwd} />
       <Stack.Screen name="MainNavigation" component={MainNavigation} />
     </Stack.Navigator>
   );

@@ -1,6 +1,6 @@
 //prettier-ignore
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useForm, Controller} from 'react-hook-form';
@@ -8,20 +8,25 @@ import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {useMutation} from 'react-query';
+import {StackScreenProps} from '@react-navigation/stack';
 
 import {regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../../utils';
 import {appKeys, queryKeys} from '../../enum';
 import {fetchSignUp, ISignUpRsp, ISignUp} from '../../services';
+import {RootStackParamList} from '../../types';
 export type IFormInputs = {
   name: string;
   id: string;
   password: string;
   confirmPasswd: string;
 };
+type Props = StackScreenProps<RootStackParamList, 'SignUp'>;
 
-const SignUp = () => {
+const SignUp: FC<Props> = ({route, navigation}) => {
+  const {userType} = route.params;
+  console.log(userType);
   //문자 인증 관련 상태
   //prettier-ignore
   const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult>();

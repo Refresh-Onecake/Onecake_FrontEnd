@@ -5,8 +5,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
-
-import {RootStackParamList} from '../../types';
+import { RootStackParamList } from '../navigator';
 
 const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const goToSignUp = (userType: string) => {

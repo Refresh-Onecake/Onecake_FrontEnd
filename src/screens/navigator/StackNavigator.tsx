@@ -15,7 +15,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export const StackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false, headerTitleAlign: 'center'}}>
       {/* 회원 가입 및 로그인 관련*/}
       <Stack.Group>
         <Stack.Screen name="SignIn" component={SignIn} />
@@ -26,7 +27,16 @@ export const StackNavigator = () => {
       </Stack.Group>
       {/* 판매자 입점 신청 screens */}
       <Stack.Group>
-        <Stack.Screen name="EnterStore" component={EnterStore} />
+        <Stack.Screen
+          name="EnterStore"
+          component={EnterStore}
+          options={{
+            headerShown: true,
+            headerTitle: '가게 등록',
+            headerTitleStyle: styles.headerTitle,
+            headerTitleContainerStyle: styles.headerTitleContainer,
+          }}
+        />
         <Stack.Screen name="EnterMenu" component={EnterMenu} />
         <Stack.Screen name="EnterSheet" component={EnterSheet} />
         <Stack.Screen name="EnterComplete" component={EnterComplete} />
@@ -34,3 +44,15 @@ export const StackNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+export const styles = StyleSheet.create({
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  headerTitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

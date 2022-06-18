@@ -1,11 +1,25 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../../styles/AppStyles';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
+import {ProgressBar} from '../../components';
 
-export const EnterStore = () => {
+export const EnterStore = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   return (
     <SafeAreaView style={styles.view}>
-      <Text>enterStore</Text>
+      <ProgressBar progress={33} />
+      <TouchableOpacity onPress={() => navigation.navigate('EnterMenu')}>
+        <Text>디음으로</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

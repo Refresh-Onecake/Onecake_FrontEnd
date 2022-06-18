@@ -1,11 +1,24 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../../styles/AppStyles';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
 
-export const EnterComplete = () => {
+export const EnterComplete = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   return (
     <SafeAreaView style={styles.view}>
-      <Text>EnterSheet</Text>
+      <Text>EnterComplete</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EnterStore')}>
+        <Text>신청하기</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

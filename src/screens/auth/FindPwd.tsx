@@ -1,7 +1,8 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../types';
+import { RootStackParamList } from '../navigator';
+
 
 const FindPwd = ({navigation}: StackScreenProps<RootStackParamList>) => {
   return (

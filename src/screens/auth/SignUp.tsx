@@ -556,6 +556,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                   borderBottomWidth: 1,
                   borderBottomColor: AppStyles.color.border,
                   marginRight: 10,
+                  height: 40,
                 }}>
                 <TextInput
                   style={styles.textInput}
@@ -664,6 +665,10 @@ const SignUp: FC<Props> = ({route, navigation}) => {
             ]}
             onPress={handleSubmit(onSubmit)}>
             <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
+          </TouchableOpacity>
+          {/* FIXME: 이후 개발 다 끝나면 삭제할 요소 */}
+          <TouchableOpacity onPress={() => navigation.navigate('EnterStore')}>
+            <Text>입점 신청 테스트</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

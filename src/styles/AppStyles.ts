@@ -7,6 +7,7 @@ export const AppStyles = {
     pink: '#FF4EA5',
     hotPink: '#FF3196',
     lightGray: '#EDEDED',
+    placeholder: '#707070',
   },
   padding: {
     screen: 32.06,

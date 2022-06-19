@@ -253,7 +253,6 @@ const SignUp: FC<Props> = ({route, navigation}) => {
       };
 
       console.log(signUpUser);
-
       signUpQuery.mutate(signUpUser);
     }
   };

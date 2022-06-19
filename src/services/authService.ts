@@ -54,10 +54,7 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-export const doSignIn = async (
-  {id, password}: ISignIn,
-  {navigation}: StackScreenProps<RootStackParamList>,
-) => {
+export const doSignIn = async ({id, password}: ISignIn, navigation) => {
   try {
     const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
       user_id: id,
@@ -70,6 +67,6 @@ export const doSignIn = async (
     console.log(data.accessToken);
     navigation.navigate('MainNavigation');
   } catch (e) {
-    console.log('로그인 오류');
+    console.log('dd', e);
   }
 };

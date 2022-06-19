@@ -13,38 +13,11 @@ import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../../types';
 import {StackScreenProps} from '@react-navigation/stack';
+import {doSignIn} from '../../services';
+
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [visible, setVisible] = useState<boolean>(false);
-
-  interface userData {
-    user_id: string;
-    password: string;
-    accessToken: string;
-    refreshToken: string;
-    TokenExpires: number;
-  }
-
-  // save Tokens
-  const doSignIn = async () => {
-    try {
-      const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
-        user_id: id,
-        password: password,
-      });
-      await AsyncStorage.multiSet([
-        ['AccessToken', data.accessToken],
-        ['RefreshToken', data.refreshToken],
-      ]);
-      console.log(data.accessToken);
-      navigation.navigate('MainNavigation');
-    } catch (e) {
-      setVisible(true);
-      return <Text>아아아</Text>;
-    }
-  };
 
   return (
     <SafeAreaProvider style={styles.signInWrapper}>
@@ -78,7 +51,9 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           style={styles.textInput}
         />
       </View>
-      <TouchableOpacity style={styles.loginBtn} onPress={doSignIn}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={() => doSignIn({id, password}, navigation)}>
         <Text style={{color: '#ffffff'}}>로그인</Text>
       </TouchableOpacity>
       <View style={styles.texts}>

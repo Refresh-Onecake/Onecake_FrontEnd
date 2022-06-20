@@ -6,3 +6,9 @@ export type IEnterStoreInputForm = {
   storeDesc: string;
   storeUrl: string;
 };
+
+export type IStoreImg = {
+  name: string | undefined;
+  type: string | undefined;
+  uri: string | undefined;
+};

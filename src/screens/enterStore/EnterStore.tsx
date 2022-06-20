@@ -1,18 +1,21 @@
 //prettier-ignore
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView} from 'react-native';
-import React, {Fragment, useCallback, useEffect, useRef} from 'react';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Alert, Image, Platform} from 'react-native';
+import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useMutation} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
-import {IEnterStoreInputForm} from './types';
+import {IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  const [storeImg, setStoreImg] = useState<IStoreImg>();
   const {
     control,
     handleSubmit,
@@ -25,6 +28,7 @@ export const EnterStore = ({
     console.log(data);
   };
 
+  // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
   const TextInputRef = useRef<TextInput | null>(null);
   const setFocus = useCallback(
     () => TextInputRef.current?.focus(),
@@ -32,6 +36,34 @@ export const EnterStore = ({
     [TextInputRef.current],
   );
   const autoFocus = useAutoFocus();
+
+  const handleImageUpload = async () => {
+    await launchImageLibrary({mediaType: 'photo'})
+      .then(resp => {
+        resp.assets?.map(({fileName, type, uri}) => {
+          const img = {
+            name: fileName,
+            type: type,
+            uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
+          };
+          console.log(img);
+          setStoreImg(img);
+        });
+      })
+      .catch(() => {
+        setStoreImg(undefined);
+        Alert.alert(
+          '사진 업로드 실패',
+          '다시 한번 시도해주시거나 관리자에게 문의해주세요.',
+          [
+            {
+              text: '확인',
+              style: 'cancel',
+            },
+          ],
+        );
+      });
+  };
 
   return (
     <Fragment>
@@ -103,16 +135,31 @@ export const EnterStore = ({
                 <Text style={[styles.inputTitle, {paddingBottom: 20}]}>
                   케이크 대표 사진
                 </Text>
-                <View style={styles.selectImage}>
-                  <Icon name="plus" size={35} color={AppStyles.color.hotPink} />
-                  <Text
-                    style={{
-                      fontSize: AppStyles.font.small,
-                      color: AppStyles.color.hotPink,
-                      fontWeight: '700',
-                    }}>
-                    이미지 (0/1)
-                  </Text>
+                {/* TODO: ImageUpload */}
+                <View style={styles.imageWrapper}>
+                  <TouchableOpacity
+                    style={styles.selectImage}
+                    onPress={handleImageUpload}>
+                    <Icon
+                      name="plus"
+                      size={35}
+                      color={AppStyles.color.hotPink}
+                    />
+                    <Text
+                      style={{
+                        fontSize: AppStyles.font.small,
+                        color: AppStyles.color.hotPink,
+                        fontWeight: '700',
+                      }}>
+                      이미지 (0/1)
+                    </Text>
+                  </TouchableOpacity>
+                  {storeImg && (
+                    <Image
+                      style={styles.selectImage}
+                      source={{uri: storeImg?.uri}}
+                    />
+                  )}
                 </View>
               </View>
               {/* 가게 위치 */}
@@ -195,7 +242,7 @@ export const EnterStore = ({
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <View>
-                    <Text style={styles.inputTitle}>가게 소개</Text>
+                    <Text style={styles.inputTitle}>카카오톡 채널</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
                         onBlur={onBlur}
@@ -247,6 +294,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     paddingTop: 20,
+    color: AppStyles.color.black,
   },
   InputWrapper: {
     justifyContent: 'center',
@@ -266,6 +314,9 @@ export const styles = StyleSheet.create({
     opacity: 0.7,
     paddingTop: 2,
   },
+  imageWrapper: {
+    flexDirection: 'row',
+  },
   selectImage: {
     width: 102.68,
     height: 102.68,
@@ -273,6 +324,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
+    marginRight: 10,
   },
   submitBtn: {
     backgroundColor: AppStyles.color.hotPink,

@@ -1,6 +1,13 @@
 //prettier-ignore
 import {Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
+import React, {
+  FC,
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useForm, Controller} from 'react-hook-form';
@@ -16,6 +23,7 @@ import {countryCodes, ICountryCode} from '../../utils';
 import {fetchSignUp, ISignUp} from '../../services';
 import {RootStackParamList} from '../navigator';
 import {appKeys} from '../../enum';
+import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 
 export type IFormInputs = {
   name: string;
@@ -221,6 +229,15 @@ const SignUp: FC<Props> = ({route, navigation}) => {
     confirmPasswdText && clearErrors('confirmPasswd');
   }, [confirmPasswdText, clearErrors]);
 
+  // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
+  const TextInputRef = useRef<TextInput | null>(null);
+  const setFocus = useCallback(
+    () => TextInputRef.current?.focus(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [TextInputRef.current],
+  );
+  const autoFocus = useAutoFocus();
+
   // 회원가입 제출
   const onSubmit = (data: IFormInputs) => {
     console.log(data);
@@ -277,407 +294,442 @@ const SignUp: FC<Props> = ({route, navigation}) => {
   }, [phoneNumber]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {/* 회원가입 폼 컴포넌트 */}
-        <View style={styles.signUpWrapper}>
-          <View style={styles.header}>
-            <Text style={styles.h1}>회원가입</Text>
-            <Text style={styles.subText}>원케이크의 회원이 되어주세요!</Text>
-          </View>
-          <View>
-            {/* 이름 입력 필드 */}
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                pattern: regEx.regName,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.inputText}>이름</Text>
-                  <View style={styles.inputFlex}>
-                    <TextInput
-                      style={styles.textInput}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      selectionColor={'lightgray'}
-                      placeholder="이름 입력"
-                    />
-                    <View style={styles.iconWrapper}>
-                      <Icon
-                        name="check-bold"
-                        size={AppStyles.IconSize.small}
-                        color={
-                          checkNameIcon
-                            ? AppStyles.color.pink
-                            : AppStyles.color.gray
-                        }
-                      />
-                    </View>
-                  </View>
-                </View>
-              )}
-              name="name"
-            />
-            {errors.name && (
-              <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
-            )}
-            {/* id 입력 필드 */}
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                minLength: 6,
-                pattern: regEx.regId,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.inputText}>아이디</Text>
-                  <View style={styles.inputFlex}>
-                    <TextInput
-                      style={styles.textInput}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      selectionColor={'lightgray'}
-                      placeholder="영문,숫자 6자 이상"
-                    />
-                    <View style={styles.iconWrapper}>
-                      <Icon
-                        name="check-bold"
-                        size={AppStyles.IconSize.small}
-                        color={
-                          checkIdIcon
-                            ? AppStyles.color.pink
-                            : AppStyles.color.gray
-                        }
-                      />
-                    </View>
-                  </View>
-                </View>
-              )}
-              name="id"
-            />
-            {errors.id && (
-              <Text style={styles.errorText}>
-                영문과 숫자는 1개 이상 포함 해주세요.
-              </Text>
-            )}
-            {/* 비밀번호 입력 필드 */}
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                minLength: 8,
-                pattern: regEx.regPassWord,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.inputText}>비밀번호</Text>
-                  <View style={styles.inputFlex}>
-                    <TextInput
-                      secureTextEntry={!passwdIcon}
-                      style={styles.textInput}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      selectionColor={'lightgray'}
-                      placeholder="영문, 숫자, 특수문자 8자 이상"
-                    />
-                    <TouchableOpacity
-                      style={styles.iconWrapper}
-                      onPress={() => setPasswdIcon(!passwdIcon)}>
-                      <Icon
-                        name="eye-off-outline"
-                        size={AppStyles.IconSize.small}
-                        color={
-                          passwdIcon
-                            ? AppStyles.color.pink
-                            : AppStyles.color.gray
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-              name="password"
-            />
-            {validPasswdText && (
-              <Text style={styles.errorText}>
-                사용할 수 있는 비밀번호입니다.
-              </Text>
-            )}
-            {errors.password && (
-              <Text style={styles.errorText}>
-                영문, 숫자, 특수문자(@$!%*#?&)는 1개 이상 포함해주세요.
-              </Text>
-            )}
-            {/* 비밀번호 확인 입력 필드 */}
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                validate: () => confirmPasswdText === true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.inputText}>비밀번호 확인</Text>
-                  <View style={styles.inputFlex}>
-                    <TextInput
-                      secureTextEntry={!confirmPasswdIcon}
-                      style={styles.textInput}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      selectionColor={'lightgray'}
-                      placeholder="영문, 숫자, 특수문자 8자 이상"
-                    />
-                    <TouchableOpacity
-                      style={styles.iconWrapper}
-                      onPress={() => setConfirmPasswdIcon(!confirmPasswdIcon)}>
-                      <Icon
-                        name="eye-off-outline"
-                        size={AppStyles.IconSize.small}
-                        color={
-                          confirmPasswdIcon
-                            ? AppStyles.color.pink
-                            : AppStyles.color.gray
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-              name="confirmPasswd"
-            />
-            {confirmPasswdText && (
-              <Text style={styles.errorText}>비밀번호가 일치합니다.</Text>
-            )}
-            {errors.confirmPasswd && (
-              <Text style={styles.errorText}>
-                비밀번호와 동일하게 작성해주세요.
-              </Text>
-            )}
-          </View>
-        </View>
-        {/* 문자인증 컴포넌트 */}
-        <View style={[styles.signUpWrapper, {marginTop: 6}]}>
-          <Text style={styles.inputText}>휴대폰 번호</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignContent: 'center',
-              alignItems: 'center',
-            }}>
-            {/* 국제번호 선택 컴포넌트 */}
-            <View style={styles.phoneNumberInputWrap}>
-              <TouchableOpacity style={styles.dropdown} onPress={toggleModal}>
-                <Text>
-                  {selectedCountry.dial_code} {selectedCountry.code}
+    <Fragment>
+      <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <AutoFocusProvider contentContainerStyle={styles.flex}>
+            {/* 회원가입 폼 컴포넌트 */}
+            <View style={styles.signUpWrapper}>
+              <View style={styles.header}>
+                <Text style={styles.h1}>회원가입</Text>
+                <Text style={styles.subText}>
+                  원케이크의 회원이 되어주세요!
                 </Text>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Icon name="chevron-down" size={AppStyles.IconSize.small} />
-                </View>
-              </TouchableOpacity>
-              <Modal
-                isVisible={isModalVisible}
-                style={{margin: AppStyles.padding.large}}>
-                <View style={styles.modalStyle}>
-                  <FlatList
-                    data={countryCodes}
-                    renderItem={({item}) => <RenderItem data={item} />}
-                    keyExtractor={(item: ICountryCode) => item.code}
+              </View>
+              <View>
+                {/* 이름 입력 필드 */}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    pattern: regEx.regName,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <View style={styles.inputWrapper}>
+                      <Text style={styles.inputText}>이름</Text>
+                      <View style={styles.inputFlex}>
+                        <TextInput
+                          style={styles.textInput}
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          value={value}
+                          onFocus={autoFocus}
+                          selectionColor={'lightgray'}
+                          placeholder="이름 입력"
+                        />
+                        <View style={styles.iconWrapper}>
+                          <Icon
+                            name="check-bold"
+                            size={AppStyles.IconSize.small}
+                            color={
+                              checkNameIcon
+                                ? AppStyles.color.pink
+                                : AppStyles.color.gray
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  )}
+                  name="name"
+                />
+                {errors.name && (
+                  <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
+                )}
+                {/* id 입력 필드 */}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    minLength: 6,
+                    pattern: regEx.regId,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <View style={styles.inputWrapper}>
+                      <Text style={styles.inputText}>아이디</Text>
+                      <View style={styles.inputFlex}>
+                        <TextInput
+                          style={styles.textInput}
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          onFocus={autoFocus}
+                          value={value}
+                          selectionColor={'lightgray'}
+                          placeholder="영문,숫자 6자 이상"
+                        />
+                        <View style={styles.iconWrapper}>
+                          <Icon
+                            name="check-bold"
+                            size={AppStyles.IconSize.small}
+                            color={
+                              checkIdIcon
+                                ? AppStyles.color.pink
+                                : AppStyles.color.gray
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  )}
+                  name="id"
+                />
+                {errors.id && (
+                  <Text style={styles.errorText}>
+                    영문과 숫자는 1개 이상 포함 해주세요.
+                  </Text>
+                )}
+                {/* 비밀번호 입력 필드 */}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    minLength: 8,
+                    pattern: regEx.regPassWord,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <View style={styles.inputWrapper}>
+                      <Text style={styles.inputText}>비밀번호</Text>
+                      <View style={styles.inputFlex}>
+                        <TextInput
+                          secureTextEntry={!passwdIcon}
+                          style={styles.textInput}
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          onFocus={autoFocus}
+                          value={value}
+                          selectionColor={'lightgray'}
+                          placeholder="영문, 숫자, 특수문자 8자 이상"
+                        />
+                        <TouchableOpacity
+                          style={styles.iconWrapper}
+                          onPress={() => setPasswdIcon(!passwdIcon)}>
+                          <Icon
+                            name="eye-off-outline"
+                            size={AppStyles.IconSize.small}
+                            color={
+                              passwdIcon
+                                ? AppStyles.color.pink
+                                : AppStyles.color.gray
+                            }
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                  name="password"
+                />
+                {validPasswdText && (
+                  <Text style={styles.errorText}>
+                    사용할 수 있는 비밀번호입니다.
+                  </Text>
+                )}
+                {errors.password && (
+                  <Text style={styles.errorText}>
+                    영문, 숫자, 특수문자(@$!%*#?&)는 1개 이상 포함해주세요.
+                  </Text>
+                )}
+                {/* 비밀번호 확인 입력 필드 */}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    validate: () => confirmPasswdText === true,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <View style={styles.inputWrapper}>
+                      <Text style={styles.inputText}>비밀번호 확인</Text>
+                      <View style={styles.inputFlex}>
+                        <TextInput
+                          secureTextEntry={!confirmPasswdIcon}
+                          style={styles.textInput}
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          onFocus={autoFocus}
+                          value={value}
+                          selectionColor={'lightgray'}
+                          placeholder="영문, 숫자, 특수문자 8자 이상"
+                        />
+                        <TouchableOpacity
+                          style={styles.iconWrapper}
+                          onPress={() =>
+                            setConfirmPasswdIcon(!confirmPasswdIcon)
+                          }>
+                          <Icon
+                            name="eye-off-outline"
+                            size={AppStyles.IconSize.small}
+                            color={
+                              confirmPasswdIcon
+                                ? AppStyles.color.pink
+                                : AppStyles.color.gray
+                            }
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                  name="confirmPasswd"
+                />
+                {confirmPasswdText && (
+                  <Text style={styles.errorText}>비밀번호가 일치합니다.</Text>
+                )}
+                {errors.confirmPasswd && (
+                  <Text style={styles.errorText}>
+                    비밀번호와 동일하게 작성해주세요.
+                  </Text>
+                )}
+              </View>
+            </View>
+            {/* 문자인증 컴포넌트 */}
+            <View style={[styles.signUpWrapper, {marginTop: 6}]}>
+              <Text style={styles.inputText}>휴대폰 번호</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {/* 국제번호 선택 컴포넌트 */}
+                <View style={styles.phoneNumberInputWrap}>
+                  <TouchableOpacity
+                    style={styles.dropdown}
+                    onPress={toggleModal}>
+                    <Text>
+                      {selectedCountry.dial_code} {selectedCountry.code}
+                    </Text>
+                    <View
+                      style={{justifyContent: 'center', alignItems: 'center'}}>
+                      <Icon
+                        name="chevron-down"
+                        size={AppStyles.IconSize.small}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <Modal
+                    isVisible={isModalVisible}
+                    style={{margin: AppStyles.padding.large}}>
+                    <View style={styles.modalStyle}>
+                      <FlatList
+                        data={countryCodes}
+                        renderItem={({item}) => <RenderItem data={item} />}
+                        keyExtractor={(item: ICountryCode) => item.code}
+                      />
+                      <TouchableOpacity
+                        style={[
+                          styles.btn,
+                          {paddingVertical: 10, borderRadius: 7, marginTop: 20},
+                        ]}
+                        onPress={toggleModal}>
+                        <Text style={{color: AppStyles.color.white}}>닫기</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Modal>
+                  <TextInput
+                    style={[styles.textInput]}
+                    keyboardType="number-pad"
+                    placeholder="전화번호"
+                    onFocus={autoFocus}
+                    selectionColor={'lightgray'}
+                    onChangeText={setPhoneNumber}
                   />
+                </View>
+                <TouchableOpacity
+                  style={[
+                    styles.btn,
+                    {
+                      borderRadius: 5,
+                      paddingHorizontal: 11,
+                      paddingVertical: 6,
+                    },
+                  ]}
+                  disabled={!validPhoneNumberText}
+                  onPress={handleSMSPhoneAuth}>
+                  <Text
+                    style={{
+                      color: AppStyles.color.white,
+                      fontSize: AppStyles.font.small,
+                    }}>
+                    인증 받기
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {!validPhoneNumberText && (
+                <Text style={styles.errorText}>
+                  - 를 포함하여 입력해주세요.(예시 : 010-0000-0000)
+                </Text>
+              )}
+            </View>
+            {authPhoneNumberForm && (
+              <View
+                style={{
+                  backgroundColor: AppStyles.color.white,
+                  paddingHorizontal: AppStyles.padding.screen,
+                  paddingBottom: AppStyles.padding.screen,
+                }}>
+                <Text>인증 번호</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      borderBottomWidth: 1,
+                      borderBottomColor: AppStyles.color.border,
+                      marginRight: 10,
+                      height: 40,
+                    }}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder="인증번호 6자리 입력"
+                      onFocus={autoFocus}
+                      selectionColor={'lightgray'}
+                      onChangeText={setCode}
+                    />
+                  </View>
                   <TouchableOpacity
                     style={[
                       styles.btn,
-                      {paddingVertical: 10, borderRadius: 7, marginTop: 20},
+                      {
+                        borderRadius: 5,
+                        paddingHorizontal: 11,
+                        paddingVertical: 6,
+                      },
                     ]}
-                    onPress={toggleModal}>
-                    <Text style={{color: AppStyles.color.white}}>닫기</Text>
+                    onPress={() => confirmCode()}>
+                    <Text
+                      style={{
+                        color: AppStyles.color.white,
+                        fontSize: AppStyles.font.small,
+                      }}>
+                      입력하기
+                    </Text>
                   </TouchableOpacity>
                 </View>
-              </Modal>
-              <TextInput
-                style={[styles.textInput]}
-                keyboardType="number-pad"
-                placeholder="전화번호"
-                selectionColor={'lightgray'}
-                onChangeText={setPhoneNumber}
-              />
-            </View>
-            <TouchableOpacity
-              style={[
-                styles.btn,
-                {
-                  borderRadius: 5,
-                  paddingHorizontal: 11,
-                  paddingVertical: 6,
-                },
-              ]}
-              disabled={!validPhoneNumberText}
-              onPress={handleSMSPhoneAuth}>
-              <Text
-                style={{
-                  color: AppStyles.color.white,
-                  fontSize: AppStyles.font.small,
-                }}>
-                인증 받기
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {!validPhoneNumberText && (
-            <Text style={styles.errorText}>
-              - 를 포함하여 입력해주세요.(예시 : 010-0000-0000)
-            </Text>
-          )}
-        </View>
-        {authPhoneNumberForm && (
-          <View
-            style={{
-              backgroundColor: AppStyles.color.white,
-              paddingHorizontal: AppStyles.padding.screen,
-              paddingBottom: AppStyles.padding.screen,
-            }}>
-            <Text>인증 번호</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  borderBottomWidth: 1,
-                  borderBottomColor: AppStyles.color.border,
-                  marginRight: 10,
-                  height: 40,
-                }}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="인증번호 6자리 입력"
-                  selectionColor={'lightgray'}
-                  onChangeText={setCode}
-                />
+                {validatedPhoneAuth && (
+                  <Text style={styles.errorText}>인증 되었습니다.</Text>
+                )}
               </View>
+            )}
+            {/* TODO: 약관 동의 컴포넌트 */}
+            <View style={[styles.signUpWrapper, {marginTop: 6}]}>
+              <Text
+                style={[styles.h1, {marginBottom: AppStyles.padding.screen}]}>
+                약관 동의
+              </Text>
+              <View>
+                <View style={styles.termHeader}>
+                  <TouchableOpacity
+                    style={styles.iconWrapper}
+                    onPress={() => handleCheckTermAll()}>
+                    <Icon
+                      name="checkbox-marked-circle"
+                      size={AppStyles.IconSize.large}
+                      color={
+                        checkedTermAll
+                          ? AppStyles.color.pink
+                          : AppStyles.color.gray
+                      }
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.h2}>전체 동의합니다.</Text>
+                </View>
+                <View style={styles.termModalWrap}>
+                  <TouchableOpacity
+                    style={styles.iconWrapper}
+                    onPress={() => setCheckedOneCakeTerm(!checkedOneCakeTerm)}>
+                    <Icon
+                      name="checkbox-marked-circle"
+                      size={AppStyles.IconSize.large}
+                      color={
+                        checkedOneCakeTerm
+                          ? AppStyles.color.pink
+                          : AppStyles.color.gray
+                      }
+                    />
+                  </TouchableOpacity>
+                  <Text style={[styles.h3, {flex: 1}]}>
+                    [필수] 원케이크 이용약관 동의
+                  </Text>
+                  <View style={styles.iconWrapper}>
+                    <Icon
+                      name="chevron-right"
+                      size={AppStyles.IconSize.xlarge}
+                    />
+                  </View>
+                </View>
+                <View style={styles.termModalWrap}>
+                  <TouchableOpacity
+                    style={styles.iconWrapper}
+                    onPress={() => setCheckedPrivacyTerm(!checkedPrivacyTerm)}>
+                    <Icon
+                      name="checkbox-marked-circle"
+                      size={AppStyles.IconSize.large}
+                      color={
+                        checkedPrivacyTerm
+                          ? AppStyles.color.pink
+                          : AppStyles.color.gray
+                      }
+                    />
+                  </TouchableOpacity>
+                  <Text style={[styles.h3, {flex: 1}]}>
+                    [필수] 개인정보 수집 및 이용에 동의
+                  </Text>
+                  <View style={styles.iconWrapper}>
+                    <Icon
+                      name="chevron-right"
+                      size={AppStyles.IconSize.xlarge}
+                    />
+                  </View>
+                </View>
+              </View>
+              {/* 회원가입 제출 버튼 */}
               <TouchableOpacity
                 style={[
                   styles.btn,
                   {
-                    borderRadius: 5,
-                    paddingHorizontal: 11,
-                    paddingVertical: 6,
+                    flex: 1,
+                    height: 56,
+                    borderRadius: 12,
+                    marginTop: AppStyles.padding.screen,
                   },
                 ]}
-                onPress={() => confirmCode()}>
-                <Text
-                  style={{
-                    color: AppStyles.color.white,
-                    fontSize: AppStyles.font.small,
-                  }}>
-                  입력하기
-                </Text>
+                onPress={handleSubmit(onSubmit)}>
+                <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
               </TouchableOpacity>
-            </View>
-            {validatedPhoneAuth && (
-              <Text style={styles.errorText}>인증 되었습니다.</Text>
-            )}
-          </View>
-        )}
-        {/* TODO: 약관 동의 컴포넌트 */}
-        <View style={[styles.signUpWrapper, {marginTop: 6}]}>
-          <Text style={[styles.h1, {marginBottom: AppStyles.padding.screen}]}>
-            약관 동의
-          </Text>
-          <View>
-            <View style={styles.termHeader}>
+              {/* FIXME: 이후 개발 다 끝나면 삭제할 요소 */}
               <TouchableOpacity
-                style={styles.iconWrapper}
-                onPress={() => handleCheckTermAll()}>
-                <Icon
-                  name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.large}
-                  color={
-                    checkedTermAll ? AppStyles.color.pink : AppStyles.color.gray
-                  }
-                />
+                onPress={() => navigation.navigate('EnterStart')}>
+                <Text>입점 신청 테스트</Text>
               </TouchableOpacity>
-              <Text style={styles.h2}>전체 동의합니다.</Text>
             </View>
-            <View style={styles.termModalWrap}>
-              <TouchableOpacity
-                style={styles.iconWrapper}
-                onPress={() => setCheckedOneCakeTerm(!checkedOneCakeTerm)}>
-                <Icon
-                  name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.large}
-                  color={
-                    checkedOneCakeTerm
-                      ? AppStyles.color.pink
-                      : AppStyles.color.gray
-                  }
-                />
-              </TouchableOpacity>
-              <Text style={[styles.h3, {flex: 1}]}>
-                [필수] 원케이크 이용약관 동의
-              </Text>
-              <View style={styles.iconWrapper}>
-                <Icon name="chevron-right" size={AppStyles.IconSize.xlarge} />
-              </View>
-            </View>
-            <View style={styles.termModalWrap}>
-              <TouchableOpacity
-                style={styles.iconWrapper}
-                onPress={() => setCheckedPrivacyTerm(!checkedPrivacyTerm)}>
-                <Icon
-                  name="checkbox-marked-circle"
-                  size={AppStyles.IconSize.large}
-                  color={
-                    checkedPrivacyTerm
-                      ? AppStyles.color.pink
-                      : AppStyles.color.gray
-                  }
-                />
-              </TouchableOpacity>
-              <Text style={[styles.h3, {flex: 1}]}>
-                [필수] 개인정보 수집 및 이용에 동의
-              </Text>
-              <View style={styles.iconWrapper}>
-                <Icon name="chevron-right" size={AppStyles.IconSize.xlarge} />
-              </View>
-            </View>
-          </View>
-          {/* 회원가입 제출 버튼 */}
-          <TouchableOpacity
-            style={[
-              styles.btn,
-              {
-                flex: 1,
-                height: 56,
-                borderRadius: 12,
-                marginTop: AppStyles.padding.screen,
-              },
-            ]}
-            onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
-          </TouchableOpacity>
-          {/* FIXME: 이후 개발 다 끝나면 삭제할 요소 */}
-          <TouchableOpacity onPress={() => navigation.navigate('EnterStart')}>
-            <Text>입점 신청 테스트</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          </AutoFocusProvider>
+        </ScrollView>
+      </SafeAreaView>
+      <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
+    </Fragment>
   );
 };
 
 export default SignUp;
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

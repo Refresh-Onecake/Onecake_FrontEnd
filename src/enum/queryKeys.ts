@@ -1,3 +1,13 @@
 export const queryKeys = {
-  signUp: ['signUp'] as const,
+  addrSearch: (
+    searchKeyword: string,
+    searchCurrentPage: number,
+    searchCountPerPage: number,
+  ) =>
+    [
+      'addrSearch',
+      searchKeyword,
+      searchCurrentPage,
+      searchCountPerPage,
+    ] as const,
 };

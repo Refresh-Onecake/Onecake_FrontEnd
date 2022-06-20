@@ -2,20 +2,36 @@
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Alert, Image, Platform} from 'react-native';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {useMutation} from 'react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+import Postcode from 'react-native-daum-postcode';
 
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import {IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import WebView from 'react-native-webview';
 
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
+  //modal관련
+  const [isModalVisible, setModalVisible] = useState(false);
+  //주소 검색 관련
+  const [searchKeyword, setSearchKeyword] = useState('강남');
+  const [searchCurrentPage, setSearchCurrentPage] = useState(1);
+  const [searchCountPerPage, setSearchCountPerPage] = useState(10);
+
   const {
     control,
     handleSubmit,
@@ -26,6 +42,10 @@ export const EnterStore = ({
 
   const onSubmit = (data: any) => {
     console.log(data);
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
@@ -135,7 +155,7 @@ export const EnterStore = ({
                 <Text style={[styles.inputTitle, {paddingBottom: 20}]}>
                   케이크 대표 사진
                 </Text>
-                {/* TODO: ImageUpload */}
+
                 <View style={styles.imageWrapper}>
                   <TouchableOpacity
                     style={styles.selectImage}
@@ -167,11 +187,15 @@ export const EnterStore = ({
               <View>
                 <Text style={styles.inputTitle}>가게 위치</Text>
                 {/* TODO: 아래서 뜨는 모달 도로명 주소 API 연결할 공간 */}
-                <TouchableOpacity style={styles.InputWrapper}>
-                  <Text
-                    style={{color: AppStyles.color.placeholder, opacity: 0.4}}>
-                    도로명 주소를 입력해주세요
-                  </Text>
+                <TouchableOpacity
+                  style={styles.InputWrapper}
+                  onPress={toggleModal}>
+                  <TextInput
+                    selectionColor={AppStyles.color.placeholder}
+                    placeholder="도로명 주소를 입력해주세요."
+                    editable={false}
+                    selectTextOnFocus={false}
+                  />
                 </TouchableOpacity>
               </View>
               {/* 가게 전화번호 */}
@@ -274,6 +298,14 @@ export const EnterStore = ({
           <Text style={styles.submitText}>디음으로</Text>
         </TouchableOpacity>
       </SafeAreaView>
+
+      {/* Modal */}
+      <Modal isVisible={isModalVisible}>
+        <Postcode
+          onSelected={data => console.log(data)}
+          onError={errors => console.log(errors)}
+        />
+      </Modal>
     </Fragment>
   );
 };

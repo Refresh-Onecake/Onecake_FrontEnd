@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@actbase/react-daum-postcode": "^1.0.4",
     "@react-native-async-storage/async-storage": "^1.17.6",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-firebase/app": "^14.11.0",
@@ -23,6 +24,7 @@
     "react": "17.0.2",
     "react-hook-form": "^7.32.1",
     "react-native": "0.68.2",
+    "react-native-daum-postcode": "^1.0.11",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-image-picker": "^4.8.4",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -33,6 +35,7 @@
     "react-native-simple-modal": "^9.0.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^9.1.0",
+    "react-native-webview": "^11.22.2",
     "react-query": "^3.39.1",
     "recoil": "^0.7.3"
   },

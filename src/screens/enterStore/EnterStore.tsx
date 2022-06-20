@@ -16,9 +16,9 @@ import Postcode from 'react-native-daum-postcode';
 
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
-import {IEnterStoreInputForm, IStoreImg} from './types';
+import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import WebView from 'react-native-webview';
+import {parseAddress} from '../../utils';
 
 export const EnterStore = ({
   navigation,
@@ -27,10 +27,7 @@ export const EnterStore = ({
   const [storeImg, setStoreImg] = useState<IStoreImg>();
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
-  //주소 검색 관련
-  const [searchKeyword, setSearchKeyword] = useState('강남');
-  const [searchCurrentPage, setSearchCurrentPage] = useState(1);
-  const [searchCountPerPage, setSearchCountPerPage] = useState(10);
+  const [address, setAddress] = useState<IAddress>();
 
   const {
     control,
@@ -191,10 +188,17 @@ export const EnterStore = ({
                   style={styles.InputWrapper}
                   onPress={toggleModal}>
                   <TextInput
+                    style={{color: AppStyles.color.black}}
+                    placeholderTextColor={AppStyles.color.placeholder}
                     selectionColor={AppStyles.color.placeholder}
                     placeholder="도로명 주소를 입력해주세요."
                     editable={false}
                     selectTextOnFocus={false}
+                    value={
+                      address?.road_full_addr
+                        ? address?.road_full_addr
+                        : '도로명 주소를 입력해주세요'
+                    }
                   />
                 </TouchableOpacity>
               </View>
@@ -302,7 +306,20 @@ export const EnterStore = ({
       {/* Modal */}
       <Modal isVisible={isModalVisible}>
         <Postcode
-          onSelected={data => console.log(data)}
+          onSelected={data => {
+            const parseAddr = {
+              jibun_address: data.jibunAddress,
+              road_full_addr: data.address,
+              si_nm: data.query,
+              sgg_nm: data.sigungu,
+              emd_nm: data.bname2,
+              lnbr_mnnm: '',
+              address_detail: data.bname,
+            };
+
+            setAddress(parseAddr);
+            toggleModal();
+          }}
           onError={errors => console.log(errors)}
         />
       </Modal>

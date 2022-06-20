@@ -12,3 +12,13 @@ export type IStoreImg = {
   type: string | undefined;
   uri: string | undefined;
 };
+
+export type IAddress = {
+  jibun_address: string;
+  road_full_addr: string;
+  si_nm: string;
+  sgg_nm: string;
+  emd_nm: string;
+  lnbr_mnnm: string;
+  address_detail: string;
+};

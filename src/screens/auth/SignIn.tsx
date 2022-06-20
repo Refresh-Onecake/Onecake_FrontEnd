@@ -5,17 +5,17 @@ import {
   TouchableOpacity,
   View,
   Text,
+  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useForm} from 'react-hook-form';
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-import {RootStackParamList} from '../../types';
+
 import {StackScreenProps} from '@react-navigation/stack';
 import {doSignIn} from '../../services';
-
+import {RootStackParamList} from '../navigator';
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   //Id, Pwd
   const [id, setId] = useState<string>('');
@@ -63,7 +63,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   // };
 
   return (
-    <SafeAreaProvider style={styles.signInWrapper}>
+    <SafeAreaView style={styles.signInWrapper}>
       <View
         style={{
           width: 87,
@@ -120,7 +120,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 
@@ -129,7 +129,9 @@ export default SignIn;
 const styles = StyleSheet.create({
   signInWrapper: {
     backgroundColor: AppStyles.color.white,
+    flex: 1,
     justifyContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
   },
   inputWrapper: {

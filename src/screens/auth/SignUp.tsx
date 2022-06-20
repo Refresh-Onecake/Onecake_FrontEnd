@@ -666,7 +666,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
             <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
           </TouchableOpacity>
           {/* FIXME: 이후 개발 다 끝나면 삭제할 요소 */}
-          <TouchableOpacity onPress={() => navigation.navigate('EnterStore')}>
+          <TouchableOpacity onPress={() => navigation.navigate('EnterStart')}>
             <Text>입점 신청 테스트</Text>
           </TouchableOpacity>
         </View>

@@ -11,4 +11,5 @@ export type RootStackParamList = {
   EnterMenu: undefined;
   EnterSheet: undefined;
   EnterStore: undefined;
+  EnterStart: undefined;
 };

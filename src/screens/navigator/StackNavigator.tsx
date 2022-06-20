@@ -7,7 +7,13 @@ import SignIn from '../auth/SignIn';
 import SelectUserType from '../auth/SelectUserType';
 import FindPwd from '../auth/FindPwd';
 
-import {EnterStore, EnterComplete, EnterMenu, EnterSheet} from '../enterStore';
+import {
+  EnterStore,
+  EnterComplete,
+  EnterMenu,
+  EnterSheet,
+  EnterStart,
+} from '../enterStore';
 import {RootStackParamList} from './navigationStackTypes';
 import {MainNavigator} from './MainNavigator';
 
@@ -35,11 +41,13 @@ export const StackNavigator = () => {
             headerTitle: '가게 등록',
             headerTitleStyle: styles.headerTitle,
             headerTitleContainerStyle: styles.headerTitleContainer,
+            headerBackTitleVisible: false,
           }}
         />
         <Stack.Screen name="EnterMenu" component={EnterMenu} />
         <Stack.Screen name="EnterSheet" component={EnterSheet} />
         <Stack.Screen name="EnterComplete" component={EnterComplete} />
+        <Stack.Screen name="EnterStart" component={EnterStart} />
       </Stack.Group>
     </Stack.Navigator>
   );

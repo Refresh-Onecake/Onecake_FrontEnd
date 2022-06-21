@@ -9,58 +9,66 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-
+import {useMutation} from 'react-query';
 import {StackScreenProps} from '@react-navigation/stack';
-import {doSignIn} from '../../services';
+import {getUserData, ISignIn} from '../../services';
 import {RootStackParamList} from '../navigator';
+
+export type IFormInputs = {
+  id: string;
+  password: string;
+};
+
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   //Id, Pwd
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  interface userData {
-    user_id: string;
-    password: string;
-    accessToken: string;
-    refreshToken: string;
-    TokenExpires: number;
-  }
-  // const URL = 'http://15.165.27.120:8080';
+
   //modal
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
   const {
     control,
     handleSubmit,
+    watch,
+    clearErrors,
     formState: {errors},
-  } = useForm({
+  } = useForm<IFormInputs>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      id: '',
+      password: '',
     },
   });
+
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  // save Tokens
-  // const doSignIn = async () => {
-  //   try {
-  //     const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
-  //       user_id: id,
-  //       password: password,
-  //     });
-  //     await AsyncStorage.multiSet([
-  //       ['AccessToken', data.accessToken],
-  //       ['RefreshToken', data.refreshToken],
-  //     ]);
-  //     console.log(data.accessToken);
-  //     navigation.navigate('MainNavigation');
-  //   } catch (e) {
-  //     toggleModal();
-  //   }
-  // };
+  const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
+    onSuccess: data => {
+      // await AsyncStorage.multiSet([
+      //   ['AccessToken', data.accessToken],
+      //   ['RefreshToken', data.refreshToken],
+      // ]);
+      console.log(data.accessToken);
+    },
+    onError: errors => {
+      toggleModal();
+    },
+  });
+
+  const doSignIn = (data: IFormInputs) => {
+    console.log(data.id);
+    const user: ISignIn = {
+      id: data.id,
+      password: data.password,
+    };
+    console.log(data.id);
+    signInQuery.mutate(user);
+  };
 
   return (
     <SafeAreaView style={styles.signInWrapper}>
@@ -78,14 +86,26 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         }}>
         Onecake.
       </Text>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          placeholder="아이디"
-          value={id}
-          onChangeText={setId}
-          style={styles.textInput}
-        />
-      </View>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <View style={styles.inputWrapper}>
+            <TextInput
+              placeholder="아이디"
+              value={id}
+              onChangeText={setId}
+              style={styles.textInput}
+            />
+          </View>
+        )}
+      />
+      id: id;
+      {errors.id && (
+        <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
+      )}
       <View style={styles.inputWrapper}>
         <TextInput
           placeholder="비밀번호"
@@ -94,11 +114,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           style={styles.textInput}
         />
       </View>
-      <TouchableOpacity
-        style={styles.loginBtn}
-        onPress={() => doSignIn({id, password}, navigation)}>
-        {/* onPress={() => doSignIn}> */}
-        {/* onPress={toggleModal}> */}
+      <TouchableOpacity style={styles.loginBtn} onPress={doSignIn}>
         <Text style={{color: '#ffffff'}}>로그인</Text>
       </TouchableOpacity>
       <View style={styles.texts}>
@@ -176,5 +192,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     alignSelf: 'flex-end',
+  },
+  errorText: {
+    fontSize: 12,
+    color: AppStyles.color.pink,
+    opacity: 0.7,
+    paddingTop: 2,
   },
 });

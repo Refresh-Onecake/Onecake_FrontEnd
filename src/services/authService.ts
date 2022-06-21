@@ -54,19 +54,10 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-export const doSignIn = async ({id, password}: ISignIn, navigation) => {
-  try {
-    const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
-      user_id: id,
-      password: password,
-    });
-    // await AsyncStorage.multiSet([
-    //   ['AccessToken', data.accessToken],
-    //   ['RefreshToken', data.refreshToken],
-    // ]);
-    console.log(data.accessToken);
-    navigation.navigate('MainNavigation');
-  } catch (e) {
-    console.log('dd', e);
-  }
+export const getUserData = async ({id, password}: ISignIn) => {
+  const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
+    user_id: id,
+    password: password,
+  });
+  return data;
 };

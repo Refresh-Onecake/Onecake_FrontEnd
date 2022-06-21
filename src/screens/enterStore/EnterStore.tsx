@@ -18,7 +18,8 @@ import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {parseAddress} from '../../utils';
+import {parseTime} from '../../utils';
+import DatePicker from 'react-native-date-picker';
 
 export const EnterStore = ({
   navigation,
@@ -28,6 +29,12 @@ export const EnterStore = ({
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState<IAddress>();
+
+  //운영시간
+  const [pickerStatus, setPickerStatus] = useState('');
+  const [openTime, setOpenTime] = useState('');
+  const [closeTime, setCloseTime] = useState('');
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const {
     control,
@@ -189,16 +196,11 @@ export const EnterStore = ({
                   onPress={toggleModal}>
                   <TextInput
                     style={{color: AppStyles.color.black}}
-                    placeholderTextColor={AppStyles.color.placeholder}
                     selectionColor={AppStyles.color.placeholder}
                     placeholder="도로명 주소를 입력해주세요."
                     editable={false}
                     selectTextOnFocus={false}
-                    value={
-                      address?.road_full_addr
-                        ? address?.road_full_addr
-                        : '도로명 주소를 입력해주세요'
-                    }
+                    value={address?.road_full_addr}
                   />
                 </TouchableOpacity>
               </View>
@@ -239,7 +241,7 @@ export const EnterStore = ({
                 render={({field: {onChange, onBlur, value}}) => (
                   <View>
                     <Text style={styles.inputTitle}>가게 소개</Text>
-                    <View style={styles.TextAreaInputWrapper}>
+                    <View style={styles.InputWrapper}>
                       <TextInput
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -261,6 +263,67 @@ export const EnterStore = ({
                 </Text>
               )}
               {/* 가게 운영 시간 TODO: react-native datapicker 를 활용하여 개발 */}
+              {
+                <View>
+                  <Text style={styles.inputTitle}>가게 운영시간</Text>
+                  <View style={styles.timePickerWrap}>
+                    <TouchableOpacity
+                      style={styles.timePickerBtn}
+                      onPress={() => {
+                        setShowTimePicker(true);
+                        setPickerStatus('OPEN');
+                      }}>
+                      <TextInput
+                        editable={false}
+                        style={styles.timePickerTitle}
+                        placeholder={'오픈 시간'}
+                        value={openTime}
+                      />
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Icon
+                          name="menu-down"
+                          size={AppStyles.IconSize.middle}
+                          style={{
+                            color: AppStyles.color.placeholder,
+                            opacity: 0.6,
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.timePickerBtn}
+                      onPress={() => {
+                        setShowTimePicker(true);
+                        setPickerStatus('CLOSE');
+                      }}>
+                      <TextInput
+                        editable={false}
+                        style={styles.timePickerTitle}
+                        placeholder={'닫는 시간'}
+                        value={closeTime}
+                      />
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Icon
+                          name="menu-down"
+                          size={AppStyles.IconSize.middle}
+                          style={{
+                            color: AppStyles.color.placeholder,
+                            opacity: 0.6,
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              }
 
               {/* 카카오톡 채널 */}
               <Controller
@@ -277,8 +340,6 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         value={value}
                         onFocus={autoFocus}
-                        multiline={true}
-                        numberOfLines={5}
                         selectionColor={AppStyles.color.placeholder}
                         placeholder="카카오톡 체널 url을 복사하여 입력해주세요"
                       />
@@ -322,7 +383,40 @@ export const EnterStore = ({
           }}
           onError={errors => console.log(errors)}
         />
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            backgroundColor: AppStyles.color.hotPink,
+            justifyContent: 'center',
+          }}
+          onPress={toggleModal}>
+          <Text
+            style={{
+              color: AppStyles.color.white,
+              height: 40,
+              textAlignVertical: 'center',
+              fontWeight: '600',
+            }}>
+            닫기
+          </Text>
+        </TouchableOpacity>
       </Modal>
+      <DatePicker
+        modal
+        open={showTimePicker}
+        mode={'time'}
+        date={new Date()}
+        onConfirm={date => {
+          pickerStatus === 'OPEN'
+            ? setOpenTime(parseTime(date))
+            : setCloseTime(parseTime(date));
+
+          setShowTimePicker(false);
+        }}
+        onCancel={() => {
+          setShowTimePicker(false);
+        }}
+      />
     </Fragment>
   );
 };
@@ -352,8 +446,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   TextAreaInputWrapper: {
-    paddingTop: 10,
-    height: 80,
+    height: 40,
     borderBottomColor: AppStyles.color.border,
     borderBottomWidth: 1,
   },
@@ -385,5 +478,21 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     color: AppStyles.color.white,
     fontWeight: '600',
+  },
+  timePickerWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 40,
+  },
+  timePickerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: AppStyles.color.border,
+    width: '46%',
+  },
+  timePickerTitle: {
+    flex: 1,
+    color: AppStyles.color.black,
   },
 });

@@ -1,11 +1,10 @@
-export type IEnterStoreInputForm = {
-  storeName: string;
-  b_no: string;
-  storeAddress: string;
-  storePhoneNumber: string;
-  storeDesc: string;
-  storeUrl: string;
-};
+export interface IEnterStoreInputForm {
+  store_name: string;
+  business_registration_number: string;
+  store_phone_number: string;
+  store_discription: string;
+  kakao_channel_url: string;
+}
 
 export type IStoreImg = {
   name: string | undefined;

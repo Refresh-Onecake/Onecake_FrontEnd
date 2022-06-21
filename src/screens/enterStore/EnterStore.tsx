@@ -2,12 +2,7 @@
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Alert, Image, Platform} from 'react-native';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from 'react-query';
+import {useMutation} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -20,6 +15,7 @@ import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
+import {fetchEnterStore, IApplyStore} from '../../services';
 
 export const EnterStore = ({
   navigation,
@@ -44,10 +40,6 @@ export const EnterStore = ({
     formState: {errors},
   } = useForm<IEnterStoreInputForm>();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -70,7 +62,7 @@ export const EnterStore = ({
             type: type,
             uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
           };
-          console.log(img);
+
           setStoreImg(img);
         });
       })
@@ -89,6 +81,45 @@ export const EnterStore = ({
       });
   };
 
+  const sellerStoreQuery = useMutation(
+    (data: IApplyStore) => fetchEnterStore(data),
+    {
+      onSuccess: Response => {
+        console.log(Response);
+      },
+      onError: errors => {
+        console.log(errors);
+      },
+    },
+  );
+
+  const onSubmit = (data: IEnterStoreInputForm) => {
+    if (storeImg && address) {
+      const tmpFetchData = {
+        store_name: data.store_name,
+        business_registration_number: data.business_registration_number,
+        store_phone_number: data.store_phone_number,
+        store_discription: data.store_discription,
+        kakao_channel_url: data.kakao_channel_url,
+        address: address,
+        storeImg: storeImg,
+        open_time: openTime,
+        close_time: closeTime,
+      };
+      sellerStoreQuery.mutate(tmpFetchData);
+    } else {
+      Alert.alert(
+        '입점 진행 오류',
+        '입점 절차 항목을 모두 입력 확인해주세요.',
+        [
+          {
+            text: '확인',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+  };
   return (
     <Fragment>
       <SafeAreaView style={styles.view}>
@@ -120,9 +151,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storeName"
+                name="store_name"
               />
-              {errors.storeName && (
+              {errors.store_name && (
                 <Text style={styles.errorText}>가게 이름을 입력해주세요.</Text>
               )}
               {/* 사업자번호 등록 필드 */}
@@ -147,9 +178,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="b_no"
+                name="business_registration_number"
               />
-              {errors.b_no && (
+              {errors.business_registration_number && (
                 <Text style={styles.errorText}>
                   사업자 등록번호를 입력해주세요.
                 </Text>
@@ -190,7 +221,7 @@ export const EnterStore = ({
               {/* form에 추가 되지 않음 */}
               <View>
                 <Text style={styles.inputTitle}>가게 위치</Text>
-                {/* TODO: 아래서 뜨는 모달 도로명 주소 API 연결할 공간 */}
+
                 <TouchableOpacity
                   style={styles.InputWrapper}
                   onPress={toggleModal}>
@@ -226,9 +257,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storePhoneNumber"
+                name="store_phone_number"
               />
-              {errors.storePhoneNumber && (
+              {errors.store_phone_number && (
                 <Text style={styles.errorText}>전화번호를 입력해주세요.</Text>
               )}
               {/* 가게 소개 */}
@@ -255,14 +286,14 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storeDesc"
+                name="store_discription"
               />
-              {errors.storePhoneNumber && (
+              {errors.store_discription && (
                 <Text style={styles.errorText}>
                   200자 이내로 가게 소개를 작성해주세요.
                 </Text>
               )}
-              {/* 가게 운영 시간 TODO: react-native datapicker 를 활용하여 개발 */}
+
               {
                 <View>
                   <Text style={styles.inputTitle}>가게 운영시간</Text>
@@ -346,9 +377,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storeUrl"
+                name="kakao_channel_url"
               />
-              {errors.storeUrl && (
+              {errors.kakao_channel_url && (
                 <Text style={styles.errorText}>
                   카카오톡 체널을 입력해주세요.
                 </Text>

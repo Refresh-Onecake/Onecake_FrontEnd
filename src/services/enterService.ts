@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import axios from 'axios';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from '../screens/enterStore';
 import {ISignUpRsp} from './authService';
 const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxOCIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4MjM0OTl9.v3mCe7TdCBInB78JHB8-qgK30wfgs9QSdpmsTMPcKJZw4kiKmW9lImmtFIykjT50hL0h2pd9Yv5BoJXR7U04xA';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxOCIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4MjY5NjV9.d-lrQrX3O_heLPRwNl5G7hGyKPGHoSXPVyS4YE37RWuiq08rvEi6H3MExfSdp3VnzWa5z_hOJnacAyto8CReSw';
 
 export const enterFormClient = axios.create({
-  baseURL: 'http://15.165.27.120:8080',
+  baseURL: 'https://15.165.27.120:8080',
   headers: {
     'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${token}`,
@@ -43,18 +44,39 @@ export const fetchEnterStore = async ({
   console.log(storeImg);
   console.log(tmpApplyObj);
 
+  const tmp = {
+    store_name: '마라탕가게',
+    business_registration_number: '142-32-144245',
+    address: {
+      jibun_address: '지번',
+      road_full_addr: '도로명',
+      si_nm: '시',
+      sgg_nm: '시군구',
+      emd_nm: '읍면동',
+      lnbr_mnnm: '뭐지',
+      address_detail: '디테일주소',
+    },
+    store_phone_number: '010-1123-2222',
+    store_discription: '맛깔나는 마라탕',
+    open_time: '09:00',
+    close_time: '21:00',
+    kakao_channel_url: 'kakaochannel.maratang.com',
+  };
+
   const formData = new FormData();
   // TODO: 사진
   formData.append('image', storeImg);
   // TODO: JSON
   formData.append(
     'applyStoreRequestDto',
-    new Blob([JSON.stringify(tmpApplyObj)], {
+    new Blob([JSON.stringify(tmp)], {
       type: 'application/json',
     }),
   );
 
-  const {data} = await axios.post<ISignUpRsp>('/api/v1/seller/store', formData);
-  console.log(data);
+  const {data} = await enterFormClient.post<ISignUpRsp>(
+    '/api/v1/seller/store',
+    formData,
+  );
   return data;
 };

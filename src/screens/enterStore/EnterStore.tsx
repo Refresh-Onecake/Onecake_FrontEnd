@@ -62,6 +62,7 @@ export const EnterStore = ({
             type: type,
             uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
           };
+          console.log(img);
 
           setStoreImg(img);
         });

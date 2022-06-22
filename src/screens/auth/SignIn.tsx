@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   StyleSheet,
   TextInput,
@@ -7,7 +6,6 @@ import {
   Text,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from 'react-native-modal';
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
@@ -37,34 +35,31 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     },
   });
 
-  interface userData {
-    user_id: string;
-    password: string;
-    accessToken: string;
-    refreshToken: string;
-    TokenExpires: number;
-  }
-
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  // save Tokens
-  const doSignIn = async (info: ISignIn) => {
-    try {
-      const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
-        user_id: info.id,
-        password: info.password,
-      });
-      // await AsyncStorage.multiSet([
-      //   ['AccessToken', data.accessToken],
-      //   ['RefreshToken', data.refreshToken],
-      // ]);
-      console.log(data);
-      navigation.navigate('MainNavigation');
-    } catch (e) {
-      toggleModal();
-    }
+  const signInQuery = useMutation(
+    (user: ISignIn) => getUserData(user, {navigation}),
+    {
+      onSuccess: data => {
+        // await AsyncStorage.multiSet([
+        //   ['AccessToken', data.accessToken],
+        //   ['RefreshToken', data.refreshToken],
+        // ]);
+      },
+      onError: errors => {
+        toggleModal();
+      },
+    },
+  );
+
+  const doSignIn = (data: IUserInfo) => {
+    const user: ISignIn = {
+      id: data.id,
+      password: data.password,
+    };
+    signInQuery.mutate(user);
   };
 
   return (

@@ -1,7 +1,7 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import axios from 'axios';
-import {UseFormUnregister} from 'react-hook-form';
-import {RootStackParamList} from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RootStackParamList} from '../screens/navigator';
 
 export type ISignUp = {
   user_id: string;
@@ -54,10 +54,22 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-export const getUserData = async ({id, password}: ISignIn) => {
-  const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
-    user_id: id,
-    password: password,
-  });
-  return data;
+export const getUserData = async (
+  {id, password}: ISignIn,
+  {navigation}: StackScreenProps<RootStackParamList>,
+) => {
+  try {
+    const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
+      user_id: id,
+      password: password,
+    });
+    // await AsyncStorage.multiSet([
+    //   ['AccessToken', data.accessToken],
+    //   ['RefreshToken', data.refreshToken],
+    // ]);
+    console.log(data);
+    navigation.navigate('MainNavigation');
+  } catch (e) {
+    console.log('로그인 오류');
+  }
 };

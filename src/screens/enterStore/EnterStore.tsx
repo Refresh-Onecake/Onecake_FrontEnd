@@ -22,7 +22,7 @@ export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
   const token =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU5MDEyMjB9.lYT6UIF8LWSr5nPnS90G0_NYbIsIPUWY8tZ5pUWQfrmwNlqdUEF57H_U_MDuNfkKInsdP5EemD8QQ43sT5oVpQ';
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU5MTAyMTB9.VUa3x6KAxVouflZxNMjIzOaud02nk8nBcfUUwK_0czWxDF8z1TgWJPS9LPXRDsfRS31RYTf9EbisuWwXv24pGw';
   //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
   //modal관련
@@ -96,66 +96,18 @@ export const EnterStore = ({
     },
   );
 
-  const fetchEnterStore = async ({
-    store_name,
-    business_registration_number,
-    store_phone_number,
-    store_discription,
-    kakao_channel_url,
-    address,
-    open_time,
-    close_time,
-    storeImg,
-  }: IApplyStore) => {
+  const fetchEnterStorePicture = async (storeImg: IStoreImg) => {
     try {
-      const tmpApplyObj = {
-        store_name,
-        business_registration_number,
-        store_phone_number,
-        store_discription,
-        kakao_channel_url,
-        address,
-        open_time,
-        close_time,
-      };
       console.log(storeImg);
-      console.log(tmpApplyObj);
-      const tmp2 = {
-        store_name: '마라탕가게',
-        business_registration_number: '142-32-144245',
-        address: {
-          jibun_address: '지번',
-          road_full_addr: '도로명',
-          si_nm: '시',
-          sgg_nm: '시군구',
-          emd_nm: '읍면동',
-          lnbr_mnnm: '뭐지',
-          address_detail: '디테일주소',
-        },
-        store_phone_number: '010-1123-2222',
-        store_discription: '맛깔나는 마라탕',
-        open_time: '09:00',
-        close_time: '21:00',
-        kakao_channel_url: 'kakaochannel.maratang.com',
-      };
-      const tmp =
-        "{store_name: '마라탕가게',business_registration_number: '142-32-144245',address: {jibun_address: '지번',road_full_addr: '도로명',si_nm: '시',sgg_nm: '시군구',emd_nm: '읍면동',lnbr_mnnm: '뭐지',address_detail: '디테일주소',},store_phone_number: '010-1123-2222',store_discription: '맛깔나는 마라탕',open_time: '09:00',close_time: '21:00',kakao_channel_url: 'kakaochannel.maratang.com',}";
 
       const fd = new FormData();
       // TODO: 사진
       fd.append('image', storeImg);
       // TODO: JSON
-
-      fd.append(
-        'applyStoreRequestDto',
-        new Blob([JSON.stringify(tmp2)], {
-          type: 'application/json',
-        }),
-      );
       // fd.append('applyStoreRequestDto', JSO.tmp);
 
       const data = await fetch(
-        'http://15.165.27.120:8080/api/v1/seller/store',
+        'http://15.165.27.120:8080/api/v1/seller/store/image',
         {
           method: 'POST',
           headers: {
@@ -170,8 +122,47 @@ export const EnterStore = ({
     }
   };
 
+  const fetchEnterStoreJson = async ({
+    store_name,
+    business_registration_number,
+    store_phone_number,
+    store_discription,
+    kakao_channel_url,
+    address,
+    open_time,
+    close_time,
+  }: IApplyStore) => {
+    try {
+      const tmpApplyObj = {
+        store_name,
+        business_registration_number,
+        store_phone_number,
+        store_discription,
+        kakao_channel_url,
+        address,
+        open_time,
+        close_time,
+      };
+
+      const data = await fetch(
+        'http://15.165.27.120:8080/api/v1/seller/store',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(tmpApplyObj),
+        },
+      );
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
-  const onSubmit = (data: IEnterStoreInputForm) => {
+  const onSubmit = async (data: IEnterStoreInputForm) => {
     if (storeImg && address) {
       const tmpFetchData = {
         store_name: data.store_name,
@@ -186,8 +177,17 @@ export const EnterStore = ({
       };
       // TODO: API 통신이 들어가는 곳
       // sellerStoreQuery.mutate(tmpFetchData);
-      // await fetchEnterStore(tmpFetchData);
-      navigation.navigate('EnterComplete');
+      await fetchEnterStoreJson(tmpFetchData)
+        .then(async () => {
+          console.log('사진 전송 성공');
+          await fetchEnterStorePicture(storeImg)
+            .then(resp => {
+              console.log('성공');
+              navigation.navigate('EnterComplete');
+            })
+            .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
     } else {
       Alert.alert(
         '입점 진행 오류',
@@ -481,7 +481,7 @@ export const EnterStore = ({
         <TouchableOpacity
           style={styles.submitBtn}
           onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.submitText}>디음으로</Text>
+          <Text style={styles.submitText}>다음으로</Text>
         </TouchableOpacity>
       </SafeAreaView>
 
@@ -510,12 +510,14 @@ export const EnterStore = ({
               flexDirection: 'row',
               backgroundColor: AppStyles.color.hotPink,
               justifyContent: 'center',
+
+              alignItems: 'center',
+              height: 40,
             }}
             onPress={toggleModal}>
             <Text
               style={{
                 color: AppStyles.color.white,
-                height: 40,
                 textAlignVertical: 'center',
                 fontWeight: '600',
               }}>

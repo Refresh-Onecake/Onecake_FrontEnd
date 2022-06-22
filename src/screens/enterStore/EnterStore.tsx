@@ -15,8 +15,10 @@ import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
-import {fetchEnterStore, IApplyStore} from '../../services';
-
+import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
+import axios from 'axios';
+const token =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4ODM0MDd9.O_kn3f6BgVOCKqz-YXHhzLSzNc5V4LljM0JIaEnFuy9bhpX2XTSsXylEjEOk1aDa2UXDpY9FIcA2x9DMM3a5eA';
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
@@ -62,9 +64,8 @@ export const EnterStore = ({
             type: type,
             uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
           };
-          console.log(img);
-
           setStoreImg(img);
+          console.log(storeImg);
         });
       })
       .catch(() => {
@@ -94,7 +95,82 @@ export const EnterStore = ({
     },
   );
 
-  const onSubmit = (data: IEnterStoreInputForm) => {
+  const fetchEnterStore = async ({
+    store_name,
+    business_registration_number,
+    store_phone_number,
+    store_discription,
+    kakao_channel_url,
+    address,
+    open_time,
+    close_time,
+    storeImg,
+  }: IApplyStore) => {
+    try {
+      const tmpApplyObj = {
+        store_name,
+        business_registration_number,
+        store_phone_number,
+        store_discription,
+        kakao_channel_url,
+        address,
+        open_time,
+        close_time,
+      };
+      console.log(storeImg);
+      console.log(tmpApplyObj);
+      const tmp2 = {
+        store_name: '마라탕가게',
+        business_registration_number: '142-32-144245',
+        address: {
+          jibun_address: '지번',
+          road_full_addr: '도로명',
+          si_nm: '시',
+          sgg_nm: '시군구',
+          emd_nm: '읍면동',
+          lnbr_mnnm: '뭐지',
+          address_detail: '디테일주소',
+        },
+        store_phone_number: '010-1123-2222',
+        store_discription: '맛깔나는 마라탕',
+        open_time: '09:00',
+        close_time: '21:00',
+        kakao_channel_url: 'kakaochannel.maratang.com',
+      };
+      const tmp =
+        "{store_name: '마라탕가게',business_registration_number: '142-32-144245',address: {jibun_address: '지번',road_full_addr: '도로명',si_nm: '시',sgg_nm: '시군구',emd_nm: '읍면동',lnbr_mnnm: '뭐지',address_detail: '디테일주소',},store_phone_number: '010-1123-2222',store_discription: '맛깔나는 마라탕',open_time: '09:00',close_time: '21:00',kakao_channel_url: 'kakaochannel.maratang.com',}";
+
+      const fd = new FormData();
+      // TODO: 사진
+      fd.append('image', storeImg);
+      // TODO: JSON
+      fd.append(
+        'applyStoreRequestDto',
+        new Blob([JSON.stringify(tmp2)], {
+          type: 'application/json',
+        }),
+      );
+      // fd.append('applyStoreRequestDto', JSO.tmp);
+      console.log(fd.getParts());
+
+      const data = await axios.post(
+        'http://15.165.27.120:8080/api/v1/seller/store',
+        fd,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        },
+      );
+      console.log(data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onSubmit = async (data: IEnterStoreInputForm) => {
     if (storeImg && address) {
       const tmpFetchData = {
         store_name: data.store_name,
@@ -107,7 +183,8 @@ export const EnterStore = ({
         open_time: openTime,
         close_time: closeTime,
       };
-      sellerStoreQuery.mutate(tmpFetchData);
+      // sellerStoreQuery.mutate(tmpFetchData);
+      await fetchEnterStore(tmpFetchData);
     } else {
       Alert.alert(
         '입점 진행 오류',

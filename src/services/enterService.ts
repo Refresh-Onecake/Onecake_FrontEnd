@@ -3,7 +3,7 @@ import axios from 'axios';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from '../screens/enterStore';
 import {ISignUpRsp} from './authService';
 const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxOCIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4MjY5NjV9.d-lrQrX3O_heLPRwNl5G7hGyKPGHoSXPVyS4YE37RWuiq08rvEi6H3MExfSdp3VnzWa5z_hOJnacAyto8CReSw';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOCIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4ODMzMDh9.0zD21g7dTnaLPmjNmA-Er6eCTzmCcMxyfwj7iXNLVHtFl3nCGTZAFkwnTWcgbIwb5wcJsborumz8Waee9G_wIg';
 
 export const enterFormClient = axios.create({
   baseURL: 'https://15.165.27.120:8080',

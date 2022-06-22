@@ -18,7 +18,7 @@ import DatePicker from 'react-native-date-picker';
 import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
 import axios from 'axios';
 const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4ODM0MDd9.O_kn3f6BgVOCKqz-YXHhzLSzNc5V4LljM0JIaEnFuy9bhpX2XTSsXylEjEOk1aDa2UXDpY9FIcA2x9DMM3a5eA';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4ODgxMDh9.WKhi8iuAUTWE8zPXVMED0Ts_qPkJ7I9ylu1CBxSXqoLxTxfKSlvzhR-2H7gcynhqVg3Gj-ABVMCfv0vQZmm15g';
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
@@ -144,6 +144,7 @@ export const EnterStore = ({
       // TODO: 사진
       fd.append('image', storeImg);
       // TODO: JSON
+
       fd.append(
         'applyStoreRequestDto',
         new Blob([JSON.stringify(tmp2)], {
@@ -151,20 +152,18 @@ export const EnterStore = ({
         }),
       );
       // fd.append('applyStoreRequestDto', JSO.tmp);
-      console.log(fd.getParts());
 
-      const data = await axios.post(
+      const data = await fetch(
         'http://15.165.27.120:8080/api/v1/seller/store',
-        fd,
         {
+          method: 'POST',
           headers: {
-            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
           },
+          body: fd,
         },
       );
-      console.log(data.data);
+      console.log(data);
     } catch (e) {
       console.log(e);
     }

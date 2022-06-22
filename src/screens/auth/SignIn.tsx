@@ -5,73 +5,70 @@ import {
   TouchableOpacity,
   View,
   Text,
-  SafeAreaView,
 } from 'react-native';
-import Modal from 'react-native-modal';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Controller, useForm} from 'react-hook-form';
+import Modal from 'react-native-modal';
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {useMutation} from 'react-query';
-import {StackScreenProps} from '@react-navigation/stack';
-import {getUserData, ISignIn} from '../../services';
 import {RootStackParamList} from '../navigator';
+import {StackScreenProps} from '@react-navigation/stack';
+import {Controller, useForm} from 'react-hook-form';
+import {ISignIn, getUserData} from '../../services';
 
-export type IFormInputs = {
+type IUserInfo = {
   id: string;
   password: string;
 };
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  //Id, Pwd
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  //modal
+  const URL = 'http://15.165.27.120:8080'; // modal
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const {
     control,
     handleSubmit,
-    watch,
-    clearErrors,
     formState: {errors},
-  } = useForm<IFormInputs>({
+  } = useForm<IUserInfo>({
     defaultValues: {
       id: '',
       password: '',
     },
   });
 
+  interface userData {
+    user_id: string;
+    password: string;
+    accessToken: string;
+    refreshToken: string;
+    TokenExpires: number;
+  }
+
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
-    onSuccess: data => {
+  // save Tokens
+  const doSignIn = async (info: ISignIn) => {
+    try {
+      const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
+        user_id: info.id,
+        password: info.password,
+      });
       // await AsyncStorage.multiSet([
       //   ['AccessToken', data.accessToken],
       //   ['RefreshToken', data.refreshToken],
       // ]);
-      console.log(data.accessToken);
-    },
-    onError: errors => {
+      console.log(data);
+      navigation.navigate('MainNavigation');
+    } catch (e) {
       toggleModal();
-    },
-  });
-
-  const doSignIn = (data: IFormInputs) => {
-    console.log(data.id);
-    const user: ISignIn = {
-      id: data.id,
-      password: data.password,
-    };
-    console.log(data.id);
-    signInQuery.mutate(user);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.signInWrapper}>
+    <SafeAreaProvider style={styles.signInWrapper}>
       <View
         style={{
           width: 87,
@@ -86,35 +83,52 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         }}>
         Onecake.
       </Text>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.inputWrapper}>
+      <View style={styles.inputWrapper}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               placeholder="아이디"
-              value={id}
-              onChangeText={setId}
+              style={styles.textInput}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="id"
+        />
+        {errors.id && (
+          <Text style={styles.errorText}>아이디를 입력해주세요</Text>
+        )}
+      </View>
+      <View style={styles.inputWrapper}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              placeholder="비밀번호"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
               style={styles.textInput}
             />
-          </View>
-        )}
-      />
-      id: id;
-      {errors.id && (
-        <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
-      )}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          placeholder="비밀번호"
-          value={password}
-          onChangeText={setPassword}
-          style={styles.textInput}
+          )}
+          name="password"
         />
+        {errors.password && (
+          <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
+        )}
       </View>
-      <TouchableOpacity style={styles.loginBtn} onPress={doSignIn}>
+
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={handleSubmit(doSignIn)}>
         <Text style={{color: '#ffffff'}}>로그인</Text>
       </TouchableOpacity>
       <View style={styles.texts}>
@@ -128,7 +142,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
       <Modal isVisible={modalVisible}>
         <View style={styles.modal}>
           <Text>
-            로그인 정보가 일치하지 않습니다.아이디나 비밀번호를 확인 후 다시
+            로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
             입력해 주세요.
           </Text>
           <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
@@ -136,7 +150,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
@@ -153,6 +167,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: 270,
     borderBottomWidth: 1,
+    height: 70,
     borderBottomColor: AppStyles.color.black,
   },
   textInput: {

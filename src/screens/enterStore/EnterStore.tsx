@@ -17,11 +17,12 @@ import {parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
 import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
 import axios from 'axios';
-const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU4ODgxMDh9.WKhi8iuAUTWE8zPXVMED0Ts_qPkJ7I9ylu1CBxSXqoLxTxfKSlvzhR-2H7gcynhqVg3Gj-ABVMCfv0vQZmm15g';
+
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  const token =
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU5MDEyMjB9.lYT6UIF8LWSr5nPnS90G0_NYbIsIPUWY8tZ5pUWQfrmwNlqdUEF57H_U_MDuNfkKInsdP5EemD8QQ43sT5oVpQ';
   //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
   //modal관련
@@ -169,7 +170,8 @@ export const EnterStore = ({
     }
   };
 
-  const onSubmit = async (data: IEnterStoreInputForm) => {
+  // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
+  const onSubmit = (data: IEnterStoreInputForm) => {
     if (storeImg && address) {
       const tmpFetchData = {
         store_name: data.store_name,
@@ -182,8 +184,10 @@ export const EnterStore = ({
         open_time: openTime,
         close_time: closeTime,
       };
+      // TODO: API 통신이 들어가는 곳
       // sellerStoreQuery.mutate(tmpFetchData);
-      await fetchEnterStore(tmpFetchData);
+      // await fetchEnterStore(tmpFetchData);
+      navigation.navigate('EnterComplete');
     } else {
       Alert.alert(
         '입점 진행 오류',
@@ -283,7 +287,7 @@ export const EnterStore = ({
                         color: AppStyles.color.hotPink,
                         fontWeight: '700',
                       }}>
-                      이미지 (0/1)
+                      {storeImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                     </Text>
                   </TouchableOpacity>
                   {storeImg && (
@@ -309,6 +313,7 @@ export const EnterStore = ({
                     editable={false}
                     selectTextOnFocus={false}
                     value={address?.road_full_addr}
+                    onPressIn={toggleModal}
                   />
                 </TouchableOpacity>
               </View>
@@ -386,6 +391,10 @@ export const EnterStore = ({
                         style={styles.timePickerTitle}
                         placeholder={'오픈 시간'}
                         value={openTime}
+                        onPressIn={() => {
+                          setShowTimePicker(true);
+                          setPickerStatus('OPEN');
+                        }}
                       />
                       <View
                         style={{
@@ -413,6 +422,10 @@ export const EnterStore = ({
                         style={styles.timePickerTitle}
                         placeholder={'닫는 시간'}
                         value={closeTime}
+                        onPressIn={() => {
+                          setShowTimePicker(true);
+                          setPickerStatus('CLOSE');
+                        }}
                       />
                       <View
                         style={{
@@ -474,40 +487,42 @@ export const EnterStore = ({
 
       {/* Modal */}
       <Modal isVisible={isModalVisible}>
-        <Postcode
-          onSelected={data => {
-            const parseAddr = {
-              jibun_address: data.jibunAddress,
-              road_full_addr: data.address,
-              si_nm: data.query,
-              sgg_nm: data.sigungu,
-              emd_nm: data.bname2,
-              lnbr_mnnm: '',
-              address_detail: data.bname,
-            };
+        <SafeAreaView style={{flex: 1}}>
+          <Postcode
+            onSelected={data => {
+              const parseAddr = {
+                jibun_address: data.jibunAddress,
+                road_full_addr: data.address,
+                si_nm: data.query,
+                sgg_nm: data.sigungu,
+                emd_nm: data.bname2,
+                lnbr_mnnm: '',
+                address_detail: data.bname,
+              };
 
-            setAddress(parseAddr);
-            toggleModal();
-          }}
-          onError={errors => console.log(errors)}
-        />
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            backgroundColor: AppStyles.color.hotPink,
-            justifyContent: 'center',
-          }}
-          onPress={toggleModal}>
-          <Text
+              setAddress(parseAddr);
+              toggleModal();
+            }}
+            onError={errors => console.log(errors)}
+          />
+          <TouchableOpacity
             style={{
-              color: AppStyles.color.white,
-              height: 40,
-              textAlignVertical: 'center',
-              fontWeight: '600',
-            }}>
-            닫기
-          </Text>
-        </TouchableOpacity>
+              flexDirection: 'row',
+              backgroundColor: AppStyles.color.hotPink,
+              justifyContent: 'center',
+            }}
+            onPress={toggleModal}>
+            <Text
+              style={{
+                color: AppStyles.color.white,
+                height: 40,
+                textAlignVertical: 'center',
+                fontWeight: '600',
+              }}>
+              닫기
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
       </Modal>
       <DatePicker
         modal

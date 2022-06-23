@@ -17,6 +17,7 @@ export default function App() {
   const Stack = createStackNavigator<RootStackParamList>();
   const [accessToken, setAccessToken] = useState<string | null>('');
 
+  // TODO: 만료되었을 경우는 여기서 확인이 될 것 같다.
   const getAccessToken = async () => {
     try {
       const token = await AsyncStorage.getItem('AccessToken');

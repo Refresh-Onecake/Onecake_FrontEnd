@@ -1,4 +1,4 @@
-import {appKeys} from '../enum';
+import {appKeys} from '../../enum';
 
 export type RootStackParamList = {
   AuthNavigation: undefined;
@@ -7,4 +7,9 @@ export type RootStackParamList = {
   FindPwd: undefined;
   SignUp: {userType: string};
   SignIn: undefined;
+  EnterComplete: undefined;
+  EnterMenu: undefined;
+  EnterSheet: undefined;
+  EnterStore: undefined;
+  EnterStart: undefined;
 };

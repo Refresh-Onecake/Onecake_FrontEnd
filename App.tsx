@@ -3,15 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil';
 //prettier-ignore
 import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider} from 'react-query';
-import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainNavigation from './src/screens/MainNavigation';
-import AuthNavigation from './src/screens/auth/AuthNavigation';
-import {RootStackParamList} from './src/types/navigationStackTypes';
+
+import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
+import {MainNavigator, StackNavigator} from './src/screens/navigator';
 //checkTokens
 const queryClient = new QueryClient();
 export default function App() {
@@ -30,9 +29,9 @@ export default function App() {
 
   useEffect(() => {
     try {
+      void getAccessToken();
       setTimeout(() => {
         SplashScreen.hide();
-        void getAccessToken();
       }, 2000); //스플래시 활성화 시간 2초
     } catch (e) {
       console.log(e);
@@ -42,26 +41,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <SafeAreaProvider>
+        <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}>
-              {accessToken == null ? (
-                <Stack.Screen
-                  name="AuthNavigation"
-                  component={AuthNavigation}
-                />
-              ) : (
-                <Stack.Screen
-                  name="MainNavigation"
-                  component={MainNavigation}
-                />
-              )}
-            </Stack.Navigator>
+            {accessToken ? <MainNavigator /> : <StackNavigator />}
           </NavigationContainer>
-        </SafeAreaProvider>
+        </SafeAreaView>
       </RecoilRoot>
     </QueryClientProvider>
   );

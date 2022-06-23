@@ -3,23 +3,29 @@ import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Home from './Home';
-import Stores from './Stores';
-import Order from './Order';
-import Contact from './Contact';
-import MyPage from './MyPage';
+import Home from '../Home';
+import Stores from '../Stores';
+import Order from '../Order';
+import Contact from '../Contact';
+import MyPage from '../MyPage';
+
+import {AppStyles} from '../../styles/AppStyles';
 
 const Tab = createBottomTabNavigator();
 
-const MainNavigation = () => {
+export const MainNavigator = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false,}}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: AppStyles.color.hotPink,
+      }}>
       <Tab.Screen
         name="홈"
         component={Home}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="home-heart" color={color} size={size} />
           ),
         }}
       />
@@ -28,7 +34,7 @@ const MainNavigation = () => {
         component={Stores}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="storefront-outline" color={color} size={size} />
           ),
         }}
       />
@@ -37,7 +43,7 @@ const MainNavigation = () => {
         component={Order}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="calendar-month-outline" color={color} size={size} />
           ),
         }}
       />
@@ -46,7 +52,7 @@ const MainNavigation = () => {
         component={Contact}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="chat-processing-outline" color={color} size={size} />
           ),
         }}
       />
@@ -55,14 +61,10 @@ const MainNavigation = () => {
         component={MyPage}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="account-circle-outline" color={color} size={size} />
           ),
         }}
       />
     </Tab.Navigator>
   );
 };
-
-export default MainNavigation;
-
-const styles = StyleSheet.create({});

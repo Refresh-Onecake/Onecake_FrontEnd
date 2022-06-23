@@ -23,6 +23,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
         'no-unused-vars': 'off',
         'no-shadow': 'off',
         'no-undef': 'off',

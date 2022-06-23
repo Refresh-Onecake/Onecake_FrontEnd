@@ -5,14 +5,16 @@ import {
   TouchableOpacity,
   View,
   Text,
+  SafeAreaView,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-import {RootStackParamList} from '../../types';
+
 import {StackScreenProps} from '@react-navigation/stack';
+import { RootStackParamList } from '../navigator';
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
@@ -47,7 +49,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   };
 
   return (
-    <SafeAreaProvider style={styles.signInWrapper}>
+    <SafeAreaView style={styles.signInWrapper}>
       <View
         style={{
           width: 87,
@@ -89,7 +91,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           비밀번호 찾기
         </Text>
       </View>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 
@@ -98,7 +100,9 @@ export default SignIn;
 const styles = StyleSheet.create({
   signInWrapper: {
     backgroundColor: AppStyles.color.white,
+    flex: 1,
     justifyContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
   },
   inputWrapper: {

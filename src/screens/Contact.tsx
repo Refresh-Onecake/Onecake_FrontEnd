@@ -1,14 +1,17 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {AppStyles} from '../styles/AppStyles';
 
 const Contact = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.view}>
       <Text>Contact</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Contact;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  view: {flex: 1, backgroundColor: AppStyles.color.white},
+});

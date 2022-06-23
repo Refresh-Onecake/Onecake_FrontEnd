@@ -14,6 +14,7 @@ import {RootStackParamList} from '../navigator';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Controller, useForm} from 'react-hook-form';
 import {ISignIn, getUserData} from '../../services';
+import {Button} from '../../components/common/Button';
 
 type IUserInfo = {
   id: string;
@@ -21,7 +22,6 @@ type IUserInfo = {
 };
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  const URL = 'http://15.165.27.120:8080'; // modal
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const {
@@ -39,25 +39,25 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     setModalVisible(!modalVisible);
   };
 
-  const signInQuery = useMutation(
-    (user: ISignIn) => getUserData(user, {navigation}),
-    {
-      onSuccess: data => {
-        // await AsyncStorage.multiSet([
-        //   ['AccessToken', data.accessToken],
-        //   ['RefreshToken', data.refreshToken],
-        // ]);
-      },
-      onError: errors => {
-        toggleModal();
-      },
+  const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
+    onSuccess: data => {
+      // await AsyncStorage.multiSet([
+      //   ['AccessToken', data.accessToken],
+      //   ['RefreshToken', data.refreshToken],
+      // ]);
+      console.log(data);
+      if (data) navigation.navigate('MainNavigation');
     },
-  );
+    onError: errors => {
+      console.log('dd');
+      toggleModal();
+    },
+  });
 
-  const doSignIn = (data: IUserInfo) => {
+  const doSignIn = ({id, password}: IUserInfo) => {
     const user: ISignIn = {
-      id: data.id,
-      password: data.password,
+      id: id,
+      password: password,
     };
     signInQuery.mutate(user);
   };
@@ -120,12 +120,15 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
         )}
       </View>
+      {/* <View style={{width: 270, padding: AppStyles.padding.screen, height: 42}}>
+        <Button onPress={handleSubmit(doSignIn)}>
+          <Text>로그인</Text>
+        </Button>
+      </View> */}
 
-      <TouchableOpacity
-        style={styles.loginBtn}
-        onPress={handleSubmit(doSignIn)}>
-        <Text style={{color: '#ffffff'}}>로그인</Text>
-      </TouchableOpacity>
+      <View style={styles.loginBtn}>
+        <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
+      </View>
       <View style={styles.texts}>
         <Text onPress={() => navigation.navigate('SelectUserType')}>
           회원가입
@@ -173,10 +176,6 @@ const styles = StyleSheet.create({
     marginTop: 26,
     width: 270,
     height: 42,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF3196',
   },
   texts: {
     width: 270,

@@ -6,7 +6,6 @@ export type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>;
 
 type ButtonProps = {
   children?: ReactNode;
-  props?: TouchableOpacityProps;
   text?: string;
   backgroundColor?: string;
   textSize?: number;
@@ -32,7 +31,7 @@ type ButtonProps = {
  *   <Button title="버튼입니다." onPress={handleClick}/>
  * </View>
  */
-export const Button: FC<ButtonProps> = ({
+export const Button: FC<ButtonProps & TouchableOpacityProps> = ({
   backgroundColor = AppStyles.color.hotPink,
   textSize = AppStyles.font.middle,
   text,

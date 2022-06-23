@@ -49,13 +49,14 @@ const styles = StyleSheet.create({
   textWrapper: {
     backgroundColor: AppStyles.color.white,
     paddingHorizontal: AppStyles.padding.screen,
-    paddingTop: 100,
+    height: '25%',
     paddingBottom: AppStyles.padding.screen,
   },
   title: {
     fontSize: AppStyles.font.title,
     fontWeight: '700',
     color: AppStyles.color.black,
+    paddingTop: 77,
     paddingBottom: 14,
   },
   subTitle: {

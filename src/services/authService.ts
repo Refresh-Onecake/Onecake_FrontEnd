@@ -1,4 +1,3 @@
-import {StackScreenProps} from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RootStackParamList} from '../screens/navigator';
@@ -27,7 +26,7 @@ export type IUserData = {
 export const apiClient = axios.create({
   baseURL: 'http://15.165.27.120:8080',
   headers: {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
 });
 

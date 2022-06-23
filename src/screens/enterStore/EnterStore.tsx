@@ -6,16 +6,35 @@ import {useMutation} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+import Postcode from 'react-native-daum-postcode';
 
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
-import {IEnterStoreInputForm, IStoreImg} from './types';
+import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import {parseTime} from '../../utils';
+import DatePicker from 'react-native-date-picker';
+import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
+import axios from 'axios';
 
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  const token =
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU5MTAyMTB9.VUa3x6KAxVouflZxNMjIzOaud02nk8nBcfUUwK_0czWxDF8z1TgWJPS9LPXRDsfRS31RYTf9EbisuWwXv24pGw';
+  //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
+  //modal관련
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [address, setAddress] = useState<IAddress>();
+
+  //운영시간
+  const [pickerStatus, setPickerStatus] = useState('');
+  const [openTime, setOpenTime] = useState('');
+  const [closeTime, setCloseTime] = useState('');
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -24,8 +43,8 @@ export const EnterStore = ({
     formState: {errors},
   } = useForm<IEnterStoreInputForm>();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
@@ -46,8 +65,8 @@ export const EnterStore = ({
             type: type,
             uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
           };
-          console.log(img);
           setStoreImg(img);
+          console.log(storeImg);
         });
       })
       .catch(() => {
@@ -65,6 +84,123 @@ export const EnterStore = ({
       });
   };
 
+  const sellerStoreQuery = useMutation(
+    (data: IApplyStore) => fetchEnterStore(data),
+    {
+      onSuccess: Response => {
+        console.log(Response);
+      },
+      onError: errors => {
+        console.log(errors);
+      },
+    },
+  );
+
+  const fetchEnterStorePicture = async (storeImg: IStoreImg) => {
+    try {
+      console.log(storeImg);
+
+      const fd = new FormData();
+      // TODO: 사진
+      fd.append('image', storeImg);
+      // TODO: JSON
+      // fd.append('applyStoreRequestDto', JSO.tmp);
+
+      const data = await fetch(
+        'http://15.165.27.120:8080/api/v1/seller/store/image',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: fd,
+        },
+      );
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchEnterStoreJson = async ({
+    store_name,
+    business_registration_number,
+    store_phone_number,
+    store_discription,
+    kakao_channel_url,
+    address,
+    open_time,
+    close_time,
+  }: IApplyStore) => {
+    try {
+      const tmpApplyObj = {
+        store_name,
+        business_registration_number,
+        store_phone_number,
+        store_discription,
+        kakao_channel_url,
+        address,
+        open_time,
+        close_time,
+      };
+
+      const data = await fetch(
+        'http://15.165.27.120:8080/api/v1/seller/store',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(tmpApplyObj),
+        },
+      );
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
+  const onSubmit = async (data: IEnterStoreInputForm) => {
+    if (storeImg && address) {
+      const tmpFetchData = {
+        store_name: data.store_name,
+        business_registration_number: data.business_registration_number,
+        store_phone_number: data.store_phone_number,
+        store_discription: data.store_discription,
+        kakao_channel_url: data.kakao_channel_url,
+        address: address,
+        storeImg: storeImg,
+        open_time: openTime,
+        close_time: closeTime,
+      };
+      // TODO: API 통신이 들어가는 곳
+      // sellerStoreQuery.mutate(tmpFetchData);
+      await fetchEnterStoreJson(tmpFetchData)
+        .then(async () => {
+          console.log('사진 전송 성공');
+          await fetchEnterStorePicture(storeImg)
+            .then(resp => {
+              console.log('성공');
+              navigation.navigate('EnterComplete');
+            })
+            .catch(e => console.log(e));
+        })
+        .catch(e => console.log(e));
+    } else {
+      Alert.alert(
+        '입점 진행 오류',
+        '입점 절차 항목을 모두 입력 확인해주세요.',
+        [
+          {
+            text: '확인',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+  };
   return (
     <Fragment>
       <SafeAreaView style={styles.view}>
@@ -96,9 +232,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storeName"
+                name="store_name"
               />
-              {errors.storeName && (
+              {errors.store_name && (
                 <Text style={styles.errorText}>가게 이름을 입력해주세요.</Text>
               )}
               {/* 사업자번호 등록 필드 */}
@@ -123,9 +259,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="b_no"
+                name="business_registration_number"
               />
-              {errors.b_no && (
+              {errors.business_registration_number && (
                 <Text style={styles.errorText}>
                   사업자 등록번호를 입력해주세요.
                 </Text>
@@ -135,7 +271,7 @@ export const EnterStore = ({
                 <Text style={[styles.inputTitle, {paddingBottom: 20}]}>
                   케이크 대표 사진
                 </Text>
-                {/* TODO: ImageUpload */}
+
                 <View style={styles.imageWrapper}>
                   <TouchableOpacity
                     style={styles.selectImage}
@@ -151,7 +287,7 @@ export const EnterStore = ({
                         color: AppStyles.color.hotPink,
                         fontWeight: '700',
                       }}>
-                      이미지 (0/1)
+                      {storeImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                     </Text>
                   </TouchableOpacity>
                   {storeImg && (
@@ -166,12 +302,19 @@ export const EnterStore = ({
               {/* form에 추가 되지 않음 */}
               <View>
                 <Text style={styles.inputTitle}>가게 위치</Text>
-                {/* TODO: 아래서 뜨는 모달 도로명 주소 API 연결할 공간 */}
-                <TouchableOpacity style={styles.InputWrapper}>
-                  <Text
-                    style={{color: AppStyles.color.placeholder, opacity: 0.4}}>
-                    도로명 주소를 입력해주세요
-                  </Text>
+
+                <TouchableOpacity
+                  style={styles.InputWrapper}
+                  onPress={toggleModal}>
+                  <TextInput
+                    style={{color: AppStyles.color.black}}
+                    selectionColor={AppStyles.color.placeholder}
+                    placeholder="도로명 주소를 입력해주세요."
+                    editable={false}
+                    selectTextOnFocus={false}
+                    value={address?.road_full_addr}
+                    onPressIn={toggleModal}
+                  />
                 </TouchableOpacity>
               </View>
               {/* 가게 전화번호 */}
@@ -196,9 +339,9 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storePhoneNumber"
+                name="store_phone_number"
               />
-              {errors.storePhoneNumber && (
+              {errors.store_phone_number && (
                 <Text style={styles.errorText}>전화번호를 입력해주세요.</Text>
               )}
               {/* 가게 소개 */}
@@ -211,7 +354,7 @@ export const EnterStore = ({
                 render={({field: {onChange, onBlur, value}}) => (
                   <View>
                     <Text style={styles.inputTitle}>가게 소개</Text>
-                    <View style={styles.TextAreaInputWrapper}>
+                    <View style={styles.InputWrapper}>
                       <TextInput
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -225,14 +368,83 @@ export const EnterStore = ({
                     </View>
                   </View>
                 )}
-                name="storeDesc"
+                name="store_discription"
               />
-              {errors.storePhoneNumber && (
+              {errors.store_discription && (
                 <Text style={styles.errorText}>
                   200자 이내로 가게 소개를 작성해주세요.
                 </Text>
               )}
-              {/* 가게 운영 시간 TODO: react-native datapicker 를 활용하여 개발 */}
+
+              {
+                <View>
+                  <Text style={styles.inputTitle}>가게 운영시간</Text>
+                  <View style={styles.timePickerWrap}>
+                    <TouchableOpacity
+                      style={styles.timePickerBtn}
+                      onPress={() => {
+                        setShowTimePicker(true);
+                        setPickerStatus('OPEN');
+                      }}>
+                      <TextInput
+                        editable={false}
+                        style={styles.timePickerTitle}
+                        placeholder={'오픈 시간'}
+                        value={openTime}
+                        onPressIn={() => {
+                          setShowTimePicker(true);
+                          setPickerStatus('OPEN');
+                        }}
+                      />
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Icon
+                          name="menu-down"
+                          size={AppStyles.IconSize.middle}
+                          style={{
+                            color: AppStyles.color.placeholder,
+                            opacity: 0.6,
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.timePickerBtn}
+                      onPress={() => {
+                        setShowTimePicker(true);
+                        setPickerStatus('CLOSE');
+                      }}>
+                      <TextInput
+                        editable={false}
+                        style={styles.timePickerTitle}
+                        placeholder={'닫는 시간'}
+                        value={closeTime}
+                        onPressIn={() => {
+                          setShowTimePicker(true);
+                          setPickerStatus('CLOSE');
+                        }}
+                      />
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Icon
+                          name="menu-down"
+                          size={AppStyles.IconSize.middle}
+                          style={{
+                            color: AppStyles.color.placeholder,
+                            opacity: 0.6,
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              }
 
               {/* 카카오톡 채널 */}
               <Controller
@@ -249,17 +461,15 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         value={value}
                         onFocus={autoFocus}
-                        multiline={true}
-                        numberOfLines={5}
                         selectionColor={AppStyles.color.placeholder}
                         placeholder="카카오톡 체널 url을 복사하여 입력해주세요"
                       />
                     </View>
                   </View>
                 )}
-                name="storeUrl"
+                name="kakao_channel_url"
               />
-              {errors.storeUrl && (
+              {errors.kakao_channel_url && (
                 <Text style={styles.errorText}>
                   카카오톡 체널을 입력해주세요.
                 </Text>
@@ -271,9 +481,67 @@ export const EnterStore = ({
         <TouchableOpacity
           style={styles.submitBtn}
           onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.submitText}>디음으로</Text>
+          <Text style={styles.submitText}>다음으로</Text>
         </TouchableOpacity>
       </SafeAreaView>
+
+      {/* Modal */}
+      <Modal isVisible={isModalVisible}>
+        <SafeAreaView style={{flex: 1}}>
+          <Postcode
+            onSelected={data => {
+              const parseAddr = {
+                jibun_address: data.jibunAddress,
+                road_full_addr: data.address,
+                si_nm: data.query,
+                sgg_nm: data.sigungu,
+                emd_nm: data.bname2,
+                lnbr_mnnm: '',
+                address_detail: data.bname,
+              };
+
+              setAddress(parseAddr);
+              toggleModal();
+            }}
+            onError={errors => console.log(errors)}
+          />
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              backgroundColor: AppStyles.color.hotPink,
+              justifyContent: 'center',
+
+              alignItems: 'center',
+              height: 40,
+            }}
+            onPress={toggleModal}>
+            <Text
+              style={{
+                color: AppStyles.color.white,
+                textAlignVertical: 'center',
+                fontWeight: '600',
+              }}>
+              닫기
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </Modal>
+      <DatePicker
+        modal
+        open={showTimePicker}
+        mode={'time'}
+        date={new Date()}
+        onConfirm={date => {
+          pickerStatus === 'OPEN'
+            ? setOpenTime(parseTime(date))
+            : setCloseTime(parseTime(date));
+
+          setShowTimePicker(false);
+        }}
+        onCancel={() => {
+          setShowTimePicker(false);
+        }}
+      />
     </Fragment>
   );
 };
@@ -303,8 +571,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   TextAreaInputWrapper: {
-    paddingTop: 10,
-    height: 80,
+    height: 40,
     borderBottomColor: AppStyles.color.border,
     borderBottomWidth: 1,
   },
@@ -336,5 +603,21 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     color: AppStyles.color.white,
     fontWeight: '600',
+  },
+  timePickerWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 40,
+  },
+  timePickerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: AppStyles.color.border,
+    width: '46%',
+  },
+  timePickerTitle: {
+    flex: 1,
+    color: AppStyles.color.black,
   },
 });

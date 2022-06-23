@@ -1,3 +1,1 @@
-export const queryKeys = {
-  signUp: ['signUp'] as const,
-};
+export const queryKeys = {};

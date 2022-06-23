@@ -6,6 +6,7 @@ import {
   Text,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
@@ -45,11 +46,11 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
       //   ['AccessToken', data.accessToken],
       //   ['RefreshToken', data.refreshToken],
       // ]);
-      console.log(data);
-      if (data) navigation.navigate('MainNavigation');
+      navigation.navigate('MainNavigation');
     },
-    onError: errors => {
-      console.log('dd');
+    // TODO: AccessToken값 만료 시 리프레시 토큰으로 재요청.
+    onError: (errors, query) => {
+      console.log(errors, query);
       toggleModal();
     },
   });
@@ -138,7 +139,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         </Text>
       </View>
       <Modal isVisible={modalVisible}>
-        <View style={styles.modal}>
+        <SafeAreaView style={styles.modal}>
           <Text>
             로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
             입력해 주세요.
@@ -146,7 +147,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
             <Text style={{color: AppStyles.color.white}}>확인</Text>
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
       </Modal>
     </SafeAreaProvider>
   );

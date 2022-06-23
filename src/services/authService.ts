@@ -53,22 +53,11 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-export const getUserData = async (
-  {id, password}: ISignIn,
-  {navigation}: StackScreenProps<RootStackParamList>,
-) => {
-  try {
-    const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
-      user_id: id,
-      password: password,
-    });
-    // await AsyncStorage.multiSet([
-    //   ['AccessToken', data.accessToken],
-    //   ['RefreshToken', data.refreshToken],
-    // ]);
-    console.log(data);
-    navigation.navigate('MainNavigation');
-  } catch (e) {
-    console.log('로그인 오류');
-  }
+//TODO: 토큰 저장 로직의 위치가 어디가 좋을까, 헤더에 담는 것도 해야 함
+export const getUserData = async ({id, password}: ISignIn) => {
+  const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
+    user_id: id,
+    password: password,
+  });
+  return data;
 };

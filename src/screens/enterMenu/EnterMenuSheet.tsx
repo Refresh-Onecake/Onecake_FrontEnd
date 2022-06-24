@@ -9,8 +9,12 @@ import {
 import React, {Fragment, useCallback, useRef, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {ToggleList} from '../../components';
-import {useSetRecoilState} from 'recoil';
-import {cakeInfoState, customerInfoState} from '../../recoil/atom';
+import {useRecoilState, useSetRecoilState} from 'recoil';
+import {
+  cakeInfoState,
+  customerInfoState,
+  storeMenuState,
+} from '../../recoil/atom';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -19,13 +23,28 @@ export const EnterMenuSheet = () => {
   // 추가했을 때 보여져야하는 목록
   const [customerInfoList, setCustomerInfoList] = useState<string[]>([]);
   const [cakeInfoList, setCakeInfoList] = useState<string[]>([]);
-
+  const [errorText, setErrorText] = useState<boolean>(false);
   const TextInputRef = useRef<TextInput | null>(null);
   const setFocus = useCallback(
     () => TextInputRef.current?.focus(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [TextInputRef.current],
   );
+  const [storeMenu, setStoreMenu] = useRecoilState(storeMenuState);
+
+  const handleSubmit = () => {
+    if (customerInfoList.length === 0 || cakeInfoList.length === 0) {
+      setErrorText(true);
+    } else {
+      // TODO: API통신이 발생하는 구간
+      setErrorText(false);
+      setStoreMenu(prev => ({
+        ...prev,
+        consumerInput: customerInfoList,
+        cakeInput: cakeInfoList,
+      }));
+    }
+  };
 
   return (
     <Fragment>
@@ -51,6 +70,11 @@ export const EnterMenuSheet = () => {
               }}>
               주문서에 들어갈 항목을 선택해주세요.
             </Text>
+            {errorText && (
+              <Text style={[EnterStoreStyles.errorText, {marginTop: 5}]}>
+                주문서 항목에 들어갈 항목을 한 개 이상 체크해주세요.
+              </Text>
+            )}
           </View>
           <ScrollView style={[styles.flex, {flexDirection: 'column'}]}>
             <View
@@ -79,7 +103,9 @@ export const EnterMenuSheet = () => {
             </View>
           </ScrollView>
         </AutoFocusProvider>
-        <TouchableOpacity style={EnterStoreStyles.submitBtn}>
+        <TouchableOpacity
+          style={EnterStoreStyles.submitBtn}
+          onPress={handleSubmit}>
           <Text style={EnterStoreStyles.submitText}>제출하기</Text>
         </TouchableOpacity>
       </SafeAreaView>

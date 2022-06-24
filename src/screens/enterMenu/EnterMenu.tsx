@@ -257,7 +257,7 @@ export const EnterMenu = ({
               }}
               render={({field: {onBlur, onChange, value}}) => (
                 <View>
-                  <Text style={EnterStoreStyles.inputTitle}>메뉴 설명</Text>
+                  <Text style={EnterStoreStyles.inputTitle}>케이크 맛</Text>
                   <View style={EnterStoreStyles.TextAreaInputWrapper}>
                     <TextInput
                       onBlur={onBlur}
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     position: 'absolute',
     backgroundColor: AppStyles.color.white,
-    bottom: 300,
+    bottom: 285,
     alignItems: 'center',
     borderRadius: 13,
   },

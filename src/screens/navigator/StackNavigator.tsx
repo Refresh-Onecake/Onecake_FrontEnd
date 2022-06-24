@@ -54,7 +54,17 @@ export const StackNavigator = () => {
           headerBackTitleVisible: false,
         }}
       />
-      <Stack.Screen name="EnterMenuSheet" component={EnterMenuSheet} />
+      <Stack.Screen
+        name="EnterMenuSheet"
+        component={EnterMenuSheet}
+        options={{
+          headerShown: true,
+          headerTitle: '주문서 등록',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

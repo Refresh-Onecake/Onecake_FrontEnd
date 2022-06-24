@@ -1,9 +1,10 @@
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {TouchableOpacityProps} from '../common/Button';
 import {AppStyles} from '../../styles/AppStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {RecoilState, useRecoilState} from 'recoil';
+import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 
 type Props = {
   title: string;
@@ -25,9 +26,11 @@ export const ToggleList: FC<Props> = ({
   };
   const [showInput, setShowInput] = useState<boolean>(false);
   const [newDataListItem, setNewDataListItem] = useState<string>('');
+
   const handleAddIconClick = () => {
     setShowInput(!showInput);
   };
+  const autoFocus = useAutoFocus();
   return (
     <View style={[styles.view]}>
       <View>
@@ -77,6 +80,7 @@ export const ToggleList: FC<Props> = ({
                   onSubmitEditing={() =>
                     setList(prev => [...prev, newDataListItem])
                   }
+                  onFocus={autoFocus}
                 />
               </View>
             </View>

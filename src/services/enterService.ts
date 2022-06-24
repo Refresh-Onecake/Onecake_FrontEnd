@@ -66,13 +66,6 @@ export const fetchEnterStore = async ({
   const formData = new FormData();
   // TODO: 사진
   formData.append('image', storeImg);
-  // TODO: JSON
-  formData.append(
-    'applyStoreRequestDto',
-    new Blob([JSON.stringify(tmp)], {
-      type: 'application/json',
-    }),
-  );
 
   const {data} = await enterFormClient.post<ISignUpRsp>(
     '/api/v1/seller/store',

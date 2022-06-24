@@ -10,11 +10,11 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
-import {StackScreenProps} from '@react-navigation/stack';
-import { RootStackParamList } from '../navigator';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const URL = 'http://15.165.27.120:8080';
   const [id, setId] = useState<string>('');
@@ -29,25 +29,31 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     TokenExpires: number;
   }
 
-  // save Tokens
-  const doSignIn = async () => {
-    try {
-      const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
-        user_id: id,
-        password: password,
-      });
-      await AsyncStorage.multiSet([
-        ['AccessToken', data.accessToken],
-        ['RefreshToken', data.refreshToken],
-      ]);
-      console.log(data.accessToken);
-      navigation.navigate('MainNavigation');
-    } catch (e) {
-      setVisible(true);
-      return <Text>아아아</Text>;
-    }
-  };
+  // // save Tokens
+  // const doSignIn = async ({
+  //   navigation,
+  // }: StackScreenProps<RootStackParamList>) => {
+  //   try {
+  //     const {data} = await axios.post<userData>(URL + '/api/v1/auth/login', {
+  //       user_id: id,
+  //       password: password,
+  //     });
+  //     await AsyncStorage.multiSet([
+  //       ['AccessToken', data.accessToken],
+  //       ['RefreshToken', data.refreshToken],
+  //     ]);
+  //     console.log(data.accessToken);
 
+  //   } catch (e) {
+  //     setVisible(true);
+  //     return <Text>아아아</Text>;
+  //   }
+  // };
+  const doSignIn = () => {
+    navigation.navigate('MainNavigator', {
+      screen: 'Home',
+    });
+  };
   return (
     <SafeAreaView style={styles.signInWrapper}>
       <View

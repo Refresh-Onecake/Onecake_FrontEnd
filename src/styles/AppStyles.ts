@@ -9,6 +9,8 @@ export const AppStyles = {
     lightGray: '#EDEDED',
     placeholder: '#707070',
     backgroundGray: '#F9F9F9',
+    subTitle: '#777777',
+    IconColor: '#808080',
   },
   padding: {
     screen: 32.06,

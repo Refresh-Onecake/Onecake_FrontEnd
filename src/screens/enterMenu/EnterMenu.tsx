@@ -22,6 +22,8 @@ import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {FlatList} from 'react-native-gesture-handler';
 import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
+import {useSetRecoilState} from 'recoil';
+import {storeMenuState} from '../../recoil/atom';
 
 export const EnterMenu = ({
   navigation,
@@ -42,7 +44,7 @@ export const EnterMenu = ({
     visible ? setVisible(false) : openDropdown();
   };
   const DropdownButton = useRef<TouchableOpacity | null>(null);
-
+  const setMenuState = useSetRecoilState(storeMenuState);
   const openDropdown = (): void => {
     DropdownButton.current?.measure((_fx, _fy, _w, h, _px, py) => {
       setDropdownTop(py + h - 2);
@@ -76,14 +78,23 @@ export const EnterMenu = ({
   );
   const autoFocus = useAutoFocus();
 
+  useEffect(() => {
+    menuImg && setValue('cake_image', menuImg);
+  }, [menuImg]);
+
+  // React.useEffect(() => {
+  //   const subscription = watch((value, {name, type}) =>
+  //     console.log(value, name, type),
+  //   );
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+
   const onSubmit = (data: IEnterMenuInputForm) => {
     //TODO: Menu 폼 입력 제출
     console.log(data);
+    setMenuState(data);
+    navigation.navigate('EnterMenuSheet');
   };
-
-  useEffect(() => {
-    setValue('cake_image', menuImg);
-  }, [menuImg]);
 
   return (
     <Fragment>
@@ -137,7 +148,7 @@ export const EnterMenu = ({
               rules={{
                 required: true,
               }}
-              render={({field: {value}}) => (
+              render={({field}) => (
                 <View>
                   <Text
                     style={[EnterStoreStyles.inputTitle, {paddingBottom: 20}]}>
@@ -149,7 +160,7 @@ export const EnterMenu = ({
                       onPress={() => handleImageUpload(setMenuImg)}>
                       <Icon
                         name="plus"
-                        size={35}
+                        size={27}
                         color={AppStyles.color.hotPink}
                       />
                       <Text
@@ -157,6 +168,7 @@ export const EnterMenu = ({
                           fontSize: AppStyles.font.small,
                           color: AppStyles.color.hotPink,
                           fontWeight: '700',
+                          paddingTop: 2,
                         }}>
                         {menuImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                       </Text>
@@ -175,6 +187,96 @@ export const EnterMenu = ({
             {errors.cake_image && (
               <Text style={[EnterStoreStyles.errorText, {marginTop: 5}]}>
                 메뉴 이미지를 업로드해주세요.
+              </Text>
+            )}
+            {/* 가격 입력항목 */}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onBlur, onChange, value}}) => (
+                <View>
+                  <Text style={EnterStoreStyles.inputTitle}>가격</Text>
+                  <View style={EnterStoreStyles.TextAreaInputWrapper}>
+                    <TextInput
+                      onBlur={onBlur}
+                      onFocus={autoFocus}
+                      value={value}
+                      selectionColor={AppStyles.color.placeholder}
+                      placeholder="최소 가격을 입력해주세요."
+                      placeholderTextColor={AppStyles.color.placeholder}
+                      style={styles.textInput}
+                      onChangeText={onChange}
+                    />
+                  </View>
+                </View>
+              )}
+              name="cake_price"
+            />
+            {errors.cake_price && (
+              <Text style={EnterStoreStyles.errorText}>
+                최소 가격을 입력해주세요.
+              </Text>
+            )}
+            {/* 메뉴 설명 입력항목 */}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onBlur, onChange, value}}) => (
+                <View>
+                  <Text style={EnterStoreStyles.inputTitle}>메뉴 설명</Text>
+                  <View style={EnterStoreStyles.TextAreaInputWrapper}>
+                    <TextInput
+                      onBlur={onBlur}
+                      onFocus={autoFocus}
+                      value={value}
+                      selectionColor={AppStyles.color.placeholder}
+                      placeholder="메뉴에 대해 설명해주세요."
+                      placeholderTextColor={AppStyles.color.placeholder}
+                      style={styles.textInput}
+                      onChangeText={onChange}
+                    />
+                  </View>
+                </View>
+              )}
+              name="cake_description"
+            />
+            {errors.cake_description && (
+              <Text style={EnterStoreStyles.errorText}>
+                메뉴 설명을 입력해주세요.
+              </Text>
+            )}
+            {/* 케이크 맛 입력항목 */}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onBlur, onChange, value}}) => (
+                <View>
+                  <Text style={EnterStoreStyles.inputTitle}>메뉴 설명</Text>
+                  <View style={EnterStoreStyles.TextAreaInputWrapper}>
+                    <TextInput
+                      onBlur={onBlur}
+                      onFocus={autoFocus}
+                      value={value}
+                      selectionColor={AppStyles.color.placeholder}
+                      placeholder="케이크 맛을 입력해주세요."
+                      placeholderTextColor={AppStyles.color.placeholder}
+                      style={styles.textInput}
+                      onChangeText={onChange}
+                    />
+                  </View>
+                </View>
+              )}
+              name="cake_taste"
+            />
+            {errors.cake_taste && (
+              <Text style={EnterStoreStyles.errorText}>
+                케이크 맛을 입력해주세요.
               </Text>
             )}
           </AutoFocusProvider>
@@ -257,8 +359,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
-    borderBottomColor: AppStyles.color.border,
     borderBottomWidth: 1,
+    borderBottomColor: AppStyles.color.border,
   },
   modalView: {
     shadowColor: '#000000',

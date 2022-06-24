@@ -248,7 +248,7 @@ export const EnterStore = ({
                     onPress={() => handleImageUpload(setStoreImg)}>
                     <Icon
                       name="plus"
-                      size={35}
+                      size={27}
                       color={AppStyles.color.hotPink}
                     />
                     <Text
@@ -256,6 +256,7 @@ export const EnterStore = ({
                         fontSize: AppStyles.font.small,
                         color: AppStyles.color.hotPink,
                         fontWeight: '700',
+                        paddingTop: 2,
                       }}>
                       {storeImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                     </Text>
@@ -557,11 +558,13 @@ export const styles = StyleSheet.create({
   selectImage: {
     width: 102.68,
     height: 102.68,
-    backgroundColor: AppStyles.color.lightGray,
+    backgroundColor: AppStyles.color.SelectImage,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
     marginRight: 10,
+    borderWidth: 1,
+    borderColor: AppStyles.color.SelectImageBorder,
   },
   submitBtn: {
     backgroundColor: AppStyles.color.hotPink,

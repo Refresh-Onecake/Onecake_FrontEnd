@@ -14,7 +14,6 @@ import {IStoreImg} from '../screens/enterStore';
     onPress={() => handleImageUpload(setStoreImg)}/>
  * 
  */
-
 export const handleImageUpload = async (
   setter: React.Dispatch<React.SetStateAction<IStoreImg | undefined>>,
 ) => {

@@ -11,6 +11,8 @@ export const AppStyles = {
     backgroundGray: '#F9F9F9',
     subTitle: '#777777',
     IconColor: '#808080',
+    SelectImage: '#FAFAFA',
+    SelectImageBorder: '#DEDEDE',
   },
   padding: {
     screen: 32.06,

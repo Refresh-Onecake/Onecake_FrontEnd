@@ -9,10 +9,15 @@ import React from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
+import {useRecoilState} from 'recoil';
+import {storeMenuState} from '../../recoil/atom';
 
 export const EnterSheet = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  const [menu, setMenu] = useRecoilState(storeMenuState);
+  console.log(menu);
+  console.log();
   return (
     <SafeAreaView style={styles.view}>
       <Text>EnterSheet</Text>

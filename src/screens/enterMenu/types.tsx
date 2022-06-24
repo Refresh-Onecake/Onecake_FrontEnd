@@ -5,5 +5,12 @@ export type IEnterMenuInputForm = {
   cake_price: string;
   cake_description: string;
   cake_taste: string;
-  cake_image: IStoreImg;
+  cake_image: IStoreImg | string;
 };
+
+export type IEnterSheetInputForm = {
+  consumerInput?: string[];
+  cakeInput?: string[];
+};
+
+export type IStoreMenu = IEnterMenuInputForm & IEnterSheetInputForm;

@@ -13,10 +13,9 @@ import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {parseTime} from '../../utils';
+import {handleImageUpload, parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
 import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
-import axios from 'axios';
 
 export const EnterStore = ({
   navigation,
@@ -55,34 +54,6 @@ export const EnterStore = ({
     [TextInputRef.current],
   );
   const autoFocus = useAutoFocus();
-
-  const handleImageUpload = async () => {
-    await launchImageLibrary({mediaType: 'photo'})
-      .then(resp => {
-        resp.assets?.map(({fileName, type, uri}) => {
-          const img = {
-            name: fileName,
-            type: type,
-            uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
-          };
-          setStoreImg(img);
-          console.log(storeImg);
-        });
-      })
-      .catch(() => {
-        setStoreImg(undefined);
-        Alert.alert(
-          '사진 업로드 실패',
-          '다시 한번 시도해주시거나 관리자에게 문의해주세요.',
-          [
-            {
-              text: '확인',
-              style: 'cancel',
-            },
-          ],
-        );
-      });
-  };
 
   const sellerStoreQuery = useMutation(
     (data: IApplyStore) => fetchEnterStore(data),
@@ -271,11 +242,10 @@ export const EnterStore = ({
                 <Text style={[styles.inputTitle, {paddingBottom: 20}]}>
                   케이크 대표 사진
                 </Text>
-
                 <View style={styles.imageWrapper}>
                   <TouchableOpacity
                     style={styles.selectImage}
-                    onPress={handleImageUpload}>
+                    onPress={() => handleImageUpload(setStoreImg)}>
                     <Icon
                       name="plus"
                       size={35}

@@ -20,6 +20,8 @@ import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {IEnterMenuInputForm} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {FlatList} from 'react-native-gesture-handler';
+import {IStoreImg} from '../enterStore';
+import {handleImageUpload} from '../../utils';
 
 export const EnterMenu = ({
   navigation,
@@ -34,6 +36,8 @@ export const EnterMenu = ({
   const [cakeSize, setCakeSize] = useState<string[]>(['도시락', '1호','2호','3호','4호','5호']);
   const [selectedCakeSize, setSelectedCakeSize] = useState<string>('도시락');
   const [addCakeSize, setAddCakeSize] = useState<string>('');
+  //메뉴 이미지 사진
+  const [menuImg, setMenuImg] = useState<IStoreImg>();
   const toggleDropdown = (): void => {
     visible ? setVisible(false) : openDropdown();
   };
@@ -76,6 +80,10 @@ export const EnterMenu = ({
     //TODO: Menu 폼 입력 제출
     console.log(data);
   };
+
+  useEffect(() => {
+    setValue('cake_image', menuImg);
+  }, [menuImg]);
 
   return (
     <Fragment>
@@ -123,6 +131,52 @@ export const EnterMenu = ({
                 케이크 크기를 선택해주세요.
               </Text>
             )}
+            {/* 케이크 메뉴 이미지 업로드 항목 */}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {value}}) => (
+                <View>
+                  <Text
+                    style={[EnterStoreStyles.inputTitle, {paddingBottom: 20}]}>
+                    케이크 대표 사진
+                  </Text>
+                  <View style={EnterStoreStyles.imageWrapper}>
+                    <TouchableOpacity
+                      style={EnterStoreStyles.selectImage}
+                      onPress={() => handleImageUpload(setMenuImg)}>
+                      <Icon
+                        name="plus"
+                        size={35}
+                        color={AppStyles.color.hotPink}
+                      />
+                      <Text
+                        style={{
+                          fontSize: AppStyles.font.small,
+                          color: AppStyles.color.hotPink,
+                          fontWeight: '700',
+                        }}>
+                        {menuImg ? '이미지 (1/1)' : '이미지 (0/1)'}
+                      </Text>
+                    </TouchableOpacity>
+                    {menuImg && (
+                      <Image
+                        style={EnterStoreStyles.selectImage}
+                        source={{uri: menuImg?.uri}}
+                      />
+                    )}
+                  </View>
+                </View>
+              )}
+              name="cake_image"
+            />
+            {errors.cake_image && (
+              <Text style={[EnterStoreStyles.errorText, {marginTop: 5}]}>
+                메뉴 이미지를 업로드해주세요.
+              </Text>
+            )}
           </AutoFocusProvider>
         </View>
         <TouchableOpacity
@@ -132,6 +186,7 @@ export const EnterMenu = ({
         </TouchableOpacity>
       </SafeAreaView>
       <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
+      {/* 케이크 선택 모달 */}
       <Modal visible={visible} transparent animationType="none">
         <SafeAreaView
           style={[

@@ -23,8 +23,12 @@ import {fetchEnterPicture, fetchStoreEnterMenu} from '../../services';
 import {useMutation} from 'react-query';
 import {IStoreImg} from '../enterStore';
 import {IFetchMenu} from './types';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
 
-export const EnterMenuSheet = () => {
+export const EnterMenuSheet = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   // 추가했을 때 보여져야하는 목록
   const [customerInfoList, setCustomerInfoList] = useState<string[]>([]);
   const [cakeInfoList, setCakeInfoList] = useState<string[]>([]);
@@ -42,6 +46,7 @@ export const EnterMenuSheet = () => {
     {
       onSuccess: data => {
         console.log('메뉴 등록 성공', data);
+        navigation.navigate('MainNavigator', {screen: 'Store'});
       },
       onError: e => {
         console.error(e);

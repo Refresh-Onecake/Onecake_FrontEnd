@@ -9,7 +9,7 @@ export interface IApplyStore extends IEnterStoreInputForm {
   address: IAddress;
   open_time: string;
   close_time: string;
-  storeImg: IStoreImg;
+  store_image: string;
 }
 
 export const fetchEnterStoreJson = async ({
@@ -42,7 +42,6 @@ export const fetchEnterStoreJson = async ({
       },
       body: JSON.stringify(tmpApplyObj),
     });
-    console.log(data);
   } catch (e) {
     console.log(e);
   }

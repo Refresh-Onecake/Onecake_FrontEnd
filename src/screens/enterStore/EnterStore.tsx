@@ -71,32 +71,49 @@ export const EnterStore = ({
   // );
 
   // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
-  const onSubmit = async (data: IEnterStoreInputForm) => {
+  const onSubmit = async ({
+    store_discription,
+    store_name,
+    business_registration_number,
+    store_phone_number,
+    kakao_channel_url,
+  }: IEnterStoreInputForm) => {
     if (storeImg && address) {
-      const tmpFetchData = {
-        store_name: data.store_name,
-        business_registration_number: data.business_registration_number,
-        store_phone_number: data.store_phone_number,
-        store_discription: data.store_discription,
-        kakao_channel_url: data.kakao_channel_url,
-        address: address,
-        storeImg: storeImg,
-        open_time: openTime,
-        close_time: closeTime,
-      };
       // TODO: API 통신이 들어가는 곳
       // sellerStoreQuery.mutate(tmpFetchData);
-      await fetchEnterStoreJson(tmpFetchData)
-        .then(async () => {
-          console.log('사진 전송 성공');
-          await fetchEnterPicture(storeImg)
+      // await fetchEnterStoreJson(tmpFetchData)
+      //   .then(async (response) => {
+      //     console.log('사진 전송 성공');
+      //     await fetchEnterPicture(storeImg)
+      //       .then(resp => {
+      //         console.log('성공');
+      //         navigation.navigate('EnterComplete');
+      //       })
+      //       .catch(e => console.log(e));
+      //   })
+      //   .catch(e => console.log(e));
+      await fetchEnterPicture(storeImg)
+        .then(async resp => {
+          console.log(resp);
+          const tmpFetchData = {
+            store_name,
+            business_registration_number,
+            store_phone_number,
+            store_discription,
+            kakao_channel_url,
+            address: address,
+            store_image: resp!,
+            open_time: openTime,
+            close_time: closeTime,
+          };
+          await fetchEnterStoreJson(tmpFetchData)
             .then(resp => {
-              console.log('성공');
+              console.log('입점 신청 성공');
               navigation.navigate('EnterComplete');
             })
-            .catch(e => console.log(e));
+            .catch(e => console.error(e));
         })
-        .catch(e => console.log(e));
+        .catch(e => console.error(e));
     } else {
       Alert.alert(
         '입점 진행 오류',

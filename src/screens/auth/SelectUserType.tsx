@@ -10,20 +10,20 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [sellerCheckIcon, setSellerCheckIcon] = useState('none');
   const [customerCheckIcon, setCustomerCheckIcon] = useState('none');
 
-  const letToggle = (type: string) => {
-    type === 'customer'
-      ? setCustomerCheckIcon('flex')
-      : setSellerCheckIcon('flex');
+  // const letToggle = (type: string) => {
+  //   type === 'customer'
+  //     ? setCustomerCheckIcon('flex')
+  //     : setSellerCheckIcon('flex');
 
-    setTimeout(() => {
-      goToSignUp(appKeys.consumer);
-    }, 1);
+  //   setTimeout(() => {
+  //     goToSignUp(appKeys.consumer);
+  //   }, 1);
 
-    setTimeout(() => {
-      setCustomerCheckIcon('none');
-      setSellerCheckIcon('none');
-    }, 1000);
-  };
+  //   setTimeout(() => {
+  //     setCustomerCheckIcon('none');
+  //     setSellerCheckIcon('none');
+  //   }, 1000);
+  // };
 
   const goToSignUp = (userType: string) => {
     console.log(userType);
@@ -38,7 +38,7 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
       </Text>
 
       <Pressable
-        onPress={() => [letToggle('customer')]}
+        onPress={() => goToSignUp(appKeys.consumer)}
         style={({pressed}) => [
           {
             borderWidth: pressed ? 3 : 0,
@@ -46,10 +46,6 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
           },
           styles.typeBtn,
         ]}>
-        <Image
-          style={[styles.checkIcon, {display: customerCheckIcon}]}
-          source={require('../../asset/checkIcon.png')}
-        />
         <Image
           style={styles.imgShape}
           source={require('../../asset/customer.png')}
@@ -57,7 +53,7 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
         <Text>소비자</Text>
       </Pressable>
       <Pressable
-        onPress={() => [goToSignUp(appKeys.seller), letToggle('seller')]}
+        onPress={() => goToSignUp(appKeys.seller)}
         style={({pressed}) => [
           {
             borderWidth: pressed ? 3 : 0,
@@ -65,10 +61,6 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
           },
           styles.typeBtn,
         ]}>
-        <Image
-          style={[styles.checkIcon, {display: sellerCheckIcon}]}
-          source={require('../../asset/checkIcon.png')}
-        />
         <Image
           resizeMode={'contain'}
           style={styles.imgShape}

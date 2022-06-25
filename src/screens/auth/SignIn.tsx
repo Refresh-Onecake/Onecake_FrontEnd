@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  AsyncStorage,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -42,10 +43,6 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
 
   const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
     onSuccess: data => {
-      // await AsyncStorage.multiSet([
-      //   ['AccessToken', data.accessToken],
-      //   ['RefreshToken', data.refreshToken],
-      // ]);
       navigation.navigate('MainNavigation');
     },
     // TODO: AccessToken값 만료 시 리프레시 토큰으로 재요청.

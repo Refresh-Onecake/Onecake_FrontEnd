@@ -33,7 +33,7 @@ export type IFormInputs = {
 };
 type Props = StackScreenProps<RootStackParamList, 'SignUp'>;
 
-const SignUp: FC<Props> = ({route, navigation}) => {
+export const SignUp: FC<Props> = ({route, navigation}) => {
   const {userType} = route.params;
   console.log(userType);
   //문자 인증 관련 상태
@@ -723,8 +723,6 @@ const SignUp: FC<Props> = ({route, navigation}) => {
     </Fragment>
   );
 };
-
-export default SignUp;
 
 const styles = StyleSheet.create({
   flex: {

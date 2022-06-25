@@ -1,7 +1,7 @@
 import {atom} from 'recoil';
-import {IStoreMenu} from '../screens/enterMenu';
+import {IFetchMenu,} from '../screens/enterMenu';
 
-export const storeMenuState = atom<IStoreMenu>({
+export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
 });
 

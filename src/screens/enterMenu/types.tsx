@@ -14,11 +14,11 @@ export type IEnterSheetInputForm = {
 };
 
 export type IFetchMenu = {
-  cakeSize?: string;
-  cakePrice?: string;
-  cakeDescription?: string;
-  cakeTaste?: string;
-  cakeImage: string;
+  cakeSize: string;
+  cakePrice: string;
+  cakeDescription: string;
+  cakeTaste: string;
   consumerInput?: string[];
   cakeInput?: string[];
+  cakeImage? : string;
 };

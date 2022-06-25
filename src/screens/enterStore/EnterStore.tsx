@@ -15,13 +15,16 @@ import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {handleImageUpload, parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
-import {fetchEnterStore, IApplyStore, ISignUpRsp} from '../../services';
+import {
+  fetchEnterPicture,
+  fetchEnterStoreJson,
+  IApplyStore,
+  ISignUpRsp,
+} from '../../services';
 
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
-  const token =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NTU5MTAyMTB9.VUa3x6KAxVouflZxNMjIzOaud02nk8nBcfUUwK_0czWxDF8z1TgWJPS9LPXRDsfRS31RYTf9EbisuWwXv24pGw';
   //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
   //modal관련
@@ -55,82 +58,17 @@ export const EnterStore = ({
   );
   const autoFocus = useAutoFocus();
 
-  const sellerStoreQuery = useMutation(
-    (data: IApplyStore) => fetchEnterStore(data),
-    {
-      onSuccess: Response => {
-        console.log(Response);
-      },
-      onError: errors => {
-        console.log(errors);
-      },
-    },
-  );
-
-  const fetchEnterStorePicture = async (storeImg: IStoreImg) => {
-    try {
-      console.log(storeImg);
-
-      const fd = new FormData();
-      // TODO: 사진
-      fd.append('image', storeImg);
-      // TODO: JSON
-      // fd.append('applyStoreRequestDto', JSO.tmp);
-
-      const data = await fetch(
-        'http://15.165.27.120:8080/api/v1/seller/store/image',
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: fd,
-        },
-      );
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const fetchEnterStoreJson = async ({
-    store_name,
-    business_registration_number,
-    store_phone_number,
-    store_discription,
-    kakao_channel_url,
-    address,
-    open_time,
-    close_time,
-  }: IApplyStore) => {
-    try {
-      const tmpApplyObj = {
-        store_name,
-        business_registration_number,
-        store_phone_number,
-        store_discription,
-        kakao_channel_url,
-        address,
-        open_time,
-        close_time,
-      };
-
-      const data = await fetch(
-        'http://15.165.27.120:8080/api/v1/seller/store',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(tmpApplyObj),
-        },
-      );
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const sellerStoreQuery = useMutation(
+  //   (data: IApplyStore) => fetchEnterStoreJson(data),
+  //   {
+  //     onSuccess: Response => {
+  //       console.log(Response);
+  //     },
+  //     onError: errors => {
+  //       console.log(errors);
+  //     },
+  //   },
+  // );
 
   // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
   const onSubmit = async (data: IEnterStoreInputForm) => {
@@ -151,7 +89,7 @@ export const EnterStore = ({
       await fetchEnterStoreJson(tmpFetchData)
         .then(async () => {
           console.log('사진 전송 성공');
-          await fetchEnterStorePicture(storeImg)
+          await fetchEnterPicture(storeImg)
             .then(resp => {
               console.log('성공');
               navigation.navigate('EnterComplete');

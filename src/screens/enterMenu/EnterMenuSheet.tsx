@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {Fragment, useCallback, useRef, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {ToggleList} from '../../components';
 import {useRecoilState, useSetRecoilState} from 'recoil';
@@ -18,6 +18,11 @@ import {
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {ScrollView} from 'react-native-gesture-handler';
+import {EnterMenu} from './EnterMenu';
+import {fetchEnterPicture, fetchStoreEnterMenu} from '../../services';
+import {useMutation} from 'react-query';
+import {IStoreImg} from '../enterStore';
+import {IFetchMenu} from './types';
 
 export const EnterMenuSheet = () => {
   // 추가했을 때 보여져야하는 목록
@@ -32,6 +37,21 @@ export const EnterMenuSheet = () => {
   );
   const [storeMenu, setStoreMenu] = useRecoilState(storeMenuState);
 
+  const menuMutation = useMutation(
+    (menuData: IFetchMenu) => fetchStoreEnterMenu(menuData),
+    {
+      onSuccess: data => {
+        console.log('메뉴 등록 성공', data);
+      },
+      onError: e => {
+        console.error(e);
+      },
+    },
+  );
+  useEffect(() => {
+    console.log(storeMenu);
+  }, [storeMenu]);
+
   const handleSubmit = () => {
     if (customerInfoList.length === 0 || cakeInfoList.length === 0) {
       setErrorText(true);
@@ -43,6 +63,7 @@ export const EnterMenuSheet = () => {
         consumerInput: customerInfoList,
         cakeInput: cakeInfoList,
       }));
+      menuMutation.mutate(storeMenu);
     }
   };
 

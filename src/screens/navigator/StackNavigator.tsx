@@ -7,7 +7,7 @@ import SignIn from '../auth/SignIn';
 import SelectUserType from '../auth/SelectUserType';
 import FindPwd from '../auth/FindPwd';
 
-import {EnterStore, EnterComplete, EnterSheet, EnterStart} from '../enterStore';
+import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
 import {RootStackParamList} from './navigationStackTypes';
 import {MainNavigator} from './MainNavigator';
 import {EnterMenuSheet} from '../enterMenu/EnterMenuSheet';
@@ -39,7 +39,6 @@ export const StackNavigator = () => {
           headerBackTitleVisible: false,
         }}
       />
-      <Stack.Screen name="EnterSheet" component={EnterSheet} />
       <Stack.Screen name="EnterComplete" component={EnterComplete} />
       <Stack.Screen name="EnterStart" component={EnterStart} />
       {/* 가게 */}

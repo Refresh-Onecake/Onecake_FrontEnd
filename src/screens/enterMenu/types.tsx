@@ -1,11 +1,11 @@
 import {IStoreImg} from '../enterStore';
 
 export type IEnterMenuInputForm = {
-  cake_size: string;
-  cake_price: string;
-  cake_description: string;
-  cake_taste: string;
-  cake_image: IStoreImg | string;
+  cakeSize: string;
+  cakePrice: string;
+  cakeDescription: string;
+  cakeTaste: string;
+  cakeImage: IStoreImg;
 };
 
 export type IEnterSheetInputForm = {
@@ -13,4 +13,12 @@ export type IEnterSheetInputForm = {
   cakeInput?: string[];
 };
 
-export type IStoreMenu = IEnterMenuInputForm & IEnterSheetInputForm;
+export type IFetchMenu = {
+  cakeSize?: string;
+  cakePrice?: string;
+  cakeDescription?: string;
+  cakeTaste?: string;
+  cakeImage: string;
+  consumerInput?: string[];
+  cakeInput?: string[];
+};

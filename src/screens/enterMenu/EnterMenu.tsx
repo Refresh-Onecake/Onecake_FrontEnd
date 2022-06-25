@@ -24,6 +24,8 @@ import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
 import {useSetRecoilState} from 'recoil';
 import {storeMenuState} from '../../recoil/atom';
+import {useMutation} from 'react-query';
+import {fetchEnterPicture} from '../../services';
 
 export const EnterMenu = ({
   navigation,
@@ -40,6 +42,7 @@ export const EnterMenu = ({
   const [addCakeSize, setAddCakeSize] = useState<string>('');
   //메뉴 이미지 사진
   const [menuImg, setMenuImg] = useState<IStoreImg>();
+  const [menuImgUrl, setMenuImgUrl] = useState<string>();
   const toggleDropdown = (): void => {
     visible ? setVisible(false) : openDropdown();
   };
@@ -56,7 +59,7 @@ export const EnterMenu = ({
 
   // 토글리스트에서 선택하였을때
   const cakeSizeItemClickHandler = (selectedCakeName: string) => {
-    setValue('cake_size', selectedCakeName);
+    setValue('cakeSize', selectedCakeName);
     setSelectedCakeSize(selectedCakeName);
     toggleDropdown();
   };
@@ -79,7 +82,7 @@ export const EnterMenu = ({
   const autoFocus = useAutoFocus();
 
   useEffect(() => {
-    menuImg && setValue('cake_image', menuImg);
+    menuImg && setValue('cakeImage', menuImg);
   }, [menuImg]);
 
   // React.useEffect(() => {
@@ -89,11 +92,35 @@ export const EnterMenu = ({
   //   return () => subscription.unsubscribe();
   // }, [watch]);
 
-  const onSubmit = (data: IEnterMenuInputForm) => {
-    //TODO: Menu 폼 입력 제출
-    console.log(data);
-    setMenuState(data);
-    navigation.navigate('EnterMenuSheet');
+  const pictureMutation = useMutation(
+    (pictureObj: IStoreImg) => fetchEnterPicture(pictureObj),
+    {
+      onSuccess: data => {
+        console.log(data);
+        console.log('사진등록 성공');
+        setMenuState(prev => ({...prev, cakeImage: data}));
+        navigation.navigate('EnterMenuSheet');
+      },
+      onError: e => {
+        console.error(e);
+      },
+    },
+  );
+
+  const onSubmit = ({
+    cakeSize,
+    cakePrice,
+    cakeDescription,
+    cakeImage,
+    cakeTaste,
+  }: IEnterMenuInputForm) => {
+    setMenuState({
+      cakeSize,
+      cakePrice,
+      cakeDescription,
+      cakeTaste,
+    });
+    menuImg ? pictureMutation.mutate(cakeImage) : null;
   };
 
   return (
@@ -135,9 +162,9 @@ export const EnterMenu = ({
                   </TouchableOpacity>
                 </View>
               )}
-              name="cake_size"
+              name="cakeSize"
             />
-            {errors.cake_size && (
+            {errors.cakeSize && (
               <Text style={EnterStoreStyles.errorText}>
                 케이크 크기를 선택해주세요.
               </Text>
@@ -182,9 +209,9 @@ export const EnterMenu = ({
                   </View>
                 </View>
               )}
-              name="cake_image"
+              name="cakeImage"
             />
-            {errors.cake_image && (
+            {errors.cakeImage && (
               <Text style={[EnterStoreStyles.errorText, {marginTop: 5}]}>
                 메뉴 이미지를 업로드해주세요.
               </Text>
@@ -212,9 +239,9 @@ export const EnterMenu = ({
                   </View>
                 </View>
               )}
-              name="cake_price"
+              name="cakePrice"
             />
-            {errors.cake_price && (
+            {errors.cakePrice && (
               <Text style={EnterStoreStyles.errorText}>
                 최소 가격을 입력해주세요.
               </Text>
@@ -242,9 +269,9 @@ export const EnterMenu = ({
                   </View>
                 </View>
               )}
-              name="cake_description"
+              name="cakeDescription"
             />
-            {errors.cake_description && (
+            {errors.cakeDescription && (
               <Text style={EnterStoreStyles.errorText}>
                 메뉴 설명을 입력해주세요.
               </Text>
@@ -272,9 +299,9 @@ export const EnterMenu = ({
                   </View>
                 </View>
               )}
-              name="cake_taste"
+              name="cakeTaste"
             />
-            {errors.cake_taste && (
+            {errors.cakeTaste && (
               <Text style={EnterStoreStyles.errorText}>
                 케이크 맛을 입력해주세요.
               </Text>

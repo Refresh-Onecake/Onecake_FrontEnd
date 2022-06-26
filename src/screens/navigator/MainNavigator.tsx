@@ -36,6 +36,7 @@ export const MainNavigator = () => {
           tabBarIcon: ({color, size}) => (
             <Icon name="storefront-outline" color={color} size={size} />
           ),
+          //TODO: role에 따라 다르게 보여야 함.
           headerShown: true,
           headerTitle: '메뉴 관리',
         }}

@@ -70,6 +70,13 @@ export const StoreDetail = ({
           </View>
         </View>
       </SafeAreaView>
+      <TabView></TabView>
+      <SafeAreaView style={styles.OrderBtnWrapper}>
+        {/* TODO: 주문서 */}
+        <View style={styles.OrderBtn}>
+          <Button text="주문서 작성하기"></Button>
+        </View>
+      </SafeAreaView>
     </>
   );
 };

@@ -1,3 +1,7 @@
+/**
+ * @author min
+ * @description 검증에 필요한 정규표현식을 모아놨습니다.
+ */
 export const regEx = {
   // 자음 없이 한글만 입력
   regName: /^[가-힣]+$/,

@@ -1,0 +1,39 @@
+{
+  "menuListNot": [],
+  "menuList": [
+    {
+      "id": 1,
+      "title": "링링 1호 커스텀 케이크",
+      "subTitle": "도시락 사이즈의 어쩌구 커스텀 케이크",
+      "price": "23900"
+    },
+    {
+      "id": 2,
+      "title": "링링 2호 커스텀 케이크",
+      "subTitle": "도시락 사이즈의 어쩌구 커스텀 케이크",
+      "price": "24900"
+    },
+    {
+      "id": 3,
+      "title": "링링 3호 커스텀 케이크",
+      "subTitle": "도시락 사이즈의 어쩌구 커스텀 케이크",
+      "price": "25900"
+    },
+    {
+      "id": 4,
+      "title": "링링 4호 커스텀 케이크",
+      "subTitle": "도시락 사이즈의 어쩌구 커스텀 케이크",
+      "price": "26900"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

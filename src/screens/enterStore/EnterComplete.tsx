@@ -37,7 +37,11 @@ export const EnterComplete = ({
         />
         <TouchableOpacity
           style={EnterStoreStyle.submitBtn}
-          onPress={() => navigation.navigate('MainNavigation')}>
+          onPress={() =>
+            navigation.navigate('MainNavigator', {
+              screen: 'Home',
+            })
+          }>
           <Text style={EnterStoreStyle.submitText}>시작하기</Text>
         </TouchableOpacity>
       </SafeAreaView>

@@ -1,7 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React, {FC} from 'react';
-
-import {AppStyles} from '../styles/AppStyles';
+import {AppStyles} from '../../styles/AppStyles';
 
 type Props = {
   progress: number;

@@ -3,9 +3,13 @@ import React, {useEffect, useState} from 'react';
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil';
 //prettier-ignore
 import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider} from 'react-query';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+  StackScreenProps,
+} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -14,7 +18,7 @@ import {MainNavigator, StackNavigator} from './src/screens/navigator';
 //checkTokens
 const queryClient = new QueryClient();
 export default function App() {
-  const Stack = createStackNavigator<RootStackParamList>();
+  const RootStack = createStackNavigator<RootStackParamList>();
   const [accessToken, setAccessToken] = useState<string | null>('');
 
   // TODO: 만료되었을 경우는 여기서 확인이 될 것 같다.
@@ -44,7 +48,21 @@ export default function App() {
       <RecoilRoot>
         <SafeAreaView style={{flex: 1}}>
           <NavigationContainer>
-            {accessToken ? <MainNavigator /> : <StackNavigator />}
+            <RootStack.Navigator
+              initialRouteName="StackNavigator"
+              screenOptions={{
+                headerShown: false,
+              }}>
+              <RootStack.Screen
+                name="MainNavigator"
+                component={MainNavigator}
+              />
+
+              <RootStack.Screen
+                name="StackNavigator"
+                component={StackNavigator}
+              />
+            </RootStack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
       </RecoilRoot>

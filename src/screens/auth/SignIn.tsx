@@ -6,13 +6,14 @@ import {
   Text,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useState} from 'react';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
-import React, {useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {useMutation} from 'react-query';
-import {RootStackParamList} from '../navigator';
-import {StackScreenProps} from '@react-navigation/stack';
 import {Controller, useForm} from 'react-hook-form';
 import {ISignIn, getUserData} from '../../services';
 import {Button} from '../../components/common/Button';
@@ -62,7 +63,11 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     };
     signInQuery.mutate(user);
   };
-
+//   const doSignIn = () => {
+//     navigation.navigate('MainNavigator', {
+//       screen: 'Home',
+//     });
+//   };
   return (
     <SafeAreaProvider style={styles.signInWrapper}>
       <View

@@ -1,1 +1,3 @@
-export const queryKeys = {};
+export const queryKeys = {
+  sellerMenuList: ['sellerMenuList'] as const,
+};

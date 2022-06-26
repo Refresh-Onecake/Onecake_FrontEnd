@@ -76,7 +76,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
     onSuccess: data => {
       userType === appKeys.consumer
         ? navigation.navigate('EnterStore')
-        : navigation.navigate('MainNavigation');
+        : navigation.navigate('MainNavigator', {screen: 'Home'});
     },
     onError: errors => {
       Alert.alert(

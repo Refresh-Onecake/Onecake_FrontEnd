@@ -36,6 +36,8 @@ export const MainNavigator = () => {
           tabBarIcon: ({color, size}) => (
             <Icon name="storefront-outline" color={color} size={size} />
           ),
+          headerShown: true,
+          headerTitle: '메뉴 관리',
         }}
       />
       <Tab.Screen
@@ -68,3 +70,15 @@ export const MainNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  headerTitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

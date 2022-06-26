@@ -59,5 +59,9 @@ export const getUserData = async ({id, password}: ISignIn) => {
     user_id: id,
     password: password,
   });
+  await AsyncStorage.multiSet([
+    ['AccessToken', data.accessToken],
+    ['RefreshToken', data.refreshToken],
+  ]);
   return data;
 };

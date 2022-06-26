@@ -1,10 +1,15 @@
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import React, {FC} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../screens/navigator';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   return (
@@ -13,8 +18,9 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
         style={styles.card}
         onPress={() => navigation.navigate('StoreDetail')}>
         <Icon
-          style={{width: 18, height: 18, position: 'absolute', right: 0}}
-          name="home-heart"
+          size={18}
+          style={{position: 'absolute', right: 0}}
+          name="heart-outline"
         />
         <Image
           style={styles.image}

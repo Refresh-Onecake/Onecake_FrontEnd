@@ -2,10 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import SignUp from '../auth/SignUp';
 import SignIn from '../auth/SignIn';
-import SelectUserType from '../auth/SelectUserType';
-import FindPwd from '../auth/FindPwd';
+import {SignUp, SelectUserType, FindPwd} from '../auth';
 
 import {
   EnterStore,
@@ -14,6 +12,9 @@ import {
   EnterSheet,
   EnterStart,
 } from '../enterStore';
+
+import {StoreDetail} from '../store';
+
 import {RootStackParamList} from './navigationStackTypes';
 import {MainNavigator} from './MainNavigator';
 
@@ -49,6 +50,7 @@ export const StackNavigator = () => {
         <Stack.Screen name="EnterComplete" component={EnterComplete} />
         <Stack.Screen name="EnterStart" component={EnterStart} />
       </Stack.Group>
+      <Stack.Screen name="StoreDetail" component={StoreDetail} />
     </Stack.Navigator>
   );
 };

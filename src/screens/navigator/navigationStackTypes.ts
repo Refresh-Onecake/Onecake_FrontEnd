@@ -12,4 +12,5 @@ export type RootStackParamList = {
   EnterSheet: undefined;
   EnterStore: undefined;
   EnterStart: undefined;
+  StoreDetail: undefined;
 };

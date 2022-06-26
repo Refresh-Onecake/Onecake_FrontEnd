@@ -6,7 +6,9 @@ import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 
-const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
+export const SelectUserType = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   const [sellerCheckIcon, setSellerCheckIcon] = useState('none');
   const [customerCheckIcon, setCustomerCheckIcon] = useState('none');
 
@@ -71,8 +73,6 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
     </SafeAreaProvider>
   );
 };
-
-export default SelectUserType;
 
 const styles = StyleSheet.create({
   wrapper: {

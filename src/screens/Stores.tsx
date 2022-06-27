@@ -8,15 +8,15 @@ import {
 import React, {FC} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {MenuList} from '../components';
+import {MenuList} from '../components/seller/MenuList';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from './navigator';
 
-export const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
+const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const role = 'SELLER';
   return (
     <SafeAreaView style={styles.view}>
-      {role === 'SELLER' ? (
+      {role === 'COSTUMER' ? (
         // TODO: 사장님 페이지
         <>
           <MenuList />
@@ -41,6 +41,8 @@ export const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
     </SafeAreaView>
   );
 };
+
+export default Stores;
 
 const styles = StyleSheet.create({
   view: {flex: 1, backgroundColor: AppStyles.color.white},

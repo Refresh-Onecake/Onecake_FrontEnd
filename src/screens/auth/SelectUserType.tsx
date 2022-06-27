@@ -4,26 +4,23 @@ import {
   Image,
   Pressable,
   Platform,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 
-export const SelectUserType = ({
-  navigation,
-}: StackScreenProps<RootStackParamList>) => {
+const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
   // checkIcon 하기 위한 것
-  const [selectedUserIcon, setSelectedUserIcon] = useState<string>(
-    appKeys.consumer,
-  );
+  const [selectedUser, setSelectedUser] = useState<string>(appKeys.consumer);
+
   const userTypeList = [appKeys.consumer, appKeys.seller];
 
   const goToSignUp = (userType: string) => {
     console.log(userType);
-    setSelectedUserIcon(userType);
     userType === appKeys.consumer
       ? navigation.navigate('SignUp', {
           userType: appKeys.consumer,
@@ -42,11 +39,9 @@ export const SelectUserType = ({
       {userTypeList.map((val, idx) => (
         <Pressable
           key={idx}
-          onPress={() => goToSignUp(val)}
+          onPress={() => setSelectedUser(val)}
           style={[
-            val === selectedUserIcon
-              ? styles.checkedIcon
-              : styles.unCheckedIcon,
+            val === selectedUser ? styles.checkedIcon : styles.unCheckedIcon,
             styles.typeBtn,
           ]}>
           <Image
@@ -59,16 +54,29 @@ export const SelectUserType = ({
             }
           />
           <Text>{val === appKeys.consumer ? '소비자' : '판매자'}</Text>
-          {val === selectedUserIcon && (
+          {val === selectedUser && (
             <Image
               style={styles.checkIcon}
               source={require('../../asset/checkIcon.png')}></Image>
           )}
         </Pressable>
       ))}
+      <TouchableOpacity
+        style={styles.selectBtn}
+        onPress={() => goToSignUp(selectedUser)}>
+        <Text
+          style={{
+            color: AppStyles.color.white,
+            fontSize: AppStyles.font.middle,
+          }}>
+          선택하기
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
+
+export default SelectUserType;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -121,5 +129,14 @@ const styles = StyleSheet.create({
     width: 25,
     left: 1,
     top: 1,
+  },
+  selectBtn: {
+    position: 'absolute',
+    bottom: 1,
+    width: '100%',
+    height: 90,
+    paddingTop: 15,
+    alignItems: 'center',
+    backgroundColor: AppStyles.color.hotPink,
   },
 });

@@ -47,7 +47,9 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
       //   ['AccessToken', data.accessToken],
       //   ['RefreshToken', data.refreshToken],
       // ]);
-      navigation.navigate('MainNavigation');
+      navigation.navigate('MainNavigator', {
+        screen: 'Home',
+      });
     },
     // TODO: AccessToken값 만료 시 리프레시 토큰으로 재요청.
     onError: (errors, query) => {
@@ -63,11 +65,11 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     };
     signInQuery.mutate(user);
   };
-//   const doSignIn = () => {
-//     navigation.navigate('MainNavigator', {
-//       screen: 'Home',
-//     });
-//   };
+  //   const doSignIn = () => {
+  //     navigation.navigate('MainNavigator', {
+  //       screen: 'Home',
+  //     });
+  //   };
   return (
     <SafeAreaProvider style={styles.signInWrapper}>
       <View

@@ -20,22 +20,23 @@ import {IMenuList} from '../../services/menuService';
 
 export const MenuList = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const {data, status} = useQuery<IMenuList[]>(
-    queryKeys.sellerMenuList,
-    getMenuList,
-    {
-      onError: () => {
-        console.error('뭐지뭐지?');
-      },
-      onSuccess: () => {
-        console.log(data);
-      },
-    },
-  );
+  // const {data, status} = useQuery<IMenuList[]>(
+  //   queryKeys.sellerMenuList,
+  //   getMenuList,
+  //   {
+  //     onError: () => {
+  //       console.error('뭐지뭐지?');
+  //     },
+  //     onSuccess: () => {
+  //       console.log(data);
+  //     },
+  //   },
+  // );
 
+  // data && data?.length > 0
   return (
     <View>
-      {data && data?.length > 0 ? (
+      {false ? (
         //TODO: 메뉴 데이터가 존재할 때
         <View style={styles.flex}>
           <Text>데이터있음</Text>

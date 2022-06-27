@@ -60,11 +60,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     };
     signInQuery.mutate(user);
   };
-  //   const doSignIn = () => {
-  //     navigation.navigate('MainNavigator', {
-  //       screen: 'Home',
-  //     });
-  //   };
+
   return (
     <SafeAreaProvider style={styles.signInWrapper}>
       <View
@@ -123,11 +119,6 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
         )}
       </View>
-      {/* <View style={{width: 270, padding: AppStyles.padding.screen, height: 42}}>
-        <Button onPress={handleSubmit(doSignIn)}>
-          <Text>로그인</Text>
-        </Button>
-      </View> */}
 
       <View style={styles.loginBtn}>
         <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>

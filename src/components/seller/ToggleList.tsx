@@ -80,7 +80,6 @@ export const ToggleList: FC<Props> = ({
                   onSubmitEditing={() =>
                     setList(prev => [...prev, newDataListItem])
                   }
-                  onFocus={autoFocus}
                 />
               </View>
             </View>

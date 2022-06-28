@@ -1,81 +1,84 @@
-import {StyleSheet, Text, Image, Pressable, Platform} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  Image,
+  Pressable,
+  Platform,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
+import React, {useState, useRef} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 
-export const SelectUserType = ({
-  navigation,
-}: StackScreenProps<RootStackParamList>) => {
-  const [sellerCheckIcon, setSellerCheckIcon] = useState('none');
-  const [customerCheckIcon, setCustomerCheckIcon] = useState('none');
+const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
+  // checkIcon 하기 위한 것
+  const [selectedUser, setSelectedUser] = useState<string>(appKeys.consumer);
 
-  // const letToggle = (type: string) => {
-  //   type === 'customer'
-  //     ? setCustomerCheckIcon('flex')
-  //     : setSellerCheckIcon('flex');
-
-  //   setTimeout(() => {
-  //     goToSignUp(appKeys.consumer);
-  //   }, 1);
-
-  //   setTimeout(() => {
-  //     setCustomerCheckIcon('none');
-  //     setSellerCheckIcon('none');
-  //   }, 1000);
-  // };
+  const userTypeList = [appKeys.consumer, appKeys.seller];
 
   const goToSignUp = (userType: string) => {
     console.log(userType);
-    navigation.navigate('SignUp', {
-      userType: userType,
-    });
+    userType === appKeys.consumer
+      ? navigation.navigate('SignUp', {
+          userType: appKeys.consumer,
+        })
+      : navigation.navigate('SignUp', {
+          userType: appKeys.seller,
+        });
   };
+
   return (
-    <SafeAreaProvider style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <Text style={{fontSize: 18, fontWeight: '800', marginBottom: 48}}>
         사용자 유형을 선택해주세요.
       </Text>
 
-      <Pressable
-        onPress={() => goToSignUp(appKeys.consumer)}
-        style={({pressed}) => [
-          {
-            borderWidth: pressed ? 3 : 0,
-            borderColor: pressed ? AppStyles.color.pink : AppStyles.color.white,
-          },
-          styles.typeBtn,
-        ]}>
-        <Image
-          style={styles.imgShape}
-          source={require('../../asset/customer.png')}
-        />
-        <Text>소비자</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => goToSignUp(appKeys.seller)}
-        style={({pressed}) => [
-          {
-            borderWidth: pressed ? 3 : 0,
-            borderColor: pressed ? AppStyles.color.pink : AppStyles.color.white,
-          },
-          styles.typeBtn,
-        ]}>
-        <Image
-          resizeMode={'contain'}
-          style={styles.imgShape}
-          source={require('../../asset/seller.png')}
-        />
-        <Text>판매자</Text>
-      </Pressable>
-    </SafeAreaProvider>
+      {userTypeList.map((val, idx) => (
+        <Pressable
+          key={idx}
+          onPress={() => setSelectedUser(val)}
+          style={[
+            val === selectedUser ? styles.checkedIcon : styles.unCheckedIcon,
+            styles.typeBtn,
+          ]}>
+          <Image
+            resizeMode={val == appKeys.seller ? 'contain' : 'cover'}
+            style={styles.imgShape}
+            source={
+              val == appKeys.consumer
+                ? require('../../asset/customer.png')
+                : require('../../asset/seller.png')
+            }
+          />
+          <Text>{val === appKeys.consumer ? '소비자' : '판매자'}</Text>
+          {val === selectedUser && (
+            <Image
+              style={styles.checkIcon}
+              source={require('../../asset/checkIcon.png')}></Image>
+          )}
+        </Pressable>
+      ))}
+      <TouchableOpacity
+        style={styles.selectBtn}
+        onPress={() => goToSignUp(selectedUser)}>
+        <Text
+          style={{
+            color: AppStyles.color.white,
+            fontSize: AppStyles.font.middle,
+          }}>
+          선택하기
+        </Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     backgroundColor: AppStyles.color.white,
     justifyContent: 'center',
     alignItems: 'center',
@@ -111,11 +114,27 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 3,
   },
+  checkedIcon: {
+    borderWidth: 3,
+    borderColor: AppStyles.color.hotPink,
+  },
+  unCheckedIcon: {
+    borderWidth: 0,
+  },
   checkIcon: {
     position: 'absolute',
     height: 25,
     width: 25,
     left: 1,
     top: 1,
+  },
+  selectBtn: {
+    position: 'absolute',
+    bottom: 1,
+    width: '100%',
+    height: 90,
+    paddingTop: 15,
+    alignItems: 'center',
+    backgroundColor: AppStyles.color.hotPink,
   },
 });

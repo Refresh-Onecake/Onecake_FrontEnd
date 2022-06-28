@@ -26,7 +26,7 @@ import {useSetRecoilState} from 'recoil';
 import {storeMenuState} from '../../recoil/atom';
 import {useMutation} from 'react-query';
 import {fetchEnterPicture} from '../../services';
-
+import {Platform} from 'react-native';
 export const EnterMenu = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
@@ -56,6 +56,7 @@ export const EnterMenu = ({
     });
     setVisible(true);
   };
+  const [toggleInputFocus, setToggleInputFocus] = useState<boolean>(false);
 
   // 토글리스트에서 선택하였을때
   const cakeSizeItemClickHandler = (selectedCakeName: string) => {
@@ -317,9 +318,22 @@ export const EnterMenu = ({
       <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
       {/* 케이크 선택 모달 */}
       <Modal visible={visible} transparent animationType="none">
+        {/* TODO: 윈도우 크기에 맞춰서 개발을 해야될 수 있다. */}
         <SafeAreaView
           style={[
-            {top: dropdownTop, width: dropdownWidth, left: dropdownLeft},
+            {
+              top: dropdownTop,
+              width: dropdownWidth,
+              left: dropdownLeft,
+              ...Platform.select({
+                android: {
+                  bottom: toggleInputFocus ? 100 : 285,
+                },
+                ios: {
+                  bottom: 285,
+                },
+              }),
+            },
             styles.modalView,
           ]}>
           <ScrollView style={{width: '100%', paddingVertical: 5}}>
@@ -355,11 +369,13 @@ export const EnterMenu = ({
               </View>
               <TextInput
                 ref={TextInputRef}
-                placeholder="새로 추가히기"
+                placeholder="새로 추가하기"
                 selectionColor={AppStyles.color.placeholder}
                 placeholderTextColor={AppStyles.color.placeholder}
                 style={styles.textInput}
                 onChangeText={setAddCakeSize}
+                onFocus={() => setToggleInputFocus(true)}
+                onBlur={() => setToggleInputFocus(false)}
                 onSubmitEditing={() => {
                   setCakeSize(prev => [...prev, addCakeSize]);
                   TextInputRef.current?.clear();
@@ -390,13 +406,19 @@ const styles = StyleSheet.create({
     borderBottomColor: AppStyles.color.border,
   },
   modalView: {
-    shadowColor: '#000000',
-    shadowRadius: 4,
-    shadowOffset: {height: 4, width: 0},
-    shadowOpacity: 0.5,
+    ...Platform.select({
+      android: {
+        elevation: 3,
+      },
+      ios: {
+        shadowColor: '#000000',
+        shadowRadius: 4,
+        shadowOffset: {height: 4, width: 0},
+        shadowOpacity: 0.5,
+      },
+    }),
     position: 'absolute',
     backgroundColor: AppStyles.color.white,
-    bottom: 285,
     alignItems: 'center',
     borderRadius: 13,
   },
@@ -411,6 +433,11 @@ const styles = StyleSheet.create({
     flex: 1,
     color: AppStyles.color.black,
     fontSize: 15,
+    ...Platform.select({
+      android: {
+        height: 40,
+      },
+    }),
   },
   cakeSizeItem: {
     flexDirection: 'row',

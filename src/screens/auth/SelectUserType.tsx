@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 10,
-          height: 10,
+          width: 1,
+          height: 1,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
+        shadowOpacity: 0.1,
+        shadowRadius: 15,
       },
       android: {
         elevation: 10,
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     height: 132,
     borderRadius: 100,
     overflow: 'hidden',
-    borderWidth: 3,
   },
   checkedIcon: {
     borderWidth: 3,
@@ -127,8 +126,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 25,
     width: 25,
-    left: 1,
-    top: 1,
+    left: Platform.OS === 'android' ? 1 : -8,
+    top: Platform.OS === 'android' ? 1 : -8,
   },
   selectBtn: {
     position: 'absolute',

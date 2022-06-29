@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Platform,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -98,6 +99,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
               style={styles.textInput}
               onBlur={onBlur}
               onChangeText={onChange}
+              selectionColor={AppStyles.color.placeholder}
               value={value}
             />
           )}
@@ -120,6 +122,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
               onChangeText={onChange}
               onBlur={onBlur}
               style={styles.textInput}
+              selectionColor={AppStyles.color.placeholder}
             />
           )}
           name="password"
@@ -173,11 +176,16 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: 270,
     borderBottomWidth: 1,
-    height: 70,
+    height: Platform.OS === 'android' ? 70 : 40,
     borderBottomColor: AppStyles.color.black,
   },
   textInput: {
     width: 270,
+    ...Platform.select({
+      ios: {
+        height: 40,
+      },
+    }),
     borderBottomColor: AppStyles.color.border,
   },
   loginBtn: {

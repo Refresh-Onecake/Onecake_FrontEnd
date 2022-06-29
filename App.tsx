@@ -5,11 +5,7 @@ import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue} from 'recoil
 import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider} from 'react-query';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  createStackNavigator,
-  StackNavigationProp,
-  StackScreenProps,
-} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -17,6 +13,7 @@ import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
 import {MainNavigator, StackNavigator} from './src/screens/navigator';
 //checkTokens
 const queryClient = new QueryClient();
+
 export default function App() {
   const RootStack = createStackNavigator<RootStackParamList>();
   const [accessToken, setAccessToken] = useState<string | null>('');

@@ -1,5 +1,5 @@
 //prettier-ignore
-import {Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Alert, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useForm, Controller} from 'react-hook-form';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -515,25 +514,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                       />
                     </View>
                   </TouchableOpacity>
-                  <Modal
-                    isVisible={isModalVisible}
-                    style={{margin: AppStyles.padding.large}}>
-                    <View style={styles.modalStyle}>
-                      <FlatList
-                        data={countryCodes}
-                        renderItem={({item}) => <RenderItem data={item} />}
-                        keyExtractor={(item: ICountryCode) => item.code}
-                      />
-                      <TouchableOpacity
-                        style={[
-                          styles.btn,
-                          {paddingVertical: 10, borderRadius: 7, marginTop: 20},
-                        ]}
-                        onPress={toggleModal}>
-                        <Text style={{color: AppStyles.color.white}}>닫기</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </Modal>
+
                   <TextInput
                     style={[styles.textInput]}
                     keyboardType="number-pad"
@@ -719,6 +700,29 @@ const SignUp: FC<Props> = ({route, navigation}) => {
           </AutoFocusProvider>
         </ScrollView>
       </SafeAreaView>
+      <Modal isVisible={isModalVisible} style={{margin: 0}}>
+        <SafeAreaView style={styles.modalStyle}>
+          <FlatList
+            style={{flex: 1}}
+            data={countryCodes}
+            renderItem={({item}) => <RenderItem data={item} />}
+            keyExtractor={(item: ICountryCode) => item.code}
+          />
+          <Pressable
+            style={[styles.btn, {paddingVertical: 10}]}
+            onPress={toggleModal}>
+            <Text
+              style={{
+                color: AppStyles.color.white,
+                fontSize: 15,
+                fontWeight: '500',
+              }}>
+              닫기
+            </Text>
+          </Pressable>
+        </SafeAreaView>
+        <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
+      </Modal>
       <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
     </Fragment>
   );
@@ -816,7 +820,7 @@ const styles = StyleSheet.create({
   btn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: AppStyles.color.pink,
+    backgroundColor: AppStyles.color.hotPink,
     // height: 56,
     // borderRadius: 12,
   },
@@ -844,7 +848,8 @@ const styles = StyleSheet.create({
   },
   modalStyle: {
     backgroundColor: AppStyles.color.white,
-    padding: 20,
+    flex: 1,
+    margin: 0,
   },
   modalItem: {
     marginVertical: 8,

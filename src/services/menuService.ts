@@ -1,21 +1,24 @@
 import {IFetchMenu} from '../screens/enterMenu';
 const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1NjEzOTAyMX0.9r6pQGuWXcwcWXygJ2xx4qRsr2E9YEaoF6UgYo0jnS85txWwePJE479mKM-l36X3pZqM5ZuVQCrDUpyS0pdpCw';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1NjUwMjAyM30.xBxUKj5h9iAJ8eA-n7eUq0bNHLpPI6F7GPByGkJzolTbUPClrsJx0RmDzFPUBO42hIoA3ZdZDPg7EzQudx8SHQ';
 
 export type IMenuList = {
-  id: number;
-  title: string;
-  subTitle: string;
+  image: string;
+  menuName: string;
+  menuDescription: string;
   price: number;
 };
 
 export const getMenuList = async () => {
-  const response = await fetch('http://localhost:3000/menuListNot', {
-    method: 'GET',
-    headers: {
-      // Authorization: `Bearer ${token}`,
+  const response = await fetch(
+    'http://15.165.27.120:8080/api/v1/seller/store/menu',
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
   return response.json();
 };
 

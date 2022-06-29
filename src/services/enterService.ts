@@ -3,7 +3,7 @@ import axios from 'axios';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from '../screens/enterStore';
 import {ISignUpRsp} from './authService';
 const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1NjEzOTAyMX0.9r6pQGuWXcwcWXygJ2xx4qRsr2E9YEaoF6UgYo0jnS85txWwePJE479mKM-l36X3pZqM5ZuVQCrDUpyS0pdpCw';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1NjUwMjAyM30.xBxUKj5h9iAJ8eA-n7eUq0bNHLpPI6F7GPByGkJzolTbUPClrsJx0RmDzFPUBO42hIoA3ZdZDPg7EzQudx8SHQ';
 
 export interface IApplyStore extends IEnterStoreInputForm {
   address: IAddress;

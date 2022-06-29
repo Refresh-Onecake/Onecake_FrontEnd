@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- *
+ * @author min
  * @param key - AsyncStorage로부터 fetch 하고 싶은 key 값을 입력합니다.
  * @returns String Value 값을 가진 정보를 가져옵니다.
  */

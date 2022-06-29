@@ -19,7 +19,10 @@ export const getMenuList = async () => {
       },
     },
   );
-  return response.json();
+  // if (!response.ok) {
+  //   throw new Error(response.status.toString());
+  // }
+  return response;
 };
 
 export const fetchStoreEnterMenu = async (data: IFetchMenu) => {

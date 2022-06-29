@@ -22,20 +22,22 @@ import {IMenuList} from '../../services/menuService';
 import {MenuRenderList} from './MenuRenderList';
 export const MenuList = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const {data, status} = useQuery<IMenuList[]>(
+  const {data, status} = useQuery<IMenuList[] | void>(
     queryKeys.sellerMenuList,
-    getMenuList,
+    async () =>
+      await getMenuList().then(res => {
+        if (!res.ok) {
+          throw new Error(res.status.toString());
+        } else {
+          return res.json();
+        }
+      }),
     {
-      onError: () => {
-        console.log('뭐지뭐지?');
+      onError: err => {
+        console.log('여기서 떠야지 이놈아', err);
       },
       onSuccess: () => {
-        console.log('메뉴 리스트다 임마');
-        console.log(data);
-      },
-      onSettled: () => {
-        console.log('업데이트 됨');
-        console.log(data);
+        //
       },
     },
   );

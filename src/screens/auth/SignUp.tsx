@@ -517,7 +517,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
 
                   <TextInput
                     style={[styles.textInput]}
-                    keyboardType="number-pad"
+                    keyboardType="default"
                     placeholder="전화번호"
                     onFocus={autoFocus}
                     selectionColor={'lightgray'}

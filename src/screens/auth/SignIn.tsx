@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Platform,
+  Image,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -72,21 +73,14 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   //     });
   //   };
   return (
-    <SafeAreaProvider style={styles.signInWrapper}>
-      <View
-        style={{
-          width: 87,
-          height: 87,
-          backgroundColor: 'hotpink',
-          marginBottom: 17,
-        }}></View>
-      <Text
-        style={{
-          fontSize: 40,
-          fontWeight: '600',
-        }}>
-        Onecake.
-      </Text>
+    <SafeAreaView style={styles.signInWrapper}>
+      <View>
+        <Image
+          style={{width: 87.91, height: 87.91, marginBottom: 17.23}}
+          source={require('../../asset/login_logo.png')}
+        />
+      </View>
+      <Text style={styles.title}>Onecake.</Text>
       <View style={styles.inputWrapper}>
         <Controller
           control={control}
@@ -131,21 +125,19 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
         )}
       </View>
-      {/* <View style={{width: 270, padding: AppStyles.padding.screen, height: 42}}>
-        <Button onPress={handleSubmit(doSignIn)}>
-          <Text>로그인</Text>
-        </Button>
-      </View> */}
-
       <View style={styles.loginBtn}>
         <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
       </View>
       <View style={styles.texts}>
-        <Text onPress={() => navigation.navigate('SelectUserType')}>
+        <Text
+          style={styles.authText}
+          onPress={() => navigation.navigate('SelectUserType')}>
           회원가입
         </Text>
-        <Text onPress={() => navigation.navigate('FindPwd')}>
-          비밀번호 찾기
+        <Text
+          style={styles.authText}
+          onPress={() => navigation.navigate('FindPwd')}>
+          아이디/비밀번호 찾기
         </Text>
       </View>
       <Modal isVisible={modalVisible}>
@@ -159,13 +151,19 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           </TouchableOpacity>
         </SafeAreaView>
       </Modal>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 
 export default SignIn;
 
 const styles = StyleSheet.create({
+  title: {
+    fontWeight: '700',
+    fontSize: 28,
+    lineHeight: 42,
+    paddingBottom: 52,
+  },
   signInWrapper: {
     backgroundColor: AppStyles.color.white,
     flex: 1,
@@ -175,11 +173,14 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     width: 270,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.7,
     height: Platform.OS === 'android' ? 70 : 40,
     borderBottomColor: AppStyles.color.black,
   },
   textInput: {
+    fontSize: 13,
+    lineHeight: 16,
+    fontWeight: '400',
     width: 270,
     ...Platform.select({
       ios: {
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
       },
     }),
     borderBottomColor: AppStyles.color.border,
+    color: AppStyles.color.black,
   },
   loginBtn: {
     marginTop: 26,
@@ -194,10 +196,10 @@ const styles = StyleSheet.create({
     height: 42,
   },
   texts: {
-    width: 270,
+    width: 194,
     marginTop: 31,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
   },
   modal: {
     padding: AppStyles.padding.screen,
@@ -223,5 +225,11 @@ const styles = StyleSheet.create({
     color: AppStyles.color.pink,
     opacity: 0.7,
     paddingTop: 2,
+  },
+  authText: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: AppStyles.color.black,
+    opacity: 0.5,
   },
 });

@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  View,
   TouchableOpacity,
 } from 'react-native';
 import React, {FC} from 'react';
@@ -25,7 +26,7 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
         <>
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate('StoreDetail')}>
+            onPress={() => navigation.navigate('StoreDetail', {storeId: 1})}>
             <Icon
               size={18}
               style={{position: 'absolute', right: 0}}
@@ -35,6 +36,12 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
               style={styles.image}
               source={require('../asset/customer.png')}></Image>
             <Text>[강남구] 링링케이크</Text>
+            <View style={styles.liked}>
+              <Text style={{marginRight: 3}}>찜</Text>
+              {/* TODO: 받아와야함*/}
+              <Text>234</Text>
+              <Text>개</Text>
+            </View>
           </TouchableOpacity>
         </>
       )}
@@ -56,5 +63,9 @@ const styles = StyleSheet.create({
   image: {
     width: 166,
     height: 214,
+  },
+  liked: {
+    marginTop: 5,
+    flexDirection: 'row',
   },
 });

@@ -66,6 +66,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             screen: 'Home',
           });
           SplashScreen.hide();
+        } else {
+          SplashScreen.hide();
         }
       })
       .catch(err => {

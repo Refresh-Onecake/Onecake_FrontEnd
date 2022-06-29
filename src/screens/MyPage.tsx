@@ -14,10 +14,9 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {StackActions, useNavigation} from '@react-navigation/native';
 
 const MyPage = () => {
-  const navigation = useNavigation();
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('AccessToken');
+      await AsyncStorage.clear();
     } catch (exception) {
       return false;
     }

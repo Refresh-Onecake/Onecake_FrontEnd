@@ -33,6 +33,8 @@ export const MenuList = () => {
         }
       }),
     {
+      refetchOnMount: 'always',
+
       onError: err => {
         console.log('여기서 떠야지 이놈아', err);
       },

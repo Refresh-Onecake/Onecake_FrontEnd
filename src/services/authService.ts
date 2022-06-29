@@ -28,6 +28,13 @@ export type IRefreshToken = {
   accessToken: IUserData['accessToken'] | null;
 };
 
+export type IRefreshTokenData = {
+  accessToken: string;
+  accessTokenExpiresIn: number;
+  grantType: string;
+  refreshToken: string;
+};
+
 export const apiClient = axios.create({
   baseURL: 'http://15.165.27.120:8080',
   headers: {

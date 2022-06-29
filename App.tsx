@@ -12,36 +12,52 @@ import {MainNavigator, StackNavigator} from './src/screens/navigator';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from './src/enum';
+import {IRefreshTokenData} from './src/services';
 
 interface IError {
   message: string;
 }
+const getMultipleData = async () => {
+  try {
+    const savedData = await AsyncStorage.multiGet([
+      appKeys.accessTokenKey,
+      appKeys.refreshTokenKey,
+    ]);
+    return savedData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: async err => {
       const response = err as IError;
       console.log('이거 맞니');
-      const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
-      const refresh = await AsyncStorage.getItem(appKeys.refreshTokenKey);
-      if (token && refresh) console.log(JSON.parse(token), JSON.parse(refresh));
-      if (response.message === '401') {
-        await fetch('http://15.165.27.120:8080/api/v1/auth/reissue', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            accessToken: JSON.parse(token!),
-            refreshToken: JSON.parse(refresh!),
-          }),
-        }).then(res => {
-          const data = res;
-          // await AsyncStorage.multiSet([
-          //   [appKeys.accessTokenKey, data.accessToken],
-          //   [appKeys.refreshTokenKey, data.refreshToken],
-          // ]);
-          console.log(data);
-        });
+      const tokens = await getMultipleData();
+      if (tokens) {
+        if (response.message === '401') {
+          await fetch('http://15.165.27.120:8080/api/v1/auth/reissue', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              accessToken: tokens[0][1],
+              refreshToken: tokens[1][1],
+            }),
+          })
+            .then(res => res.json())
+            .then(async (data: IRefreshTokenData) => {
+              await AsyncStorage.multiSet(
+                [
+                  [appKeys.accessTokenKey, data.accessToken],
+                  [appKeys.refreshTokenKey, data.refreshToken],
+                ],
+                () => console.log('성공!'),
+              );
+            });
+        }
       }
     },
   }),

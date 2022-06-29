@@ -13,7 +13,9 @@ import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 
-const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
+export const SelectUserType = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   // checkIcon 하기 위한 것
   const [selectedUser, setSelectedUser] = useState<string>(appKeys.consumer);
 

@@ -23,6 +23,11 @@ export type IUserData = {
   TokenExpires: number;
 };
 
+export type IRefreshToken = {
+  refreshToken: IUserData['refreshToken'] | null;
+  accessToken: IUserData['accessToken'] | null;
+};
+
 export const apiClient = axios.create({
   baseURL: 'http://15.165.27.120:8080',
   headers: {
@@ -53,7 +58,6 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-//TODO: 토큰 저장 로직의 위치가 어디가 좋을까, 헤더에 담는 것도 해야 함
 export const getUserData = async ({id, password}: ISignIn) => {
   const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
     user_id: id,

@@ -22,11 +22,10 @@ import Modal from 'react-native-modal';
 import {AppStyles} from '../../styles/AppStyles';
 import {useMutation} from 'react-query';
 import {Controller, useForm} from 'react-hook-form';
-import {ISignIn, getUserData} from '../../services';
+import {ISignIn, getUserData, IRefreshToken} from '../../services';
 import {Button} from '../../components/common/Button';
 import {appKeys} from '../../enum';
 import {useAsync} from '../../hooks';
-import {getStringValueToken} from '../../utils';
 import {useSetRecoilState} from 'recoil';
 import {accessTokenState} from '../../recoil/atom';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
@@ -39,8 +38,7 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string | null>();
-  const setAccessTokenState = useSetRecoilState(accessTokenState);
+  const [accessToken, setAccessToken] = useState<IRefreshToken | null>();
   const {
     control,
     handleSubmit,
@@ -52,22 +50,28 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     },
   });
 
-  const [error, resetError] = useAsync(async () => {
-    setAccessToken(null);
-    resetError();
-    const fetchToken = await getStringValueToken(appKeys.accessTokenKey);
-    setAccessToken(fetchToken);
-  });
-
   useEffect(() => {
-    if (accessToken) {
-      setAccessTokenState(accessToken);
-      navigation.navigate('MainNavigator', {
-        screen: 'Home',
+    const getMultipleData = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem(appKeys.accessTokenKey);
+        return savedData;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMultipleData()
+      .then(resp => {
+        if (resp) {
+          navigation.navigate('MainNavigator', {
+            screen: 'Home',
+          });
+          SplashScreen.hide();
+        }
+      })
+      .catch(err => {
+        SplashScreen.hide();
       });
-      SplashScreen.hide();
-    }
-  }, [accessToken]);
+  }, []);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);

@@ -1,5 +1,6 @@
 import {atom} from 'recoil';
 import {IFetchMenu} from '../screens/enterMenu';
+import {IRefreshToken} from '../services';
 
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
@@ -21,7 +22,10 @@ export const cakeInfoState = atom<string[]>({
   ],
 });
 
-export const accessTokenState = atom<string>({
+export const accessTokenState = atom<IRefreshToken>({
   key: 'accessTokenState',
-  default: '',
+  default: {
+    accessToken: '',
+    refreshToken: '',
+  },
 });

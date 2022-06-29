@@ -26,20 +26,16 @@ export const MenuList = () => {
     queryKeys.sellerMenuList,
     async () =>
       await getMenuList().then(res => {
-        if (!res.ok) {
-          throw new Error(res.status.toString());
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
         } else {
           return res.json();
         }
       }),
     {
       refetchOnMount: 'always',
-
       onError: err => {
         console.log('여기서 떠야지 이놈아', err);
-      },
-      onSuccess: () => {
-        //
       },
     },
   );

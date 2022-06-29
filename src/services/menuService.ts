@@ -21,9 +21,6 @@ export const getMenuList = async () => {
         },
       },
     );
-    // if (!response.ok) {
-    //   throw new Error(response.status.toString());
-    // }
     return response;
   }
 };

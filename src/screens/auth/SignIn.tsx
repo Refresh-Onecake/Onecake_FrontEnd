@@ -7,10 +7,15 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
@@ -19,6 +24,13 @@ import {useMutation} from 'react-query';
 import {Controller, useForm} from 'react-hook-form';
 import {ISignIn, getUserData} from '../../services';
 import {Button} from '../../components/common/Button';
+import {appKeys} from '../../enum';
+import {useAsync} from '../../hooks';
+import {getStringValueToken} from '../../utils';
+import {useSetRecoilState} from 'recoil';
+import {accessTokenState} from '../../recoil/atom';
+import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import SplashScreen from 'react-native-splash-screen';
 
 type IUserInfo = {
   id: string;
@@ -27,7 +39,8 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const [accessToken, setAccessToken] = useState<string | null>();
+  const setAccessTokenState = useSetRecoilState(accessTokenState);
   const {
     control,
     handleSubmit,
@@ -39,23 +52,38 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     },
   });
 
+  const [error, resetError] = useAsync(async () => {
+    setAccessToken(null);
+    resetError();
+    const fetchToken = await getStringValueToken(appKeys.accessTokenKey);
+    setAccessToken(fetchToken);
+  });
+
+  useEffect(() => {
+    if (accessToken) {
+      setAccessTokenState(accessToken);
+      navigation.navigate('MainNavigator', {
+        screen: 'Home',
+      });
+      SplashScreen.hide();
+    }
+  }, [accessToken]);
+
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
   const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
-    onSuccess: data => {
-      // await AsyncStorage.multiSet([
-      //   ['AccessToken', data.accessToken],
-      //   ['RefreshToken', data.refreshToken],
-      // ]);
+    onSuccess: async data => {
+      await AsyncStorage.multiSet([
+        [appKeys.accessTokenKey, data.accessToken],
+        [appKeys.refreshTokenKey, data.refreshToken],
+      ]);
       navigation.navigate('MainNavigator', {
         screen: 'Home',
       });
     },
-    // TODO: AccessToken값 만료 시 리프레시 토큰으로 재요청.
-    onError: (errors, query) => {
-      console.log(errors, query);
+    onError: errors => {
       toggleModal();
     },
   });
@@ -67,90 +95,97 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     };
     signInQuery.mutate(user);
   };
-  //   const doSignIn = () => {
-  //     navigation.navigate('MainNavigator', {
-  //       screen: 'Home',
-  //     });
-  //   };
+
+  const TextInputRef = useRef<TextInput | null>(null);
+  const setFocus = useCallback(
+    () => TextInputRef.current?.focus(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [TextInputRef.current],
+  );
+  const autoFocus = useAutoFocus();
   return (
     <SafeAreaView style={styles.signInWrapper}>
-      <View>
-        <Image
-          style={{width: 87.91, height: 87.91, marginBottom: 17.23}}
-          source={require('../../asset/login_logo.png')}
-        />
-      </View>
-      <Text style={styles.title}>Onecake.</Text>
-      <View style={styles.inputWrapper}>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              placeholder="아이디"
-              style={styles.textInput}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              selectionColor={AppStyles.color.placeholder}
-              value={value}
-            />
+      <AutoFocusProvider contentContainerStyle={styles.signInWrapper}>
+        <View>
+          <Image
+            style={{width: 87.91, height: 87.91, marginBottom: 17.23}}
+            source={require('../../asset/login_logo.png')}
+          />
+        </View>
+        <Text style={styles.title}>Onecake.</Text>
+        <View style={styles.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                onFocus={autoFocus}
+                placeholder="아이디"
+                style={styles.textInput}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                selectionColor={AppStyles.color.placeholder}
+                value={value}
+              />
+            )}
+            name="id"
+          />
+          {errors.id && (
+            <Text style={styles.errorText}>아이디를 입력해주세요</Text>
           )}
-          name="id"
-        />
-        {errors.id && (
-          <Text style={styles.errorText}>아이디를 입력해주세요</Text>
-        )}
-      </View>
-      <View style={styles.inputWrapper}>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              placeholder="비밀번호"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              style={styles.textInput}
-              selectionColor={AppStyles.color.placeholder}
-            />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="비밀번호"
+                value={value}
+                onFocus={autoFocus}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                style={styles.textInput}
+                selectionColor={AppStyles.color.placeholder}
+              />
+            )}
+            name="password"
+          />
+          {errors.password && (
+            <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
           )}
-          name="password"
-        />
-        {errors.password && (
-          <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
-        )}
-      </View>
-      <View style={styles.loginBtn}>
-        <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
-      </View>
-      <View style={styles.texts}>
-        <Text
-          style={styles.authText}
-          onPress={() => navigation.navigate('SelectUserType')}>
-          회원가입
-        </Text>
-        <Text
-          style={styles.authText}
-          onPress={() => navigation.navigate('FindPwd')}>
-          아이디/비밀번호 찾기
-        </Text>
-      </View>
-      <Modal isVisible={modalVisible}>
-        <SafeAreaView style={styles.modal}>
-          <Text>
-            로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
-            입력해 주세요.
+        </View>
+        <View style={styles.loginBtn}>
+          <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
+        </View>
+        <View style={styles.texts}>
+          <Text
+            style={styles.authText}
+            onPress={() => navigation.navigate('SelectUserType')}>
+            회원가입
           </Text>
-          <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
-            <Text style={{color: AppStyles.color.white}}>확인</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </Modal>
+          <Text
+            style={styles.authText}
+            onPress={() => navigation.navigate('FindPwd')}>
+            아이디/비밀번호 찾기
+          </Text>
+        </View>
+        <Modal isVisible={modalVisible}>
+          <SafeAreaView style={styles.modal}>
+            <Text>
+              로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
+              입력해 주세요.
+            </Text>
+            <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
+              <Text style={{color: AppStyles.color.white}}>확인</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </Modal>
+      </AutoFocusProvider>
     </SafeAreaView>
   );
 };

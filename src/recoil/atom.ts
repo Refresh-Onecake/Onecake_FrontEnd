@@ -1,5 +1,5 @@
 import {atom} from 'recoil';
-import {IFetchMenu,} from '../screens/enterMenu';
+import {IFetchMenu} from '../screens/enterMenu';
 
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
@@ -19,4 +19,9 @@ export const cakeInfoState = atom<string[]>({
     '레터링 문구',
     '레퍼런스 사진',
   ],
+});
+
+export const accessTokenState = atom<string>({
+  key: 'accessTokenState',
+  default: '',
 });

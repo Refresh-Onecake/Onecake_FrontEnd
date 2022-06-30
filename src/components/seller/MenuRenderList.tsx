@@ -13,12 +13,17 @@ import {AppStyles} from '../../styles/AppStyles';
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {priceFormatParser} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../screens/navigator';
 
 export type MenuRenderListProps = {
   data: IMenuList[] | undefined;
 };
 
 export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const RenderItem = (item: ListRenderItemInfo<IMenuList>) => {
     return (
       <View
@@ -57,12 +62,18 @@ export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
       <View style={[styles.shadowView, styles.listWrap]}>
         <FlatList data={data} renderItem={RenderItem} />
       </View>
-      <View style={[styles.shadowView, styles.btn]}>
+      <TouchableOpacity
+        style={[styles.shadowView, styles.btn]}
+        onPress={() =>
+          navigation.navigate('StackNavigator', {
+            screen: 'EnterMenu',
+          })
+        }>
         <Image
           source={require('../../asset/plus_btn_gray.png')}
           style={{width: 25, height: 25}}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

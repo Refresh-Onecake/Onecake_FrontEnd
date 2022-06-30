@@ -26,10 +26,10 @@ export const MenuList = () => {
     queryKeys.sellerMenuList,
     async () =>
       await getMenuList().then(res => {
-        if (!res?.ok) {
+        if (res?.ok) {
           throw new Error(res?.status.toString());
         } else {
-          return res.json();
+          if (res) return res.json();
         }
       }),
     {

@@ -94,11 +94,19 @@ export const EnterMenu = ({
   // }, [watch]);
 
   const pictureMutation = useMutation(
-    (pictureObj: IStoreImg) => fetchEnterPicture(pictureObj),
+    async (pictureObj: IStoreImg) =>
+      await fetchEnterPicture(pictureObj).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
     {
       onSuccess: data => {
         console.log(data);
         console.log('사진등록 성공');
+
         setMenuState(prev => ({...prev, cakeImage: data}));
         navigation.navigate('EnterMenuSheet');
       },

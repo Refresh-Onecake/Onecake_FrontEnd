@@ -65,8 +65,16 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
+export type ILoginResponse = {
+  grantType: string;
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresIn: number;
+  role: string;
+};
+
 export const getUserData = async ({id, password}: ISignIn) => {
-  const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
+  const {data} = await apiClient.post<ILoginResponse>('/api/v1/auth/login', {
     user_id: id,
     password: password,
   });

@@ -1,13 +1,26 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import {MenuList} from '../components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from './navigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {appKeys} from '../enum';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  //FIXME: 하드코딩 부분 이후 로그인 고칠 부분
-  const role = 'SELLER';
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
+
   return (
     <SafeAreaView style={styles.view}>
       {role === 'SELLER' ? (

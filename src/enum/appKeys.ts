@@ -8,4 +8,5 @@ export const appKeys = {
   seller: 'SELLER' as const,
   accessTokenKey: '@accessToken' as const,
   refreshTokenKey: '@refreshToken' as const,
+  roleTokenKey: '@role' as const,
 };

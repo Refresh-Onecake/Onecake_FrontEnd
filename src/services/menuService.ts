@@ -26,16 +26,19 @@ export const getMenuList = async () => {
 };
 
 export const fetchStoreEnterMenu = async (data: IFetchMenu) => {
-  const response = await fetch(
-    'http://15.165.27.120:8080/api/v1/seller/store/menu',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      'http://15.165.27.120:8080/api/v1/seller/store/menu',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    },
-  );
-  return response.json();
+    );
+    return response.json();
+  }
 };

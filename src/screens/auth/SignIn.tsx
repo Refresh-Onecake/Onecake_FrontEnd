@@ -84,6 +84,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
       await AsyncStorage.multiSet([
         [appKeys.accessTokenKey, data.accessToken],
         [appKeys.refreshTokenKey, data.refreshToken],
+        [appKeys.roleTokenKey, data.role],
       ]);
       navigation.navigate('MainNavigator', {
         screen: 'Home',

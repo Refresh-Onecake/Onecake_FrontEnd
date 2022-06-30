@@ -32,7 +32,6 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: async err => {
       const response = err as IError;
-      console.log('이거 맞니');
       const tokens = await getMultipleData();
       if (tokens) {
         if (response.message === '401') {
@@ -54,7 +53,7 @@ const queryClient = new QueryClient({
                   [appKeys.accessTokenKey, data.accessToken],
                   [appKeys.refreshTokenKey, data.refreshToken],
                 ],
-                () => console.log('성공!'),
+                () => console.log('토큰 리프레쉬'),
               );
             });
         }

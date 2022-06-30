@@ -39,6 +39,6 @@ export const fetchStoreEnterMenu = async (data: IFetchMenu) => {
         body: JSON.stringify(data),
       },
     );
-    return response.json();
+    return response;
   }
 };

@@ -43,10 +43,18 @@ export const EnterMenuSheet = ({
   const [storeMenu, setStoreMenu] = useRecoilState(storeMenuState);
   const queryClient = useQueryClient();
   const menuMutation = useMutation(
-    (menuData: IFetchMenu) => fetchStoreEnterMenu(menuData),
+    async (menuData: IFetchMenu) =>
+      fetchStoreEnterMenu(menuData).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
     {
       onSuccess: data => {
-        void queryClient.invalidateQueries(queryKeys.sellerMenuList);
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        queryClient.invalidateQueries(queryKeys.sellerMenuList);
         console.log('메뉴 등록 성공', data);
         navigation.navigate('MainNavigator', {screen: 'Store'});
       },

@@ -110,6 +110,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     [TextInputRef.current],
   );
   const autoFocus = useAutoFocus();
+
   return (
     <SafeAreaView style={styles.signInWrapper}>
       <AutoFocusProvider contentContainerStyle={styles.signInWrapper}>
@@ -119,7 +120,12 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             source={require('../../asset/login_logo.png')}
           />
         </View>
-        <Text style={styles.title}>Onecake.</Text>
+        <View style={{paddingTop: 13.23, paddingBottom: 50.94}}>
+          <Image
+            style={{width: 143.38, height: 25.68, resizeMode: 'contain'}}
+            source={require('../../asset/login_title.png')}
+          />
+        </View>
         <View style={styles.inputWrapper}>
           <Controller
             control={control}

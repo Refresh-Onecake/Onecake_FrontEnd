@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,16 +17,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="vyi-N2-zGA">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="CNb-W6-OWw" userLabel="LaunchScreen">
+                                <rect key="frame" x="-3" y="-3" width="381" height="673"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="rtV-Rk-dXn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="vyi-N2-zGA" secondAttribute="bottom" id="3jv-0i-1aY"/>
-                            <constraint firstItem="vyi-N2-zGA" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7zK-DW-4YC"/>
-                            <constraint firstAttribute="trailing" secondItem="vyi-N2-zGA" secondAttribute="trailing" id="84S-Sp-s5r"/>
-                            <constraint firstItem="vyi-N2-zGA" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Zuh-SH-vfT"/>
+                            <constraint firstAttribute="bottom" secondItem="CNb-W6-OWw" secondAttribute="bottom" constant="-3" id="F4d-XP-ofI"/>
+                            <constraint firstItem="CNb-W6-OWw" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="-3" id="IV6-lX-iPU"/>
+                            <constraint firstItem="CNb-W6-OWw" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="-3" id="fA3-pz-DT9"/>
+                            <constraint firstAttribute="trailing" secondItem="CNb-W6-OWw" secondAttribute="trailing" constant="-3" id="fiF-c1-Pwn"/>
                         </constraints>
                     </view>
                 </viewController>

@@ -145,10 +145,10 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             )}
             name="id"
           />
-          {errors.id && (
-            <Text style={styles.errorText}>아이디를 입력해주세요</Text>
-          )}
         </View>
+        {errors.id && (
+          <Text style={styles.errorText}>아이디를 입력해주세요</Text>
+        )}
         <View style={styles.inputWrapper}>
           <Controller
             control={control}
@@ -168,10 +168,10 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             )}
             name="password"
           />
-          {errors.password && (
-            <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
-          )}
         </View>
+        {errors.password && (
+          <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
+        )}
         <View style={styles.loginBtn}>
           <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
         </View>
@@ -269,6 +269,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   errorText: {
+    width: 270,
     fontSize: 12,
     color: AppStyles.color.pink,
     opacity: 0.7,

@@ -3,10 +3,30 @@ import React, {FC, useEffect, useState} from 'react';
 import {CalendarList} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
+import {LocaleConfig} from 'react-native-calendars';
+import moment from 'moment';
+import {useRecoilState, useSetRecoilState} from 'recoil';
+import {currentYearState} from '../../recoil/atom';
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+LocaleConfig.locales['ko'] = {
+  //prettier-ignore
+  monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+  //prettier-ignore
+  monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월',],
+  //prettier-ignore
+  dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
+  //prettier-ignore
+  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+  today: '오늘',
+};
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+LocaleConfig.defaultLocale = 'ko';
 
 export type ScrollCalendarProps = {
   current?: string;
   markedDate?: string[];
+  dotMarkedData?: string[];
 };
 
 export const ScrollCalendar: FC<ScrollCalendarProps> = ({
@@ -14,7 +34,8 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
   markedDate,
 }) => {
   const [markedDates, setMarkedDates] = useState({});
-
+  const [scrollYearState, setScrollYearState] =
+    useRecoilState(currentYearState);
   useEffect(() => {
     const obj = markedDate?.reduce(
       (c, v) =>
@@ -35,8 +56,50 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
   return (
     <View>
       <CalendarList
+        onVisibleMonthsChange={months => {
+          scrollYearState !== months[0].year &&
+            setScrollYearState(months[0].year);
+        }}
         markedDates={markedDates}
-        theme={{todayTextColor: AppStyles.color.hotPink}}
+        monthFormat={'M월'}
+        theme={{
+          monthTextColor: AppStyles.color.hotPink,
+          textMonthFontSize: 18,
+          textMonthFontWeight: '500',
+          textDayFontSize: 18,
+          textDayFontWeight: '500',
+          todayTextColor: AppStyles.color.hotPink,
+          'stylesheet.calendar.main': {
+            dayContainer: {
+              borderTopColor: AppStyles.color.border,
+              borderTopWidth: 1,
+              flex: 1,
+              paddingHorizontal: 10,
+              paddingBottom: 10,
+              paddingTop: 5,
+            },
+            emptyDayContainer: {
+              flex: 1,
+              paddingHorizontal: 10,
+              paddingBottom: 10,
+              paddingTop: 5,
+            },
+            container: {
+              padding: 0,
+              margin: 0,
+            },
+          },
+          'stylesheet.calendar-list.main': {
+            margin: 0,
+            padding: 0,
+          },
+          'stylesheet.calendar.header': {
+            week: {
+              height: 0,
+              margin: 0,
+            },
+          },
+        }}
       />
     </View>
   );

@@ -8,13 +8,15 @@ import {ScrollCalendar} from '../components';
 import {useQuery} from 'react-query';
 import {getSellerOrderList, ISellerOrderList} from '../services/orderService';
 import {queryKeys} from '../enum';
-
-const date = ['2022-06-30', '2022-06-20', '2022-06-22', '2022-05-1'];
+import {useRecoilValue} from 'recoil';
+import {currentYearState} from '../recoil/atom';
+const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const SellerOrder = () => {
   const [orderDate, setOrderDate] = useState<string[]>([]);
+  const scrollYear = useRecoilValue(currentYearState);
   const {data, status} = useQuery<ISellerOrderList[]>(
-    queryKeys.sellerMenuList,
+    queryKeys.sellerOrderList,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       await getSellerOrderList().then(res => {
@@ -40,9 +42,9 @@ export const SellerOrder = () => {
 
   console.log(orderDate);
   return (
-    <View>
+    <>
       <View style={styles.header}>
-        <Text style={styles.headerText}>{moment().year()}</Text>
+        <Text style={styles.headerText}>{scrollYear}</Text>
         <Text
           style={[
             styles.headerTitle,
@@ -55,11 +57,18 @@ export const SellerOrder = () => {
           <Text style={styles.headerText}>휴무</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.week}>
+        {WEEK.map((val, idx) => (
+          <Text key={idx} style={styles.weekText}>
+            {val}
+          </Text>
+        ))}
+      </View>
       <ScrollCalendar
         current={moment().format('YYYY-MM-DD').toString()}
         markedDate={orderDate}
       />
-    </View>
+    </>
   );
 };
 
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     paddingHorizontal: 14,
-    marginTop: 5,
+    marginTop: 10,
   },
   headerTitle: {
     flex: 1,
@@ -79,5 +88,19 @@ const styles = StyleSheet.create({
     color: AppStyles.color.hotPink,
     fontSize: 15,
     fontWeight: '600',
+  },
+  week: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 22,
+    paddingBottom: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: AppStyles.color.border,
+  },
+  weekText: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: 'rgba(60,60,67,0.3)',
+    letterSpacing: -0.078,
   },
 });

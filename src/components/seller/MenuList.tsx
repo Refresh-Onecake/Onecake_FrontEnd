@@ -39,6 +39,7 @@ export const MenuList = () => {
       },
     },
   );
+
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 20}}>
       {data && data?.length > 0 ? (

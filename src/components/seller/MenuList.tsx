@@ -22,7 +22,7 @@ import {IMenuList} from '../../services/menuService';
 import {MenuRenderList} from './MenuRenderList';
 export const MenuList = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const {data, status} = useQuery<IMenuList[] | void>(
+  const {data, status} = useQuery<IMenuList[]>(
     queryKeys.sellerMenuList,
     async () =>
       await getMenuList().then(res => {

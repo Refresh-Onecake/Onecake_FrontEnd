@@ -1,11 +1,32 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
+import {appKeys} from '../enum';
+import {SellerOrder} from './SellerOrder';
 
 const Order = () => {
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
+
   return (
     <SafeAreaView style={styles.view}>
-      <Text>Order</Text>
+      {role === appKeys.seller ? (
+        <>
+          <SellerOrder />
+        </>
+      ) : (
+        <></>
+      )}
     </SafeAreaView>
   );
 };

@@ -1,11 +1,11 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Header} from '@react-navigation/stack';
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import moment from 'moment';
-import {AppStyles} from '../../styles/AppStyles';
-import {BottomSheet, ScrollCalendar} from '../../components';
 import {useQuery} from 'react-query';
+import {DateData} from 'react-native-calendars';
+
+import {BottomSheet, ScrollCalendar} from '../../components';
+import {AppStyles} from '../../styles/AppStyles';
 import {
   getSellerOrderList,
   ISellerOrderList,
@@ -13,12 +13,14 @@ import {
 import {queryKeys} from '../../enum';
 import {useRecoilValue} from 'recoil';
 import {currentYearState} from '../../recoil/atom';
-import {DateData} from 'react-native-calendars';
+import {OrderManageList} from './OrderManageList';
+
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const SellerOrder = () => {
   const [orderDate, setOrderDate] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [clickedDate, setClickedDate] = useState<DateData>();
   const scrollYear = useRecoilValue(currentYearState);
   const {data, status} = useQuery<ISellerOrderList[]>(
     queryKeys.sellerOrderList,
@@ -45,7 +47,7 @@ export const SellerOrder = () => {
     },
   );
   const onDayPress = (date: DateData) => {
-    console.log('눌림', date);
+    setClickedDate(date);
     setModalVisible(true);
   };
 
@@ -80,14 +82,14 @@ export const SellerOrder = () => {
         setModalVisible={setModalVisible}
         height="95%">
         <View>
-          <Text>Hello</Text>
+          <OrderManageList orderData={data} date={clickedDate} />
         </View>
       </BottomSheet>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },

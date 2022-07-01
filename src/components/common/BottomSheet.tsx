@@ -154,16 +154,16 @@ const styles = StyleSheet.create({
   },
   bar: {
     marginTop: 5.44,
-    justifyContent: 'flex-start',
     width: 58.01,
     height: 4.1,
     backgroundColor: '#D7D7D7',
     borderRadius: 30,
+    marginBottom: 26,
   },
   bottomSheetContainer: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: AppStyles.color.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },

@@ -16,6 +16,7 @@ export type ISellerOrderList = {
   letterColor: string;
   letter: string;
   refImg: string;
+  status: string;
 };
 
 export const getSellerOrderList = async () => {

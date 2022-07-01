@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-export const manageOrder = () => {
+export const OrderManageContent = () => {
   return (
     <View>
-      <Text>manageOrder</Text>
+      <Text>OrderManageContent</Text>
     </View>
   );
 };

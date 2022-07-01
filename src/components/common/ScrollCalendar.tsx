@@ -24,14 +24,19 @@ LocaleConfig.locales['ko'] = {
 LocaleConfig.defaultLocale = 'ko';
 
 export type ScrollCalendarProps = {
-  current?: string;
   markedDate?: string[];
-  dotMarkedData?: string[];
   onDayPress?: (date: DateData) => void;
 };
 
+/**
+ * @author min
+ * @description 스크롤이 가능한 캘린더 입니다.
+ * @param markedDate 달력에 색칠할 동그라미 일정 ex) ['2022-01-01',2022-01-02','2022-01-03']
+ * @param onDayPress 달력일을 눌렀을 때 반응할 함수
+ * @example
+ * <ScrollCalendar markedDate={orderDate} onDayPress={onDayPress} />
+ */
 export const ScrollCalendar: FC<ScrollCalendarProps> = ({
-  current,
   markedDate,
   onDayPress,
 }) => {

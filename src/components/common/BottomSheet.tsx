@@ -7,18 +7,51 @@ import {
   PanResponder,
   Modal,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
-import React, {Dispatch, FC, SetStateAction, useEffect, useRef} from 'react';
+import React, {
+  cloneElement,
+  Dispatch,
+  FC,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+  useRef,
+} from 'react';
 import {event} from 'react-native-reanimated';
+import {AppStyles} from '../../styles/AppStyles';
 
 export type BottomSheetProps = {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
+  children: ReactElement;
+  height: string;
 };
 
+/**
+ * @author min
+ * @description bottomSheet 입니다.
+ * @param modalVisible - modalVisible boolean
+ * @param setModalVisible - modalVisible SetState
+ * @param bottomSheet 내부에 보일 컴포넌트
+ * @param height bottomSheet 높이 입니다. %로 입력해주세요 ex) '90%'
+ * @example
+  const [modalVisible, setModalVisible] = useState(false);
+ *  ...
+ *  <BottomSheet
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        height="95%">
+        <View>
+          <Text>Hello</Text>
+        </View>
+      </BottomSheet>
+ */
 export const BottomSheet: FC<BottomSheetProps> = ({
   modalVisible,
   setModalVisible,
+  children,
+  height,
 }) => {
   const screenHeight = Dimensions.get('screen').height;
   const panY = useRef(new Animated.Value(screenHeight)).current;
@@ -96,10 +129,14 @@ export const BottomSheet: FC<BottomSheetProps> = ({
         <Animated.View
           style={{
             ...styles.bottomSheetContainer,
+            height: height,
             transform: [{translateY: translateY}],
           }}
           {...panResponders.panHandlers}>
-          <Text>This is BottomSheet</Text>
+          <View style={styles.bar} />
+          {cloneElement(children, {
+            close: closeModal,
+          })}
         </Animated.View>
       </View>
     </Modal>
@@ -110,17 +147,25 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.67)',
   },
   background: {
     flex: 1,
   },
+  bar: {
+    marginTop: 5.44,
+    justifyContent: 'flex-start',
+    width: 58.01,
+    height: 4.1,
+    backgroundColor: '#D7D7D7',
+    borderRadius: 30,
+  },
   bottomSheetContainer: {
-    height: 300,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
+  contentView: {},
 });

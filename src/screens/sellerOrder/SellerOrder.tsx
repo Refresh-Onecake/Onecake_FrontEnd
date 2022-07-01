@@ -3,13 +3,16 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Header} from '@react-navigation/stack';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import moment from 'moment';
-import {AppStyles} from '../styles/AppStyles';
-import {BottomSheet, ScrollCalendar} from '../components';
+import {AppStyles} from '../../styles/AppStyles';
+import {BottomSheet, ScrollCalendar} from '../../components';
 import {useQuery} from 'react-query';
-import {getSellerOrderList, ISellerOrderList} from '../services/orderService';
-import {queryKeys} from '../enum';
+import {
+  getSellerOrderList,
+  ISellerOrderList,
+} from '../../services/orderService';
+import {queryKeys} from '../../enum';
 import {useRecoilValue} from 'recoil';
-import {currentYearState} from '../recoil/atom';
+import {currentYearState} from '../../recoil/atom';
 import {DateData} from 'react-native-calendars';
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
@@ -46,16 +49,6 @@ export const SellerOrder = () => {
     setModalVisible(true);
   };
 
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: AppStyles.color.gray,
-        height: '100%',
-      }}>
-      <Text>Swipe down to close</Text>
-    </View>
-  );
-
   const sheetRef = React.useRef(null);
 
   return (
@@ -81,15 +74,15 @@ export const SellerOrder = () => {
           </Text>
         ))}
       </View>
-      <ScrollCalendar
-        current={moment().format('YYYY-MM-DD').toString()}
-        markedDate={orderDate}
-        onDayPress={onDayPress}
-      />
+      <ScrollCalendar markedDate={orderDate} onDayPress={onDayPress} />
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+        height="95%">
+        <View>
+          <Text>Hello</Text>
+        </View>
+      </BottomSheet>
     </View>
   );
 };

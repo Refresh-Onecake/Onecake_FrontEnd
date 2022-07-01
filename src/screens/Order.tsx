@@ -4,7 +4,7 @@ import {AppStyles} from '../styles/AppStyles';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys} from '../enum';
-import {SellerOrder} from './SellerOrder';
+import {SellerOrder} from './sellerOrder/SellerOrder';
 
 const Order = () => {
   const [role, setRole] = useState<string>();

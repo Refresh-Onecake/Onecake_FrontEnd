@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
-import {CalendarList} from 'react-native-calendars';
+import {CalendarList, DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
 import {LocaleConfig} from 'react-native-calendars';
@@ -27,13 +27,16 @@ export type ScrollCalendarProps = {
   current?: string;
   markedDate?: string[];
   dotMarkedData?: string[];
+  onDayPress?: (date: DateData) => void;
 };
 
 export const ScrollCalendar: FC<ScrollCalendarProps> = ({
   current,
   markedDate,
+  onDayPress,
 }) => {
   const [markedDates, setMarkedDates] = useState({});
+
   const [scrollYearState, setScrollYearState] =
     useRecoilState(currentYearState);
   useEffect(() => {
@@ -53,6 +56,10 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
     );
     setMarkedDates(obj);
   }, [markedDate]);
+  assert(
+    onDayPress !== undefined,
+    '달력에 필요한 onDayPress 는 undefined 가 아니어야 한다.',
+  );
   return (
     <View>
       <CalendarList
@@ -60,6 +67,7 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
           scrollYearState !== months[0].year &&
             setScrollYearState(months[0].year);
         }}
+        onDayPress={date => onDayPress(date)}
         markedDates={markedDates}
         monthFormat={'M월'}
         theme={{

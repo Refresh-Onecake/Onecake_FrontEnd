@@ -1,19 +1,21 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Header} from '@react-navigation/stack';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import moment from 'moment';
 import {AppStyles} from '../styles/AppStyles';
-import {ScrollCalendar} from '../components';
+import {BottomSheet, ScrollCalendar} from '../components';
 import {useQuery} from 'react-query';
 import {getSellerOrderList, ISellerOrderList} from '../services/orderService';
 import {queryKeys} from '../enum';
 import {useRecoilValue} from 'recoil';
 import {currentYearState} from '../recoil/atom';
+import {DateData} from 'react-native-calendars';
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const SellerOrder = () => {
   const [orderDate, setOrderDate] = useState<string[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const scrollYear = useRecoilValue(currentYearState);
   const {data, status} = useQuery<ISellerOrderList[]>(
     queryKeys.sellerOrderList,
@@ -39,10 +41,25 @@ export const SellerOrder = () => {
       },
     },
   );
+  const onDayPress = (date: DateData) => {
+    console.log('눌림', date);
+    setModalVisible(true);
+  };
 
-  console.log(orderDate);
+  const renderContent = () => (
+    <View
+      style={{
+        backgroundColor: AppStyles.color.gray,
+        height: '100%',
+      }}>
+      <Text>Swipe down to close</Text>
+    </View>
+  );
+
+  const sheetRef = React.useRef(null);
+
   return (
-    <>
+    <View style={styles.flex}>
       <View style={styles.header}>
         <Text style={styles.headerText}>{scrollYear}</Text>
         <Text
@@ -67,12 +84,20 @@ export const SellerOrder = () => {
       <ScrollCalendar
         current={moment().format('YYYY-MM-DD').toString()}
         markedDate={orderDate}
+        onDayPress={onDayPress}
       />
-    </>
+      <BottomSheet
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   header: {
     flexDirection: 'row',
     height: 40,
@@ -102,5 +127,9 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'rgba(60,60,67,0.3)',
     letterSpacing: -0.078,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });

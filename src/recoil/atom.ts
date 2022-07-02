@@ -1,7 +1,7 @@
 import {atom} from 'recoil';
 import {IFetchMenu} from '../screens/enterMenu';
 import {IRefreshToken} from '../services';
-
+import moment from 'moment';
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
 });
@@ -28,4 +28,9 @@ export const accessTokenState = atom<IRefreshToken>({
     accessToken: '',
     refreshToken: '',
   },
+});
+
+export const currentYearState = atom<number>({
+  key: 'currentYearState',
+  default: moment().year(),
 });

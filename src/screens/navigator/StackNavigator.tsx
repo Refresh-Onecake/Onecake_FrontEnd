@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import SignIn from '../auth/SignIn';
@@ -8,8 +8,10 @@ import {StoreDetail} from '../store';
 import {RootStackParamList} from './navigationStackTypes';
 import {MainNavigator} from './MainNavigator';
 import {EnterMenuSheet} from '../enterMenu/EnterMenuSheet';
-import {EnterComplete, EnterStart, EnterStore} from '../enterStore';
+import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
 import {EnterMenu} from '../enterMenu';
+import {OrderManageList} from '../sellerOrder/OrderManageList';
+import {OrderSheet} from '../sellerOrder/OrderSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -61,6 +63,9 @@ export const StackNavigator = () => {
           headerBackTitleVisible: false,
         }}
       />
+      {/* 사장님 주문서 */}
+      <Stack.Screen name="OrderManageList" component={OrderManageList} />
+      <Stack.Screen name="OrderSheet" component={OrderSheet} />
     </Stack.Navigator>
   );
 };

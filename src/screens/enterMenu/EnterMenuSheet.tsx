@@ -20,11 +20,12 @@ import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {ScrollView} from 'react-native-gesture-handler';
 import {EnterMenu} from './EnterMenu';
 import {fetchEnterPicture, fetchStoreEnterMenu} from '../../services';
-import {useMutation} from 'react-query';
+import {useMutation, useQueryClient} from 'react-query';
 import {IStoreImg} from '../enterStore';
 import {IFetchMenu} from './types';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
+import {queryKeys} from '../../enum';
 
 export const EnterMenuSheet = ({
   navigation,
@@ -40,11 +41,20 @@ export const EnterMenuSheet = ({
     [TextInputRef.current],
   );
   const [storeMenu, setStoreMenu] = useRecoilState(storeMenuState);
-
+  const queryClient = useQueryClient();
   const menuMutation = useMutation(
-    (menuData: IFetchMenu) => fetchStoreEnterMenu(menuData),
+    async (menuData: IFetchMenu) =>
+      fetchStoreEnterMenu(menuData).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
     {
       onSuccess: data => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        queryClient.invalidateQueries(queryKeys.sellerMenuList);
         console.log('메뉴 등록 성공', data);
         navigation.navigate('MainNavigator', {screen: 'Store'});
       },

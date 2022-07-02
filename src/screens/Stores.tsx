@@ -6,15 +6,29 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MenuList} from '../components/seller/MenuList';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from './navigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {appKeys} from '../enum';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  const role = 'SELLER';
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
+
   return (
     <SafeAreaView style={styles.view}>
       {role === 'COSTUMER' ? (

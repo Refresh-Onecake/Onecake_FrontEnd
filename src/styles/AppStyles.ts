@@ -13,6 +13,8 @@ export const AppStyles = {
     IconColor: '#808080',
     SelectImage: '#FAFAFA',
     SelectImageBorder: '#DEDEDE',
+    midGray: '#8E8E8E',
+    midBlack: '#0C0C0C',
   },
   padding: {
     screen: 32.06,

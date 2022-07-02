@@ -1,3 +1,5 @@
+import {DateData} from 'react-native-calendars';
+
 export type RootStackParamList = {
   AuthNavigation: undefined;
   MainNavigator: {
@@ -18,4 +20,6 @@ export type RootStackParamList = {
   StackNavigator: {
     screen?: string | undefined;
   };
+  OrderManageList: undefined;
+  OrderSheet: undefined;
 };

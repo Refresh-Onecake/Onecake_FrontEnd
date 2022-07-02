@@ -6,8 +6,10 @@ import {
   StyleSheet,
   Text,
   View,
+  AppState,
+  Platform,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {getMenuList} from '../../services/menuService';
 import {useQuery} from 'react-query';
 import {queryKeys} from '../../enum';
@@ -17,30 +19,32 @@ import {RootStackParamList} from '../../screens/navigator';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {IMenuList} from '../../services/menuService';
-
+import {MenuRenderList} from './MenuRenderList';
 export const MenuList = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  // const {data, status} = useQuery<IMenuList[]>(
-  //   queryKeys.sellerMenuList,
-  //   getMenuList,
-  //   {
-  //     onError: () => {
-  //       console.error('뭐지뭐지?');
-  //     },
-  //     onSuccess: () => {
-  //       console.log(data);
-  //     },
-  //   },
-  // );
+  const {data, status} = useQuery<IMenuList[]>(
+    queryKeys.sellerMenuList,
+    async () =>
+      await getMenuList().then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
+    {
+      refetchOnMount: 'always',
+      onError: err => {
+        console.log('여기서 떠야지 이놈아', err);
+      },
+    },
+  );
 
-  // data && data?.length > 0
   return (
-    <View>
-      {false ? (
+    <SafeAreaView style={{flex: 1, marginBottom: 20}}>
+      {data && data?.length > 0 ? (
         //TODO: 메뉴 데이터가 존재할 때
-        <View style={styles.flex}>
-          <Text>데이터있음</Text>
-        </View>
+        <MenuRenderList data={data} />
       ) : (
         // TODO: 메뉴 데이터가 존재하지 않을 때
         <SafeAreaView style={styles.flex}>
@@ -64,7 +68,7 @@ export const MenuList = () => {
           </View>
         </SafeAreaView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -82,5 +86,20 @@ const styles = StyleSheet.create({
     width: 270,
     height: 44,
     marginTop: 20,
+  },
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  // box-shadow: 0px 1px 9px 3px rgba(0, 0, 0, 0.07);
+  shadowView: {
+    ...Platform.select({
+      android: {
+        elevation: 3,
+      },
+      ios: {
+        shadowColor: '#000000',
+        shadowRadius: 9,
+        shadowOffset: {height: 1, width: 0},
+        shadowOpacity: 0.2,
+      },
+    }),
   },
 });

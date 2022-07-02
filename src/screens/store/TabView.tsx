@@ -1,35 +1,40 @@
-import * as React from 'react';
-import {StyleSheet, View, useWindowDimensions} from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import {StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {AppStyles} from '../../styles/AppStyles';
+import {apiClient} from '../../services';
+import axios from 'axios';
+import {useForm} from 'react-hook-form';
 
-const FirstRoute = () => <View style={{flex: 1, backgroundColor: '#ff4081'}} />;
+const phoneWidth = Dimensions.get('window').width;
+const TabIndicatorWidth = (phoneWidth / 3).toFixed();
 
-const SecondRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#673ab7'}} />
-);
-
-export default function TabViewExample() {
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'First'},
-    {key: 'second', title: 'Second'},
-  ]);
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-
+export default function TabView() {
   return (
-    <TabView
-      navigationState={{index, routes}}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{width: layout.width}}
-    />
+    <SafeAreaView style={styles.wrapper}>
+      <TouchableOpacity style={styles.indicator}>
+        <Text>메뉴</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.indicator}>
+        <Text>가게 정보</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.indicator}>
+        <Text>리뷰</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapper: {
+    flexDirection: 'row',
+    backgroundColor: AppStyles.color.white,
+  },
+  indicator: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: AppStyles.color.white,
+    width: +TabIndicatorWidth,
+    height: 47,
+  },
+});

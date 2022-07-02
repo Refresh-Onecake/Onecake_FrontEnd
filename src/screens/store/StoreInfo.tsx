@@ -22,7 +22,6 @@ const style = StyleSheet.create({
   wrapper: {
     paddingTop: 30,
     paddingLeft: 20,
-    height: ,
   },
   text: {
     fontSize: AppStyles.font.middle,

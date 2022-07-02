@@ -8,19 +8,54 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
-import TabView from './TabView';
-import React, {useRef} from 'react';
+import React, {FC, useRef, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AppStyles} from '../../styles/AppStyles';
 import {Button} from '../../components';
+import TabView from './TabView';
 
-export const StoreDetail = ({
+type Props = StackScreenProps<RootStackParamList, 'StoreDetail'>;
+
+type IStoreInfo = {
+  likedNum: 0;
+  reviewNum: 0;
+  storeDescription: 'string';
+  storeImage: 'string';
+  storeName: 'string';
+};
+
+const token =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1NjYxNDkyOX0.yCoykwPZMV8kz-2ZEfpsumb0Jxv7H-M4tGxivagosvu-TylRoyNJRM4TohWUqg9hkB4MxZmtPntSo1nQqfP0kA';
+const baseURL = 'http://15.165.27.120:8080';
+
+export const StoreDetail: FC<Props> = ({
+  route,
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
   const titleInfoCard = useRef<SafeAreaView>(null);
+  const storeId = route.params;
+  console.log(storeId);
+
+  const getStoreInfo = async () => {
+    const data = await fetch(`${baseURL}/api/v1/consumer/stores/1/mainInfo`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(res => {
+      if (!res?.ok) {
+        throw new Error(res?.status.toString());
+      } else {
+        if (res) console.log(res);
+      }
+    });
+  };
 
   return (
     <>
+      {/*TODO: 눌렀을 때 색 채워지기*/}
+      <Icon size={24} name="heart-outline" style={styles.heart}></Icon>
       {/*TODO: 이미지 받아와야 함*/}
       <Image
         style={styles.image}
@@ -28,7 +63,7 @@ export const StoreDetail = ({
       <SafeAreaView
         style={{
           width: '100%',
-          height: 145,
+          height: '20%',
           backgroundColor: AppStyles.color.white,
           marginBottom: 10,
         }}></SafeAreaView>
@@ -43,39 +78,23 @@ export const StoreDetail = ({
             링링케이크
           </Text>
           {/*TODO: 설명 받아와야 함*/}
-          <Text>마포구에 위치한 케이크 가게에요.</Text>
+          <Text>
+            마포구에 위치한 케이크 가게에요. 어쩌구저꺼주 이렇게 이렇게
+          </Text>
         </View>
         <View style={styles.userOptionWrapper}>
           <View
             style={[
               styles.userOption,
               {borderRightWidth: 1, borderColor: AppStyles.color.border},
-            ]}>
-            {/*TODO: 눌렀을 때 색 채워지기*/}
-            <Icon
-              size={18}
-              name="heart-outline"
-              style={styles.margiRight}></Icon>
-            {/*TODO: 개수 받아와야 함*/}
-            <Text style={styles.margiRight}>찜</Text>
-            <Text>141</Text>
-          </View>
-          <View style={styles.userOption}>
-            <Icon
-              size={18}
-              name="heart-outline"
-              style={styles.margiRight}></Icon>
-            {/*TODO: 개수 받아와야 함*/}
-            <Text style={styles.margiRight}>리뷰</Text>
-            <Text>1234</Text>
-          </View>
+            ]}></View>
         </View>
       </SafeAreaView>
       <TabView></TabView>
       <SafeAreaView style={styles.OrderBtnWrapper}>
         {/* TODO: 주문서 */}
         <View style={styles.OrderBtn}>
-          <Button text="주문서 작성하기"></Button>
+          <Button text="주문서 작성하기" onPress={getStoreInfo}></Button>
         </View>
       </SafeAreaView>
     </>
@@ -85,13 +104,13 @@ export const StoreDetail = ({
 const styles = StyleSheet.create({
   image: {
     width: 375,
-    height: 280,
+    height: '40%',
   },
   titleInfo: {
-    top: 250,
+    top: '35%',
     position: 'absolute',
-    width: 360,
-    height: 153,
+    width: 350,
+    height: 146,
     alignSelf: 'center',
     borderRadius: 13,
     backgroundColor: AppStyles.color.white,
@@ -122,12 +141,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '50%',
   },
-  margiRight: {
-    marginRight: 5,
+  heart: {
+    position: 'absolute',
+    right: 1,
+    marginRight: 20,
+    marginTop: 20,
   },
   OrderBtnWrapper: {
     backgroundColor: AppStyles.color.white,
-    position: 'relative',
+    position: 'absolute',
     bottom: 1,
     width: '100%',
     height: 105,

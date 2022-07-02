@@ -135,8 +135,6 @@ export const BottomSheet: FC<BottomSheetProps> = ({
           <Animated.View
             style={{
               ...styles.bottomSheetContainer,
-
-              transform: [{translateY: translateY}],
             }}
             {...panResponders.panHandlers}>
             <View style={styles.bar} />

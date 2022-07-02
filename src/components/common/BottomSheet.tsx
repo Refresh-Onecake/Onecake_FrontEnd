@@ -131,9 +131,16 @@ export const BottomSheet: FC<BottomSheetProps> = ({
             ...styles.bottomSheetContainer,
             height: height,
             transform: [{translateY: translateY}],
-          }}
-          {...panResponders.panHandlers}>
-          <View style={styles.bar} />
+          }}>
+          <Animated.View
+            style={{
+              ...styles.bottomSheetContainer,
+
+              transform: [{translateY: translateY}],
+            }}
+            {...panResponders.panHandlers}>
+            <View style={styles.bar} />
+          </Animated.View>
           {cloneElement(children, {
             close: closeModal,
           })}

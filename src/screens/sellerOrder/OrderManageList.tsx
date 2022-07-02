@@ -5,45 +5,32 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {ISellerOrderList} from '../../services/orderService';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
-
-// 주문 대기중, 주문 완료, 제작중, 제작완료, 취소된 주문
-//RECEIVED, ACCEPTED, MAKING, COMPLETED, CANCELED
-const orderStatus = [
-  {
-    status: 'RECEIVED',
-    text: '주문 대기중',
-  },
-  {
-    status: 'ACCEPTED',
-    text: '주문 완료',
-  },
-  {
-    status: 'MAKING',
-    text: '제작중',
-  },
-  {
-    status: 'COMPLETED',
-    text: '제작 완료',
-  },
-  {
-    status: 'CANCELED',
-    text: '취소된 주문',
-  },
-];
+import {OrderManageContent} from '../../components';
 
 export type OrderManageListProps = {
   orderData: ISellerOrderList[] | undefined;
   date: DateData | undefined;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 export const OrderManageList: FC<OrderManageListProps> = ({
   orderData,
   date,
+  setModalVisible,
 }) => {
   console.log(orderData);
   const [received, setReceived] = useState<ISellerOrderList[]>([]);
@@ -51,6 +38,36 @@ export const OrderManageList: FC<OrderManageListProps> = ({
   const [making, setMaking] = useState<ISellerOrderList[]>([]);
   const [completed, setCompleted] = useState<ISellerOrderList[]>([]);
   const [canceled, setCanceled] = useState<ISellerOrderList[]>([]);
+
+  const orderStatus = useMemo(() => {
+    return [
+      {
+        status: 'RECEIVED',
+        text: '주문 대기중',
+        data: received,
+      },
+      {
+        status: 'ACCEPTED',
+        text: '주문 완료',
+        data: accepted,
+      },
+      {
+        status: 'MAKING',
+        text: '제작중',
+        data: making,
+      },
+      {
+        status: 'COMPLETED',
+        text: '제작 완료',
+        data: completed,
+      },
+      {
+        status: 'CANCELED',
+        text: '취소된 주문',
+        data: canceled,
+      },
+    ];
+  }, [accepted, canceled, completed, making, received]);
 
   useEffect(() => {
     assert(orderData !== undefined, 'orderData는 undefined 가 되서는 안된다.');
@@ -91,7 +108,9 @@ export const OrderManageList: FC<OrderManageListProps> = ({
   return (
     <View style={styles.view}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerIcon}>
+        <TouchableOpacity
+          style={styles.headerIcon}
+          onPress={() => setModalVisible(false)}>
           <Image
             style={{width: 18, height: 18, resizeMode: 'contain'}}
             source={require('../../asset/arrow-back.png')}
@@ -102,6 +121,21 @@ export const OrderManageList: FC<OrderManageListProps> = ({
         </Text>
         <View style={{width: 18, height: 18}} />
       </View>
+      <ScrollView style={{paddingTop: 10}}>
+        {orderStatus.map(({text, data}, idx) => (
+          <View key={idx} style={styles.contentView}>
+            <View
+              style={{
+                paddingHorizontal: 20,
+                paddingBottom: 10,
+                paddingTop: 24,
+              }}>
+              <OrderManageContent title={text} renderData={data} />
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={{height: 50}} />
     </View>
   );
 };
@@ -110,12 +144,11 @@ const styles = StyleSheet.create({
   view: {
     width: Dimensions.get('screen').width,
     flex: 1,
-    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
-
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   headerIcon: {
     justifyContent: 'flex-start',
@@ -126,5 +159,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontWeight: '700',
     fontSize: 18,
+    color: AppStyles.color.black,
+  },
+  contentView: {
+    borderBottomWidth: 7,
+    borderBottomColor: '#F4F4F4',
   },
 });

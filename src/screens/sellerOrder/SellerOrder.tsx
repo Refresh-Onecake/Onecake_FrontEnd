@@ -82,7 +82,11 @@ export const SellerOrder = () => {
         setModalVisible={setModalVisible}
         height="95%">
         <View>
-          <OrderManageList orderData={data} date={clickedDate} />
+          <OrderManageList
+            orderData={data}
+            date={clickedDate}
+            setModalVisible={setModalVisible}
+          />
         </View>
       </BottomSheet>
     </View>

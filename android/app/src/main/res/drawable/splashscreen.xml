@@ -5,7 +5,7 @@
     <item>
         <bitmap
                 android:gravity="center"
-                android:src="@drawable/image" />
+                android:src="@drawable/image3" />
     </item>
 
 </layer-list>

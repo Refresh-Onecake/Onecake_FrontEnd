@@ -7,16 +7,8 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {RootStackParamList} from '../navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
@@ -26,9 +18,6 @@ import {Controller, useForm} from 'react-hook-form';
 import {ISignIn, getUserData, IRefreshToken} from '../../services';
 import {Button} from '../../components/common/Button';
 import {appKeys} from '../../enum';
-import {useAsync} from '../../hooks';
-import {useSetRecoilState} from 'recoil';
-import {accessTokenState} from '../../recoil/atom';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import SplashScreen from 'react-native-splash-screen';
 

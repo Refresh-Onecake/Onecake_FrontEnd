@@ -14,6 +14,9 @@ import {priceFormatParser} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../screens/navigator';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {orderListModalState} from '../../recoil/atom';
+import {appKeys} from '../../enum';
 export type OrderManageContentProps = {
   title: string;
   renderData: ISellerOrderList[];
@@ -23,18 +26,22 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
   renderData,
 }) => {
   const RenderItem = ({item, idx}: {item: ISellerOrderList; idx: number}) => {
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const [orderListState, setOrderModalState] =
+      useRecoilState(orderListModalState);
 
+    const onPressItem = () => {
+      setOrderModalState(appKeys.orderListMore);
+    };
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('OrderSheet')}
         style={[
           styles.listItem,
           idx !== 0 && {
             borderTopWidth: 1,
             borderTopColor: AppStyles.color.border,
           },
-        ]}>
+        ]}
+        onPress={onPressItem}>
         <View style={{paddingRight: 11.61}}>
           {/* FIXME: 이후 item.uri로 변경할 예정 */}
           <Image

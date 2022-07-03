@@ -21,18 +21,25 @@ import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
 import {OrderManageContent} from '../../components';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {orderListModalState} from '../../recoil/atom';
+import {appKeys} from '../../enum';
+import {OrderSheet} from './OrderSheet';
 
 export type OrderManageListProps = {
   orderData: ISellerOrderList[] | undefined;
   date: DateData | undefined;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
+  close?: () => void;
 };
 export const OrderManageList: FC<OrderManageListProps> = ({
   orderData,
   date,
   setModalVisible,
+  close,
 }) => {
-  console.log(orderData);
+  const [orderListState, setOrderListState] =
+    useRecoilState(orderListModalState);
   const [received, setReceived] = useState<ISellerOrderList[]>([]);
   const [accepted, setAccepted] = useState<ISellerOrderList[]>([]);
   const [making, setMaking] = useState<ISellerOrderList[]>([]);
@@ -105,36 +112,47 @@ export const OrderManageList: FC<OrderManageListProps> = ({
   //   console.log(canceled);
   // }, [received, accepted, making, completed, canceled]);
 
+  const BackBtnHandler = () => {
+    orderListState === appKeys.orderList
+      ? setModalVisible(false)
+      : setOrderListState(appKeys.orderList);
+  };
   return (
     <View style={styles.view}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.headerIcon}
-          onPress={() => setModalVisible(false)}>
+        <TouchableOpacity style={styles.headerIcon} onPress={BackBtnHandler}>
           <Image
             style={{width: 18, height: 18, resizeMode: 'contain'}}
             source={require('../../asset/arrow-back.png')}
           />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
-          {date?.dateString.replace(/-/g, '.')}
+          {orderListState === appKeys.orderList
+            ? date?.dateString.replace(/-/g, '.')
+            : '주문서'}
         </Text>
         <View style={{width: 18, height: 18}} />
       </View>
-      <ScrollView style={{paddingTop: 10}}>
-        {orderStatus.map(({text, data}, idx) => (
-          <View key={idx} style={styles.contentView}>
-            <View
-              style={{
-                paddingHorizontal: 20,
-                paddingBottom: 10,
-                paddingTop: 24,
-              }}>
-              <OrderManageContent title={text} renderData={data} />
+      {orderListState === appKeys.orderList ? (
+        <ScrollView style={{paddingTop: 10}}>
+          {orderStatus.map(({text, data}, idx) => (
+            <View key={idx} style={styles.contentView}>
+              <View
+                style={{
+                  paddingHorizontal: 20,
+                  paddingBottom: 10,
+                  paddingTop: 24,
+                }}>
+                <OrderManageContent title={text} renderData={data} />
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      ) : (
+        <>
+          <OrderSheet />
+        </>
+      )}
       <View style={{height: 50}} />
     </View>
   );

@@ -7,7 +7,6 @@ import {
   PanResponder,
   Modal,
   TouchableWithoutFeedback,
-  SafeAreaView,
 } from 'react-native';
 import React, {
   cloneElement,
@@ -89,7 +88,6 @@ export const BottomSheet: FC<BottomSheetProps> = ({
     closeBottomSheet.start(() => {
       //BottomSheet가 닫힌 후 Modal이 사라지도록 기능 구현
       setModalVisible(false);
-      console.log('눌림');
     });
   };
 
@@ -141,7 +139,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
             <View style={styles.bar} />
           </Animated.View>
           {cloneElement(children, {
-            close: () => closeModal(),
+            close: closeModal,
           })}
         </Animated.View>
       </View>

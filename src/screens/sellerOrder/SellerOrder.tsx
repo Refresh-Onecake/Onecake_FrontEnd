@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useQuery} from 'react-query';
 import {DateData} from 'react-native-calendars';
@@ -10,15 +10,17 @@ import {
   getSellerOrderList,
   ISellerOrderList,
 } from '../../services/orderService';
-import {queryKeys} from '../../enum';
-import {useRecoilValue} from 'recoil';
-import {currentYearState} from '../../recoil/atom';
+import {appKeys, queryKeys} from '../../enum';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {currentYearState, orderListModalState} from '../../recoil/atom';
 import {OrderManageList} from './OrderManageList';
 
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const SellerOrder = () => {
   const [orderDate, setOrderDate] = useState<string[]>([]);
+  const [orderListState, setOrderListState] =
+    useRecoilState(orderListModalState);
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedDate, setClickedDate] = useState<DateData>();
   const scrollYear = useRecoilValue(currentYearState);
@@ -47,11 +49,15 @@ export const SellerOrder = () => {
     },
   );
   const onDayPress = (date: DateData) => {
-    setClickedDate(date);
+    setClickedDate(() => date);
     setModalVisible(true);
   };
 
-  const sheetRef = React.useRef(null);
+  useEffect(() => {
+    if (!modalVisible && orderListState === appKeys.orderListMore) {
+      setOrderListState(appKeys.orderList);
+    }
+  }, [modalVisible]);
 
   return (
     <View style={styles.flex}>

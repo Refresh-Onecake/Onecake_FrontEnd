@@ -9,4 +9,6 @@ export const appKeys = {
   accessTokenKey: '@accessToken' as const,
   refreshTokenKey: '@refreshToken' as const,
   roleTokenKey: '@role' as const,
+  orderList: 'orderList' as const, //판매자 달력 클릭 시 modal 내 리스트 출력 페이지
+  orderListMore: 'orderListMore' as const, //판매자 달력 클릭시 modal 내 주문 상세 출력 페이지
 };

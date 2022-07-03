@@ -31,3 +31,16 @@ export const getSellerOrderList = async () => {
     return response;
   }
 };
+
+export const getSellerOrderSheet = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch('http://localhost:3000/orderSheet', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  }
+};

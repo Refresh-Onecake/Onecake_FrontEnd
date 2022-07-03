@@ -4,8 +4,7 @@ import {CalendarList, DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
 import {LocaleConfig} from 'react-native-calendars';
-import moment from 'moment';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilState} from 'recoil';
 import {currentYearState} from '../../recoil/atom';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

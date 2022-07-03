@@ -77,32 +77,33 @@ export const OrderManageList: FC<OrderManageListProps> = ({
   }, [accepted, canceled, completed, making, received]);
 
   useEffect(() => {
-    assert(orderData !== undefined, 'orderData는 undefined 가 되서는 안된다.');
-    orderData.map(val => {
-      switch (val.status) {
-        case 'RECEIVED': {
-          setReceived(prev => [...prev, val]);
-          break;
+    if (orderListState === appKeys.orderList && orderData !== undefined) {
+      orderData.map(val => {
+        switch (val.status) {
+          case 'RECEIVED': {
+            setReceived(prev => [...prev, val]);
+            break;
+          }
+          case 'ACCEPTED': {
+            setAccepted(prev => [...prev, val]);
+            break;
+          }
+          case 'MAKING': {
+            setMaking(prev => [...prev, val]);
+            break;
+          }
+          case 'COMPLETED': {
+            setCompleted(prev => [...prev, val]);
+            break;
+          }
+          case 'CANCELED': {
+            setCanceled(prev => [...prev, val]);
+            break;
+          }
         }
-        case 'ACCEPTED': {
-          setAccepted(prev => [...prev, val]);
-          break;
-        }
-        case 'MAKING': {
-          setMaking(prev => [...prev, val]);
-          break;
-        }
-        case 'COMPLETED': {
-          setCompleted(prev => [...prev, val]);
-          break;
-        }
-        case 'CANCELED': {
-          setCanceled(prev => [...prev, val]);
-          break;
-        }
-      }
-    });
-  }, [orderData]);
+      });
+    }
+  }, []);
 
   // useEffect(() => {
   //   console.log(received);

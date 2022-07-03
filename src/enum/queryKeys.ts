@@ -5,5 +5,6 @@
 
 export const queryKeys = {
   sellerMenuList: ['sellerMenuList'] as const,
-  sellerOrderList: ['sekkerOrderList'] as const,
+  sellerOrderList: ['sellerOrderList'] as const,
+  sellerOrderSheet: ['sellerOrderSheet'] as const,
 };

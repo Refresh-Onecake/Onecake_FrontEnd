@@ -24,6 +24,7 @@ export const SellerOrder = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedDate, setClickedDate] = useState<DateData>();
   const scrollYear = useRecoilValue(currentYearState);
+
   const {data, status} = useQuery<ISellerOrderList[]>(
     queryKeys.sellerOrderList,
     async () =>
@@ -86,7 +87,7 @@ export const SellerOrder = () => {
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        height="95%">
+        height="100%">
         <View>
           <OrderManageList
             orderData={data}

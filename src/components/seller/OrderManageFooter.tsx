@@ -72,6 +72,9 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
             setSelectedItem={setCancelReason}
             selectedItem={cancelReason}
           />
+          <View style={styles.modalBtnWrap}>
+            <Button text="취소하기" />
+          </View>
         </SafeAreaView>
       </Modal>
     </View>
@@ -108,5 +111,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+  },
+  modalBtnWrap: {
+    height: 60,
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
 });

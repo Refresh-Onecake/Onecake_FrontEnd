@@ -65,7 +65,7 @@ export const OrderManageList: FC<OrderManageListProps> = ({
       },
       {
         status: 'COMPLETED',
-        text: '제작 완료',
+        text: '픽업 완료',
         data: completed,
       },
       {

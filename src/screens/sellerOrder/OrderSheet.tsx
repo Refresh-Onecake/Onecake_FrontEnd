@@ -5,7 +5,7 @@ import {
   getSellerOrderSheet,
   ISellerOrderList,
 } from '../../services/orderService';
-import {queryKeys} from '../../enum';
+import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {dateFormatParser, timeFormatToKorea} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';

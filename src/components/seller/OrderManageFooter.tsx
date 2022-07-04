@@ -1,17 +1,23 @@
 import {Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {FC, useState} from 'react';
+import Modal from 'react-native-modal';
+
 import {orderStatusKeys} from '../../enum';
 import {Button} from '../common/Button';
 import {AppStyles} from '../../styles/AppStyles';
-import Modal from 'react-native-modal';
 import {ModalHeader} from '../common/ModalHeader';
+import {RadioList} from '../common/RadioList';
 
 type OrderManageFooterProps = {
   status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
 };
 
+export const cancelReasonList = ['고객 요청', '가게 사정', '재료 소진', '기타'];
+
 export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [cancelReason, setCancelReason] = useState<string>('');
+
   return (
     <View>
       {
@@ -60,6 +66,11 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
           <ModalHeader
             title="주문 취소 사유 선택"
             setVisible={setModalVisible}
+          />
+          <RadioList
+            renderList={cancelReasonList}
+            setSelectedItem={setCancelReason}
+            selectedItem={cancelReason}
           />
         </SafeAreaView>
       </Modal>

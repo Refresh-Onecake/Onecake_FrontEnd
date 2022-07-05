@@ -64,8 +64,20 @@ export const StackNavigator = () => {
         }}
       />
       {/* 사장님 주문서 */}
-      <Stack.Screen name="OrderManageList" component={OrderManageList} />
-      <Stack.Screen name="OrderSheet" component={OrderSheet} />
+      <Stack.Screen
+        name="OrderManageList"
+        component={OrderManageList}
+        options={{
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="OrderSheet"
+        component={OrderSheet}
+        options={{
+          presentation: 'card',
+        }}
+      />
     </Stack.Navigator>
   );
 };

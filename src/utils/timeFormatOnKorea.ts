@@ -12,11 +12,11 @@ export const timeFormatToKorea = (time: string | undefined) => {
   );
 
   const hour = (parseInt(time.substring(0, 2)) - 12).toString();
-  const minuet = time.substring(3, 5);
+  const minute = time.substring(3, 5);
 
   if (time.includes('PM')) {
-    return `오후 ${hour}시 ${minuet}분`;
+    return `오후 ${hour}시 ${minute}분`;
   } else {
-    return `오전 ${hour}시 ${minuet}분`;
+    return `오전 ${hour}시 ${minute}분`;
   }
 };

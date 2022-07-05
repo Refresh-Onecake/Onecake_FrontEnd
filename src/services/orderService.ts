@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appKeys} from '../enum';
+import {appKeys, orderStatusKeys} from '../enum';
 
 export type ISellerOrderList = {
   id: number;
@@ -11,18 +11,32 @@ export type ISellerOrderList = {
   consumerPhone: string;
   orderDate: string;
   pickupDate: string;
+  pickupTime: string;
   bgColor: string;
   cakeTaste: string;
   letterColor: string;
   letter: string;
   refImg: string;
-  status: string;
+  status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
 };
 
 export const getSellerOrderList = async () => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch('http://localhost:3000/orderList', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  }
+};
+
+export const getSellerOrderSheet = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch('http://localhost:3000/orderSheet', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

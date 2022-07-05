@@ -8,6 +8,9 @@
  *
  */
 
-export const priceFormatParser = (inputNumber: number) => {
+import {assert} from './assert';
+
+export const priceFormatParser = (inputNumber: number | undefined) => {
+  assert(inputNumber !== undefined, '가격은 undefined 가 될 수 없다. ');
   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };

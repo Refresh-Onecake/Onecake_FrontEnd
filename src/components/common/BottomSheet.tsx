@@ -122,7 +122,7 @@ export const BottomSheet: FC<BottomSheetProps> = ({
       animationType={'fade'}
       transparent
       statusBarTranslucent>
-      <View style={styles.overlay}>
+      <SafeAreaView style={styles.overlay}>
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.background} />
         </TouchableWithoutFeedback>
@@ -139,11 +139,13 @@ export const BottomSheet: FC<BottomSheetProps> = ({
             {...panResponders.panHandlers}>
             <View style={styles.bar} />
           </Animated.View>
+
           {cloneElement(children, {
             close: closeModal,
           })}
         </Animated.View>
-      </View>
+      </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
     </Modal>
   );
 };

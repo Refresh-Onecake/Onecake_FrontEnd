@@ -112,6 +112,7 @@
       "consumerPhone": "010-4183-2998",
       "orderDate": "2022-06-29",
       "pickupDate": "2022-07-01",
+      "puckerTime": "15:30 PM",
       "bgColor": "노란색",
       "cakeTaste": "바닐라",
       "letterColor": "갈색",
@@ -129,6 +130,7 @@
       "consumerPhone": "010-4183-2998",
       "orderDate": "2022-06-29",
       "pickupDate": "2022-07-01",
+      "puckerTime": "15:30 PM",
       "bgColor": "노란색",
       "cakeTaste": "바닐라",
       "letterColor": "갈색",
@@ -137,6 +139,24 @@
       "status": "CANCELED"
     }
   ],
+  "orderSheet": {
+    "id": 1,
+    "cakeImage": "https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg",
+    "cakeTitle": "링링 1호 커스텀 케이크",
+    "cakeDescription": "도시락 사이즈의 어쩌구 커스텀 케이크",
+    "price": 100000,
+    "consumerName": "남시연",
+    "consumerPhone": "010-4183-2998",
+    "orderDate": "2022-06-01",
+    "pickupDate": "2022-07-01",
+    "pickupTime": "15:30 PM",
+    "bgColor": "노란색",
+    "cakeTaste": "바닐라",
+    "letterColor": "갈색",
+    "letter": "happy birthday 제로!",
+    "refImg": "https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg",
+    "status": "RECEIVED"
+  },
   "menuList": [
     {
       "id": 1,

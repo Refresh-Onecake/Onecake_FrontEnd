@@ -1,5 +1,5 @@
 //prettier-ignore
-import {Alert, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Alert, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -70,12 +70,17 @@ const SignUp: FC<Props> = ({route, navigation}) => {
     setModalVisible(!isModalVisible);
   };
 
+  // ? navigation.navigate('EnterStart')
+  // : navigation.navigate('MainNavigator', {screen: 'Home'});
+
   // 회원가입 query
   const signUpQuery = useMutation((user: ISignUp) => fetchSignUp(user), {
     onSuccess: data => {
-      userType === appKeys.consumer
-        ? navigation.navigate('EnterStore')
-        : navigation.navigate('MainNavigator', {screen: 'Home'});
+      userType === appKeys.seller
+        ? navigation.reset({routes: [{name: 'EnterStart'}]})
+        : navigation.reset({
+            routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
+          });
     },
     onError: errors => {
       Alert.alert(
@@ -292,6 +297,10 @@ const SignUp: FC<Props> = ({route, navigation}) => {
       : setValidPhoneNumberText(false);
   }, [phoneNumber]);
 
+  useEffect(() => {
+    checkedPrivacyTerm && checkedOneCakeTerm ? setCheckedTermAll(true) : null;
+  }, [checkedOneCakeTerm, checkedPrivacyTerm]);
+
   return (
     <Fragment>
       <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
@@ -324,19 +333,17 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                           onChangeText={onChange}
                           value={value}
                           onFocus={autoFocus}
-                          selectionColor={'lightgray'}
+                          placeholderTextColor={AppStyles.color.darkGray}
+                          selectionColor={AppStyles.color.hotPink}
                           placeholder="이름 입력"
                         />
                         <View style={styles.iconWrapper}>
-                          <Icon
-                            name="check-bold"
-                            size={AppStyles.IconSize.small}
-                            color={
-                              checkNameIcon
-                                ? AppStyles.color.pink
-                                : AppStyles.color.gray
-                            }
-                          />
+                          {checkNameIcon && (
+                            <Image
+                              style={{width: 11.45, height: 11.45}}
+                              source={require('../../asset/check_Icon_default_active.png')}
+                            />
+                          )}
                         </View>
                       </View>
                     </View>
@@ -364,19 +371,17 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                           onChangeText={onChange}
                           onFocus={autoFocus}
                           value={value}
-                          selectionColor={'lightgray'}
+                          placeholderTextColor={AppStyles.color.darkGray}
+                          selectionColor={AppStyles.color.hotPink}
                           placeholder="영문,숫자 6자 이상"
                         />
                         <View style={styles.iconWrapper}>
-                          <Icon
-                            name="check-bold"
-                            size={AppStyles.IconSize.small}
-                            color={
-                              checkIdIcon
-                                ? AppStyles.color.pink
-                                : AppStyles.color.gray
-                            }
-                          />
+                          {checkIdIcon && (
+                            <Image
+                              style={{width: 11.45, height: 11.45}}
+                              source={require('../../asset/check_Icon_default_active.png')}
+                            />
+                          )}
                         </View>
                       </View>
                     </View>
@@ -407,21 +412,23 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                           onChangeText={onChange}
                           onFocus={autoFocus}
                           value={value}
-                          selectionColor={'lightgray'}
+                          placeholderTextColor={AppStyles.color.darkGray}
+                          selectionColor={AppStyles.color.hotPink}
                           placeholder="영문, 숫자, 특수문자 8자 이상"
                         />
                         <TouchableOpacity
                           style={styles.iconWrapper}
                           onPress={() => setPasswdIcon(!passwdIcon)}>
-                          <Icon
-                            name="eye-off-outline"
-                            size={AppStyles.IconSize.small}
-                            color={
-                              passwdIcon
-                                ? AppStyles.color.pink
-                                : AppStyles.color.gray
-                            }
-                          />
+                          {value.length > 0 && (
+                            <Image
+                              style={{width: 13, height: 13}}
+                              source={
+                                passwdIcon
+                                  ? require('../../asset/visible_active.png')
+                                  : require('../../asset/visible_none.png')
+                              }
+                            />
+                          )}
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -456,7 +463,8 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                           onChangeText={onChange}
                           onFocus={autoFocus}
                           value={value}
-                          selectionColor={'lightgray'}
+                          placeholderTextColor={AppStyles.color.darkGray}
+                          selectionColor={AppStyles.color.hotPink}
                           placeholder="영문, 숫자, 특수문자 8자 이상"
                         />
                         <TouchableOpacity
@@ -464,15 +472,16 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                           onPress={() =>
                             setConfirmPasswdIcon(!confirmPasswdIcon)
                           }>
-                          <Icon
-                            name="eye-off-outline"
-                            size={AppStyles.IconSize.small}
-                            color={
-                              confirmPasswdIcon
-                                ? AppStyles.color.pink
-                                : AppStyles.color.gray
-                            }
-                          />
+                          {value.length > 0 && (
+                            <Image
+                              style={{width: 13, height: 13}}
+                              source={
+                                confirmPasswdIcon
+                                  ? require('../../asset/visible_active.png')
+                                  : require('../../asset/visible_none.png')
+                              }
+                            />
+                          )}
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -503,13 +512,18 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                   <TouchableOpacity
                     style={styles.dropdown}
                     onPress={toggleModal}>
-                    <Text>
-                      {selectedCountry.dial_code} {selectedCountry.code}
+                    <Text style={styles.dropdownText}>
+                      {`${selectedCountry.dial_code} ${selectedCountry.code}`}
                     </Text>
                     <View
                       style={{justifyContent: 'center', alignItems: 'center'}}>
                       <Icon
                         name="chevron-down"
+                        style={{
+                          color: AppStyles.color.black,
+                          opacity: 0.5,
+                          paddingLeft: 3,
+                        }}
                         size={AppStyles.IconSize.small}
                       />
                     </View>
@@ -520,7 +534,8 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                     keyboardType="default"
                     placeholder="전화번호"
                     onFocus={autoFocus}
-                    selectionColor={'lightgray'}
+                    placeholderTextColor={AppStyles.color.darkGray}
+                    selectionColor={AppStyles.color.hotPink}
                     onChangeText={setPhoneNumber}
                   />
                 </View>
@@ -538,7 +553,8 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                   <Text
                     style={{
                       color: AppStyles.color.white,
-                      fontSize: AppStyles.font.small,
+                      fontSize: 11,
+                      fontWeight: '500',
                     }}>
                     인증 받기
                   </Text>
@@ -577,7 +593,8 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                       style={styles.textInput}
                       placeholder="인증번호 6자리 입력"
                       onFocus={autoFocus}
-                      selectionColor={'lightgray'}
+                      placeholderTextColor={AppStyles.color.darkGray}
+                      selectionColor={AppStyles.color.hotPink}
                       onChangeText={setCode}
                     />
                   </View>
@@ -594,9 +611,10 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                     <Text
                       style={{
                         color: AppStyles.color.white,
-                        fontSize: AppStyles.font.small,
+                        fontSize: 11,
+                        fontWeight: '500',
                       }}>
-                      입력하기
+                      {`입력 하기`}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -616,13 +634,11 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                   <TouchableOpacity
                     style={styles.iconWrapper}
                     onPress={() => handleCheckTermAll()}>
-                    <Icon
-                      name="checkbox-marked-circle"
-                      size={AppStyles.IconSize.large}
-                      color={
+                    <Image
+                      source={
                         checkedTermAll
-                          ? AppStyles.color.pink
-                          : AppStyles.color.gray
+                          ? require('../../asset/check_circle_active.png')
+                          : require('../../asset/check_circle_none.png')
                       }
                     />
                   </TouchableOpacity>
@@ -631,14 +647,15 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                 <View style={styles.termModalWrap}>
                   <TouchableOpacity
                     style={styles.iconWrapper}
-                    onPress={() => setCheckedOneCakeTerm(!checkedOneCakeTerm)}>
-                    <Icon
-                      name="checkbox-marked-circle"
-                      size={AppStyles.IconSize.large}
-                      color={
+                    onPress={() => {
+                      setCheckedOneCakeTerm(!checkedOneCakeTerm);
+                      setCheckedTermAll(false);
+                    }}>
+                    <Image
+                      source={
                         checkedOneCakeTerm
-                          ? AppStyles.color.pink
-                          : AppStyles.color.gray
+                          ? require('../../asset/check_circle_active.png')
+                          : require('../../asset/check_circle_none.png')
                       }
                     />
                   </TouchableOpacity>
@@ -655,14 +672,15 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                 <View style={styles.termModalWrap}>
                   <TouchableOpacity
                     style={styles.iconWrapper}
-                    onPress={() => setCheckedPrivacyTerm(!checkedPrivacyTerm)}>
-                    <Icon
-                      name="checkbox-marked-circle"
-                      size={AppStyles.IconSize.large}
-                      color={
+                    onPress={() => {
+                      setCheckedPrivacyTerm(!checkedPrivacyTerm);
+                      setCheckedTermAll(false);
+                    }}>
+                    <Image
+                      source={
                         checkedPrivacyTerm
-                          ? AppStyles.color.pink
-                          : AppStyles.color.gray
+                          ? require('../../asset/check_circle_active.png')
+                          : require('../../asset/check_circle_none.png')
                       }
                     />
                   </TouchableOpacity>
@@ -743,7 +761,7 @@ const styles = StyleSheet.create({
     padding: AppStyles.padding.screen,
   },
   header: {
-    paddingTop: 60.06,
+    paddingTop: 50.06,
     paddingBottom: 20,
   },
   h1: {
@@ -767,8 +785,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   subText: {
-    color: AppStyles.color.black,
-    opacity: 0.5,
+    color: AppStyles.color.darkGray,
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 17,
@@ -788,29 +805,30 @@ const styles = StyleSheet.create({
     height: 40,
   },
   inputText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     color: AppStyles.color.black,
-    opacity: 0.5,
   },
   textInput: {
     fontSize: 15,
     flex: 1,
     color: AppStyles.color.black,
-    opacity: 0.5,
+    fontStyle: 'normal',
+    fontWeight: '500',
     paddingLeft: 0,
   },
   errorText: {
     fontSize: 12,
     color: AppStyles.color.pink,
-    opacity: 0.7,
-    paddingTop: 2,
+    fontWeight: '500',
+    paddingTop: 3.36,
   },
   termHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: AppStyles.color.border,
     paddingBottom: 12,
+    alignItems: 'center',
   },
   termModalWrap: {
     paddingTop: 14,
@@ -845,6 +863,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     borderRadius: 14,
     marginRight: 10,
+  },
+  dropdownText: {
+    color: AppStyles.color.black,
+    opacity: 0.5,
+    fontWeight: '500',
+    fontSize: 13,
+    paddingVertical: 3,
   },
   modalStyle: {
     backgroundColor: AppStyles.color.white,

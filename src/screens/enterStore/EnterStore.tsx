@@ -13,7 +13,7 @@ import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {handleImageUpload, parseTime} from '../../utils';
+import {assert, handleImageUpload, parseTime} from '../../utils';
 import DatePicker from 'react-native-date-picker';
 import {
   fetchEnterPicture,
@@ -95,6 +95,7 @@ export const EnterStore = ({
       await fetchEnterPicture(storeImg)
         .then(async resp => {
           console.log(resp);
+          assert(resp !== undefined, '사진 업로드 오류');
           const tmpFetchData = {
             store_name,
             business_registration_number,
@@ -102,7 +103,7 @@ export const EnterStore = ({
             store_discription,
             kakao_channel_url,
             address: address,
-            store_image: resp!,
+            store_image: resp.toString(),
             open_time: openTime,
             close_time: closeTime,
           };
@@ -468,6 +469,7 @@ export const EnterStore = ({
           setShowTimePicker(false);
         }}
       />
+      <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
     </Fragment>
   );
 };

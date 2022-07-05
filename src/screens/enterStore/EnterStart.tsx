@@ -33,6 +33,7 @@ export const EnterStart = ({
           </TouchableOpacity>
         </View>
       </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
     </Fragment>
   );
 };

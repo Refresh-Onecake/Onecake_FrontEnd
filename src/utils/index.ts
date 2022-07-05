@@ -6,4 +6,4 @@ export * from './priceFormatParser';
 export * from './getStringValueFromAsyncStorage';
 export * from './assert';
 export * from './dateFormatParser';
-export * from './timeFormatToKorea';
+export * from './timeFormatOnKorea';

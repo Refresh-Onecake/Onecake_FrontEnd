@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 //prettier-ignore
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 //prettier-ignore
-import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider, QueryCache} from 'react-query';
+import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider, QueryCache, MutationCache} from 'react-query';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,7 +11,7 @@ import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
 import {MainNavigator, StackNavigator} from './src/screens/navigator';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appKeys} from './src/enum';
+import {appKeys, queryKeys} from './src/enum';
 import {IRefreshTokenData} from './src/services';
 
 interface IError {
@@ -30,7 +30,7 @@ const getMultipleData = async () => {
 };
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: async err => {
+    onError: async (err, query) => {
       const response = err as IError;
       const tokens = await getMultipleData();
       if (tokens) {
@@ -53,7 +53,11 @@ const queryClient = new QueryClient({
                   [appKeys.accessTokenKey, data.accessToken],
                   [appKeys.refreshTokenKey, data.refreshToken],
                 ],
-                () => console.log('토큰 리프레쉬'),
+                () => {
+                  console.log('기존 토큰 리프레쉬');
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                  console.log(`호출 api ${query.queryHash}`);
+                },
               );
             });
         }
@@ -61,6 +65,7 @@ const queryClient = new QueryClient({
     },
   }),
 });
+
 export default function App() {
   const RootStack = createStackNavigator<RootStackParamList>();
 

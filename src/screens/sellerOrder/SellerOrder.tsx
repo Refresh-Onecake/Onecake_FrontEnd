@@ -31,13 +31,13 @@ export const SellerOrder = () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       await getSellerOrderList().then(res => {
         if (!res?.ok) {
+          console.log(res?.status.toString());
           throw new Error(res?.status.toString());
         } else {
           if (res) return res.json();
         }
       }),
     {
-      refetchOnMount: 'always',
       onError: err => {
         console.log('여기서 떠야지 이놈아', err);
       },

@@ -16,13 +16,14 @@ import Modal from 'react-native-modal';
 import {useMutation} from 'react-query';
 import {StackScreenProps} from '@react-navigation/stack';
 
-import {regEx} from '../../utils';
+import {assert, regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
 import {countryCodes, ICountryCode} from '../../utils';
-import {fetchSignUp, ISignUp} from '../../services';
+import {fetchSignUp, getUserData, ISignIn, ISignUp} from '../../services';
 import {RootStackParamList} from '../navigator';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type IFormInputs = {
   name: string;
@@ -69,18 +70,38 @@ const SignUp: FC<Props> = ({route, navigation}) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const [user, setUser] = useState<ISignIn>();
 
   // ? navigation.navigate('EnterStart')
   // : navigation.navigate('MainNavigator', {screen: 'Home'});
 
-  // 회원가입 query
-  const signUpQuery = useMutation((user: ISignUp) => fetchSignUp(user), {
-    onSuccess: data => {
+  // 로그인 query
+  const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
+    onSuccess: async data => {
+      await AsyncStorage.multiSet([
+        [appKeys.accessTokenKey, data.accessToken],
+        [appKeys.refreshTokenKey, data.refreshToken],
+        [appKeys.roleTokenKey, data.role],
+      ]);
       userType === appKeys.seller
         ? navigation.reset({routes: [{name: 'EnterStart'}]})
         : navigation.reset({
             routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
           });
+    },
+    onError: errors => {
+      toggleModal();
+    },
+  });
+
+  // 회원가입 query
+  const signUpQuery = useMutation((user: ISignUp) => fetchSignUp(user), {
+    onSuccess: data => {
+      assert(
+        user !== undefined,
+        '회원 가입 이후 로그인하고자 하는 유저의 정보는 undefined가 되어선 안된다.',
+      );
+      signInQuery.mutate(user);
     },
     onError: errors => {
       Alert.alert(
@@ -274,6 +295,8 @@ const SignUp: FC<Props> = ({route, navigation}) => {
       };
 
       console.log(signUpUser);
+
+      setUser({id: data.id, password: data.password});
       signUpQuery.mutate(signUpUser);
     }
   };
@@ -663,10 +686,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                     [필수] 원케이크 이용약관 동의
                   </Text>
                   <View style={styles.iconWrapper}>
-                    <Icon
-                      name="chevron-right"
-                      size={AppStyles.IconSize.xlarge}
-                    />
+                    <Image source={require('../../asset/chevron_right.png')} />
                   </View>
                 </View>
                 <View style={styles.termModalWrap}>
@@ -688,10 +708,7 @@ const SignUp: FC<Props> = ({route, navigation}) => {
                     [필수] 개인정보 수집 및 이용에 동의
                   </Text>
                   <View style={styles.iconWrapper}>
-                    <Icon
-                      name="chevron-right"
-                      size={AppStyles.IconSize.xlarge}
-                    />
+                    <Image source={require('../../asset/chevron_right.png')} />
                   </View>
                 </View>
               </View>
@@ -782,7 +799,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.gray,
-    opacity: 0.5,
   },
   subText: {
     color: AppStyles.color.darkGray,

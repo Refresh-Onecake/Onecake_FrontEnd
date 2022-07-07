@@ -2,12 +2,13 @@ import {
   Image,
   ListRenderItemInfo,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useCallback, useMemo} from 'react';
 import {IMenuList} from '../../services';
 import {AppStyles} from '../../styles/AppStyles';
 import {FlatList} from 'react-native-gesture-handler';
@@ -23,45 +24,40 @@ export type MenuRenderListProps = {
 
 export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  const RenderItem = (item: ListRenderItemInfo<IMenuList>) => {
-    return (
-      <View
-        style={[
-          styles.listItem,
-          item.index !== 0 && {
-            borderTopWidth: 1,
-            borderTopColor: AppStyles.color.border,
-          },
-        ]}>
-        <View style={{paddingRight: 11.61}}>
-          {/* FIXME: 이후 item.uri로 변경할 예정 */}
-          <Image
-            style={styles.image}
-            source={{
-              uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
-            }}
-          />
-        </View>
-        <View style={{flex: 1}}>
-          <Text style={styles.title}>{item.item.menuName}</Text>
-          <Text style={styles.subTitle}>{item.item.menuDescription}</Text>
-          <Text style={styles.price}>
-            {priceFormatParser(item.item.price)}원~
-          </Text>
-        </View>
-        <View style={styles.more}>
-          <Icon name="dots-horizontal" size={20} color="#D9D9D9" />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <View style={[styles.view]}>
-      <View style={[styles.shadowView, styles.listWrap]}>
-        <FlatList data={data} renderItem={RenderItem} />
-      </View>
+      <ScrollView style={[styles.shadowView, styles.listWrap]}>
+        {data &&
+          data.map((val, idx) => (
+            <View
+              key={idx}
+              style={[
+                styles.listItem,
+                idx !== 0 && {
+                  borderTopWidth: 1,
+                  borderTopColor: AppStyles.color.border,
+                },
+              ]}>
+              <View style={{paddingRight: 11.61}}>
+                {/* FIXME: 이후 item.uri로 변경할 예정 */}
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+                  }}
+                />
+              </View>
+              <View style={{flex: 1}}>
+                <Text style={styles.title}>{val.menuName}</Text>
+                <Text style={styles.subTitle}>{val.menuDescription}</Text>
+                <Text style={styles.price}>{val.price}원~</Text>
+              </View>
+              <View style={styles.more}>
+                <Icon name="dots-horizontal" size={20} color="#D9D9D9" />
+              </View>
+            </View>
+          ))}
+      </ScrollView>
       <TouchableOpacity
         style={[styles.shadowView, styles.btn]}
         onPress={() =>

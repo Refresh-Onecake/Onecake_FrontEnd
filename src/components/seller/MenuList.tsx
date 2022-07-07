@@ -57,6 +57,11 @@ export const MenuList = () => {
   useEffect(() => {
     focusManager.setFocused(isFocused);
   }, [isFocused]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 20}}>
       {data && data?.length > 0 ? (
@@ -103,20 +108,5 @@ const styles = StyleSheet.create({
     width: 270,
     height: 44,
     marginTop: 20,
-  },
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
-  // box-shadow: 0px 1px 9px 3px rgba(0, 0, 0, 0.07);
-  shadowView: {
-    ...Platform.select({
-      android: {
-        elevation: 3,
-      },
-      ios: {
-        shadowColor: '#000000',
-        shadowRadius: 9,
-        shadowOffset: {height: 1, width: 0},
-        shadowOpacity: 0.2,
-      },
-    }),
   },
 });

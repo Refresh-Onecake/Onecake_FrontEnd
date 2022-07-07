@@ -5,3 +5,6 @@ export const orderStatusKeys = {
   픽업완료: 'completed',
   취소된주문: 'canceled',
 } as const;
+
+export type OrderStatusUnion =
+  typeof orderStatusKeys[keyof typeof orderStatusKeys];

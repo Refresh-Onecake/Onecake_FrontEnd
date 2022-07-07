@@ -11,7 +11,13 @@ export const timeFormatToKorea = (time: string | undefined) => {
     '파싱하고자 하는 시간은 undefined가 아니어야 한다.',
   );
 
-  const hour = (parseInt(time.substring(0, 2)) - 12).toString();
+  const hourNum = parseInt(time.substring(0, 2));
+  const hour =
+    hourNum >= 0 && hourNum < 13
+      ? hourNum === 0
+        ? hourNum + 12
+        : hourNum
+      : hourNum - 12;
   const minute = time.substring(3, 5);
 
   if (time.includes('PM')) {

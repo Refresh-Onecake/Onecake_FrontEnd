@@ -40,3 +40,8 @@ export const orderListModalState = atom<string>({
   key: 'orderListModalState',
   default: appKeys.orderList,
 });
+
+export const orderSheetIdState = atom<number>({
+  key: 'orderSheetIdState',
+  default: 0,
+});

@@ -26,9 +26,10 @@ import {assert} from '../../utils';
 import {OrderManageContent} from '../../components';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {orderListModalState} from '../../recoil/atom';
-import {appKeys, queryKeys} from '../../enum';
+import {appKeys, orderStatusKeys, queryKeys} from '../../enum';
 import {OrderSheet} from './OrderSheet';
 import {useQuery} from 'react-query';
+import {useQueryRefetchingOnError} from '../../hooks';
 
 export type OrderManageListProps = {
   date: DateData | undefined;
@@ -49,13 +50,12 @@ export const OrderManageList: FC<OrderManageListProps> = ({
     '특정 날짜의 주문을 보기 위해서는 날짜가 선택되어야한다.',
   );
   // 특정 날짜의 주문들 가져오기 위한 api
-  const {data, status} = useQuery<ISellerOrderList[]>(
+  const {data, status} = useQuery<ISellerOrderList>(
     queryKeys.sellerOrderList,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       await getSellerOrderList(date.dateString).then(res => {
         if (!res?.ok) {
-          console.log(res?.status.toString());
           throw new Error(res?.status.toString());
         } else {
           if (res) return res.json();
@@ -63,7 +63,9 @@ export const OrderManageList: FC<OrderManageListProps> = ({
       }),
     {
       onError: err => {
-        console.log('여기서 떠야지 이놈아', err);
+        console.log('특정 날짜의 주문을 보는 api에러 에러 발생');
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useQueryRefetchingOnError(err, queryKeys.sellerOrderList);
       },
       onSuccess: data => {
         console.log(data);
@@ -92,26 +94,58 @@ export const OrderManageList: FC<OrderManageListProps> = ({
         </Text>
         <View style={{width: 18, height: 18}} />
       </View>
-      {/* {orderListState === appKeys.orderList ? (
+      {orderListState === appKeys.orderList ? (
         <ScrollView style={{paddingTop: 10}}>
-          {orderStatus.map(({text, data}, idx) => (
-            <View key={idx} style={styles.contentView}>
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                  paddingBottom: 10,
-                  paddingTop: 24,
-                }}>
-                <OrderManageContent title={text} />
-              </View>
+          {data && (
+            <View>
+              {data.received.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.received}
+                    status={'주문대기중'}
+                  />
+                </View>
+              )}
+              {data.accepted.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.accepted}
+                    status={'주문완료'}
+                  />
+                </View>
+              )}
+              {data.making.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.making}
+                    status={'제작중'}
+                  />
+                </View>
+              )}
+              {data.canceled.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.canceled}
+                    status={'픽업완료'}
+                  />
+                </View>
+              )}
+              {data.completed.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.completed}
+                    status={'취소된주문'}
+                  />
+                </View>
+              )}
             </View>
-          ))}
+          )}
         </ScrollView>
       ) : (
         <>
           <OrderSheet />
         </>
-      )} */}
+      )}
       <View style={{height: 50}} />
     </View>
   );

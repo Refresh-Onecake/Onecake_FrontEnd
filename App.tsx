@@ -4,7 +4,7 @@ import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue, useSetRecoil
 //prettier-ignore
 import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider, QueryCache, MutationCache} from 'react-query';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
@@ -72,7 +72,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaProvider>
           <NavigationContainer>
             <RootStack.Navigator
               initialRouteName="StackNavigator"
@@ -90,7 +90,7 @@ export default function App() {
               />
             </RootStack.Navigator>
           </NavigationContainer>
-        </SafeAreaView>
+        </SafeAreaProvider>
       </RecoilRoot>
     </QueryClientProvider>
   );

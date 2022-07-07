@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: AppStyles.color.pink,
     fontWeight: '500',
-    paddingTop: 3.36,
+    paddingTop: 5.36,
   },
   termHeader: {
     flexDirection: 'row',

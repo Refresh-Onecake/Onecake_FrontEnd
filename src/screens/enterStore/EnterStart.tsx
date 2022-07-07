@@ -16,24 +16,20 @@ export const EnterStart = ({
 }: StackScreenProps<RootStackParamList>) => {
   return (
     <Fragment>
-      <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
-      <SafeAreaView style={styles.view}>
-        <View style={styles.container}>
-          <View style={styles.textWrapper}>
-            <Text style={styles.title}>사장님, 반갑습니다!</Text>
-            <Text style={styles.subTitle}>
-              입점 신청부터 가게 등록까지 진행합니다.
-            </Text>
-          </View>
-          <View style={{flex: 1}} />
-          <TouchableOpacity
-            style={EnterStoreStyle.submitBtn}
-            onPress={() => navigation.navigate('EnterStore')}>
-            <Text style={EnterStoreStyle.submitText}>입점 신청하기</Text>
-          </TouchableOpacity>
+      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
+      <SafeAreaView style={{flex: 1, backgroundColor: AppStyles.color.hotPink}}>
+        <View style={styles.view}>
+          <Text style={styles.title}>사장님, 반갑습니다!</Text>
+          <Text style={styles.subTitle}>
+            입점 신청부터 가게 등록까지 진행합니다.
+          </Text>
         </View>
+        <TouchableOpacity
+          style={EnterStoreStyle.submitBtn}
+          onPress={() => navigation.navigate('EnterStore')}>
+          <Text style={EnterStoreStyle.submitText}>입점 신청하기</Text>
+        </TouchableOpacity>
       </SafeAreaView>
-      <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
     </Fragment>
   );
 };
@@ -41,19 +37,10 @@ export const EnterStart = ({
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: AppStyles.color.hotPink,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: AppStyles.color.backgroundGray,
-  },
-  textWrapper: {
     backgroundColor: AppStyles.color.white,
-    paddingHorizontal: AppStyles.padding.screen,
-    height: '25%',
-    paddingBottom: AppStyles.padding.screen,
   },
   title: {
+    paddingLeft: 30,
     fontSize: AppStyles.font.title,
     fontWeight: '700',
     color: AppStyles.color.black,
@@ -61,6 +48,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   subTitle: {
+    paddingLeft: 30,
     fontSize: AppStyles.font.subTitle,
     fontWeight: '400',
     color: AppStyles.color.black,

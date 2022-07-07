@@ -13,7 +13,12 @@ import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {assert, handleImageUpload, parseTime} from '../../utils';
+import {
+  assert,
+  handleImageUpload,
+  parseTime,
+  timeFormatToKorea,
+} from '../../utils';
 import DatePicker from 'react-native-date-picker';
 import {
   fetchEnterPicture,
@@ -153,7 +158,8 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         value={value}
                         onFocus={autoFocus}
-                        selectionColor={AppStyles.color.placeholder}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder="가게 이름을 입력해주세요."
                       />
                     </View>
@@ -180,7 +186,8 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         onFocus={autoFocus}
                         value={value}
-                        selectionColor={AppStyles.color.placeholder}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder="사업자 등록번호를 입력해주세요."
                       />
                     </View>
@@ -235,7 +242,8 @@ export const EnterStore = ({
                   onPress={toggleModal}>
                   <TextInput
                     style={{color: AppStyles.color.black}}
-                    selectionColor={AppStyles.color.placeholder}
+                    placeholderTextColor={AppStyles.color.darkGray}
+                    selectionColor={AppStyles.color.hotPink}
                     placeholder="도로명 주소를 입력해주세요."
                     editable={false}
                     selectTextOnFocus={false}
@@ -260,7 +268,8 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         onFocus={autoFocus}
                         value={value}
-                        selectionColor={AppStyles.color.placeholder}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder="가게 전화번호를 입력해주세요."
                       />
                     </View>
@@ -289,7 +298,8 @@ export const EnterStore = ({
                         onFocus={autoFocus}
                         multiline={true}
                         numberOfLines={5}
-                        selectionColor={AppStyles.color.placeholder}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder="가게에 대한 소개를 입력해주세요. (200자 이내)"
                       />
                     </View>
@@ -316,6 +326,8 @@ export const EnterStore = ({
                       <TextInput
                         editable={false}
                         style={styles.timePickerTitle}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder={'오픈 시간'}
                         value={openTime}
                         onPressIn={() => {
@@ -347,6 +359,8 @@ export const EnterStore = ({
                       <TextInput
                         editable={false}
                         style={styles.timePickerTitle}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder={'닫는 시간'}
                         value={closeTime}
                         onPressIn={() => {
@@ -388,7 +402,8 @@ export const EnterStore = ({
                         onChangeText={onChange}
                         value={value}
                         onFocus={autoFocus}
-                        selectionColor={AppStyles.color.placeholder}
+                        placeholderTextColor={AppStyles.color.darkGray}
+                        selectionColor={AppStyles.color.hotPink}
                         placeholder="카카오톡 체널 url을 복사하여 입력해주세요"
                       />
                     </View>
@@ -416,6 +431,7 @@ export const EnterStore = ({
       <Modal isVisible={isModalVisible}>
         <SafeAreaView style={{flex: 1}}>
           <Postcode
+            style={{borderTopLeftRadius: 20, borderTopRightRadius: 20}}
             onSelected={data => {
               const parseAddr = {
                 jibun_address: data.jibunAddress,
@@ -437,13 +453,15 @@ export const EnterStore = ({
               flexDirection: 'row',
               backgroundColor: AppStyles.color.hotPink,
               justifyContent: 'center',
-
               alignItems: 'center',
-              height: 40,
+              height: 50,
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
             }}
             onPress={toggleModal}>
             <Text
               style={{
+                fontSize: 16,
                 color: AppStyles.color.white,
                 textAlignVertical: 'center',
                 fontWeight: '600',
@@ -460,8 +478,8 @@ export const EnterStore = ({
         date={new Date()}
         onConfirm={date => {
           pickerStatus === 'OPEN'
-            ? setOpenTime(parseTime(date))
-            : setCloseTime(parseTime(date));
+            ? setOpenTime(timeFormatToKorea(parseTime(date)))
+            : setCloseTime(timeFormatToKorea(parseTime(date)));
 
           setShowTimePicker(false);
         }}
@@ -505,9 +523,8 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 12,
-    color: AppStyles.color.pink,
-    opacity: 0.7,
-    paddingTop: 2,
+    color: AppStyles.color.hotPink,
+    paddingTop: 5.66,
   },
   imageWrapper: {
     flexDirection: 'row',

@@ -5,11 +5,11 @@
  */
 export const parseTime = (date: Date) => {
   console.log(date);
-  const tmpHours = date.getHours();
+  const tmpHours = `${date.getHours() < 10 ? '0' : ''}${date.getHours()}`;
   // let meridiem;
-  // tmpHours - 12 < 0 ? meridiem = '오전' : meridiem = '오후';
+  const meridiem = parseInt(tmpHours) - 12 < 0 ? 'AM' : 'PM';
   const tmpMinuets = `${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
-  const fullTime = `${tmpHours}:${tmpMinuets}`;
+  const fullTime = `${tmpHours}:${tmpMinuets} ${meridiem}`;
 
   return fullTime;
 };

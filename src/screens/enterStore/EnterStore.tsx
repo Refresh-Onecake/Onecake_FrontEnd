@@ -557,7 +557,6 @@ export const styles = StyleSheet.create({
     height: 40,
   },
   timePickerBtn: {
-    flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: AppStyles.color.border,

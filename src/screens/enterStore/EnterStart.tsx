@@ -1,4 +1,5 @@
 import {
+  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -17,12 +18,29 @@ export const EnterStart = ({
   return (
     <Fragment>
       <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
-      <SafeAreaView style={{flex: 1, backgroundColor: AppStyles.color.hotPink}}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          backgroundColor: AppStyles.color.hotPink,
+        }}>
         <View style={styles.view}>
           <Text style={styles.title}>사장님, 반갑습니다!</Text>
           <Text style={styles.subTitle}>
             입점 신청부터 가게 등록까지 진행합니다.
           </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: AppStyles.color.white,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../asset/seller.png')}
+            style={{width: 274.3, height: 386.95}}
+          />
         </View>
         <TouchableOpacity
           style={EnterStoreStyle.submitBtn}

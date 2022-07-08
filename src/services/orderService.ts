@@ -96,3 +96,22 @@ export const orderSheetChangeState = async (orderId: number) => {
     return response;
   }
 };
+
+//주문 상태 취소
+export const orderSheetCancel = async (orderId: number, reason: string) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/state/cancel`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({reason}),
+      },
+    );
+    return response;
+  }
+};

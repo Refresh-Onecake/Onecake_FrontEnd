@@ -114,7 +114,6 @@ export const refetchToken = async (
         () => {
           console.log('기존 토큰 리프레쉬');
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-
           query && console.log(`호출 api ${query.queryHash}`);
         },
       );

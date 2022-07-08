@@ -41,8 +41,8 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
     const [orderSheetId, setOrderSheetId] = useRecoilState(orderSheetIdState);
-    // 특정 주문서 가져오기
 
+    console.log(status);
     const onPressItem = () => {
       setOrderModalState(appKeys.orderListMore);
       setOrderSheetId(id);

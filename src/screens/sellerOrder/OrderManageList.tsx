@@ -122,19 +122,19 @@ export const OrderManageList: FC<OrderManageListProps> = ({
                   />
                 </View>
               )}
-              {data.canceled.length > 0 && (
-                <View style={styles.contentView}>
-                  <OrderManageContent
-                    renderData={data.canceled}
-                    status={'픽업완료'}
-                  />
-                </View>
-              )}
               {data.completed.length > 0 && (
                 <View style={styles.contentView}>
                   <OrderManageContent
                     renderData={data.completed}
-                    status={'취소된주문'}
+                    status={'픽업 완로'}
+                  />
+                </View>
+              )}
+              {data.canceled.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.canceled}
+                    status={'취소된 주문'}
                   />
                 </View>
               )}

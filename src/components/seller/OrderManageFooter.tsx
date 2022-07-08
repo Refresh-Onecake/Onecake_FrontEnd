@@ -9,20 +9,20 @@ import {ModalHeader} from '../common/ModalHeader';
 import {RadioList} from '../common/RadioList';
 
 type OrderManageFooterProps = {
-  status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
+  // status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
+  state: string;
 };
-
 export const cancelReasonList = ['고객 요청', '가게 사정', '재료 소진', '기타'];
 
-export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
+export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [cancelReason, setCancelReason] = useState<string>('');
-
+  console.log(state);
   return (
     <View>
       {
         {
-          [orderStatusKeys.주문대기중]: (
+          ['RECEIVED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button text="주문 진행하기" />
@@ -35,21 +35,21 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
               </View>
             </View>
           ),
-          [orderStatusKeys.주문완료]: (
+          ['ACCEPTED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button text="케이크 제작하기" />
               </View>
             </View>
           ),
-          [orderStatusKeys.제작중]: (
+          ['MAKING'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button text="픽업 완료하기" />
               </View>
             </View>
           ),
-          [orderStatusKeys.픽업완료]: <></>,
+          ['CANCELED'.toString()]: <></>,
           [orderStatusKeys.취소된주문]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
@@ -57,7 +57,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
               </View>
             </View>
           ),
-        }[status]
+        }[state]
       }
       <Modal
         isVisible={modalVisible}

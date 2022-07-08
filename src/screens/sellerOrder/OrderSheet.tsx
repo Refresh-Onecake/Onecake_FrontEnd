@@ -102,7 +102,7 @@ export const OrderSheet = () => {
           </View>
         </AutoFocusProvider>
       </ScrollView>
-      {/* {data && <OrderManageFooter status={data.state} />} */}
+      {data && <OrderManageFooter state={data.state} />}
     </View>
   );
 };

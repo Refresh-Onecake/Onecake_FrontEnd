@@ -130,6 +130,7 @@ export const OrderSheet = () => {
             <Text style={styles.memoTitle}>메모</Text>
             <TextInput
               onFocus={autoFocus}
+              value={data?.memo}
               style={styles.memoTextInput}
               placeholderTextColor={AppStyles.color.placeholder}
               placeholder="메모 작성(200자 이내)"

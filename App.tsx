@@ -12,12 +12,12 @@ import {MainNavigator, StackNavigator} from './src/screens/navigator';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys, queryKeys} from './src/enum';
-import {IRefreshTokenData} from './src/services';
+import {IRefreshTokenData, refetchToken} from './src/services';
 
 interface IError {
   message: string;
 }
-const getMultipleData = async () => {
+export const getMultipleData = async () => {
   try {
     const savedData = await AsyncStorage.multiGet([
       appKeys.accessTokenKey,
@@ -35,31 +35,7 @@ const queryClient = new QueryClient({
       const tokens = await getMultipleData();
       if (tokens) {
         if (response.message === '401') {
-          await fetch('http://15.165.27.120:8080/api/v1/auth/reissue', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              accessToken: tokens[0][1],
-              refreshToken: tokens[1][1],
-            }),
-          })
-            .then(res => res.json())
-            .then(async (data: IRefreshTokenData) => {
-              await AsyncStorage.multiSet(
-                [
-                  [appKeys.accessTokenKey, data.accessToken],
-                  [appKeys.refreshTokenKey, data.refreshToken],
-                ],
-                () => {
-                  console.log('기존 토큰 리프레쉬');
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                  console.log(`호출 api ${query.queryHash}`);
-                },
-              );
-            });
+          await refetchToken(tokens, query);
         }
       }
     },

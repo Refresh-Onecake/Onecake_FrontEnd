@@ -59,3 +59,22 @@ export const getSellerOrderSheet = async (orderId: number) => {
     return response;
   }
 };
+
+//특정 주문서에 메모 저장하기
+export const setOrderSheetMemo = async (orderId: number, memo: string) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/memo`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({memo}),
+      },
+    );
+    return response;
+  }
+};

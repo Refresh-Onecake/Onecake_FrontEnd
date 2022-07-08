@@ -1,10 +1,11 @@
 import {Image, StyleSheet, Text, View, TextInput} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
-import {useQuery} from 'react-query';
+import {useMutation, useQuery} from 'react-query';
 import {
   getSellerOrderSheet,
   IOrderSheet,
   ISellerOrderList,
+  setOrderSheetMemo,
 } from '../../services/orderService';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
@@ -15,6 +16,8 @@ import {OrderManageFooter} from '../../components';
 import {useRecoilValue} from 'recoil';
 import {orderSheetIdState} from '../../recoil/atom';
 import {useQueryRefetchingOnError} from '../../hooks';
+import {getMultipleData} from '../../../App';
+import {refetchToken} from '../../services';
 
 export const OrderSheet = () => {
   const [memo, setMemo] = useState<string>('');
@@ -50,12 +53,42 @@ export const OrderSheet = () => {
       },
     },
   );
+
+  const memoMutation = useMutation(
+    async ({orderId, memo}: {memo: string; orderId: number}) =>
+      await setOrderSheetMemo(orderId, memo).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        console.log('메모등록 성공');
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
   const TextInputRef = useRef<TextInput | null>(null);
   const setFocus = useCallback(
     () => TextInputRef.current?.focus(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [TextInputRef.current],
   );
+
+  const handleSubmitMemo = () => {
+    memoMutation.mutate({orderId, memo});
+  };
 
   const autoFocus = useAutoFocus();
   return (
@@ -98,6 +131,7 @@ export const OrderSheet = () => {
               selectionColor={'#FF4EA5'}
               maxLength={200}
               onChangeText={setMemo}
+              onSubmitEditing={handleSubmitMemo}
             />
           </View>
         </AutoFocusProvider>

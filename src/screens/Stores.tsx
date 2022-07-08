@@ -8,11 +8,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys, queryKeys} from '../enum';
 import {useAsync, useQueryRefetchingOnError} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
-import {focusManager, useQuery} from 'react-query';
+import {focusManager, useQuery, useQueryClient} from 'react-query';
 import {getMenuList, IMenuList} from '../services';
 import {useIsFocused} from '@react-navigation/native';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
+  const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
   const [error, resetError] = useAsync(async () => {
     resetError();
@@ -37,14 +38,18 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
       }),
     {
       refetchOnWindowFocus: true,
-      retry: 10,
+
       onSuccess: data => {
         console.log(data);
       },
       onError: err => {
         console.log('메뉴 리스트 불러오기에서 에러 발생');
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useQueryRefetchingOnError(err, queryKeys.sellerMenuList);
+        const response = err as Error;
+        if (response.message === '401') {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+          queryClient.invalidateQueries(queryKeys.sellerMenuList);
+          console.log(`${queryKeys.sellerMenuList.toString()} 쿼리 성공`);
+        }
       },
     },
   );

@@ -1,6 +1,10 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RootStackParamList} from '../screens/navigator';
+import {appKeys} from '../enum';
+import {KeyValuePair} from '@react-native-async-storage/async-storage/lib/typescript/types';
+import {assert} from '../utils';
+import {Query, QueryKey} from 'react-query';
 
 export type ISignUp = {
   user_id: string;
@@ -79,4 +83,40 @@ export const getUserData = async ({id, password}: ISignIn) => {
     password: password,
   });
   return data;
+};
+
+export const refetchToken = async (
+  tokens: readonly KeyValuePair[] | undefined,
+  query?: Query<unknown, unknown, unknown, QueryKey>,
+) => {
+  assert(
+    tokens !== undefined,
+    'token을 refresh 하기 위해서는 undefined가 아니어야 한다',
+  );
+  await fetch('http://15.165.27.120:8080/api/v1/auth/reissue', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      accessToken: tokens[0][1],
+      refreshToken: tokens[1][1],
+    }),
+  })
+    .then(res => res.json())
+    .then(async (data: IRefreshTokenData) => {
+      await AsyncStorage.multiSet(
+        [
+          [appKeys.accessTokenKey, data.accessToken],
+          [appKeys.refreshTokenKey, data.refreshToken],
+        ],
+        () => {
+          console.log('기존 토큰 리프레쉬');
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
+          query && console.log(`호출 api ${query.queryHash}`);
+        },
+      );
+    });
 };

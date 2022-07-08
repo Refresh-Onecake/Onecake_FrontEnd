@@ -78,3 +78,21 @@ export const setOrderSheetMemo = async (orderId: number, memo: string) => {
     return response;
   }
 };
+
+//주문 상태 다음 단계로 변경
+export const orderSheetChangeState = async (orderId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/state`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response;
+  }
+};

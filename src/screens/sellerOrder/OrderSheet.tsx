@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, View, TextInput} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {
   getSellerOrderSheet,
   IOrderSheet,
@@ -20,6 +20,8 @@ import {getMultipleData} from '../../../App';
 import {refetchToken} from '../../services';
 
 export const OrderSheet = () => {
+  const queryClient = useQueryClient();
+
   const [memo, setMemo] = useState<string>('');
   const orderId = useRecoilValue(orderSheetIdState);
   const [imgUri, setImgUri] = useState<string | undefined>();
@@ -36,11 +38,14 @@ export const OrderSheet = () => {
         }
       }),
     {
-      refetchOnMount: 'always',
       onError: err => {
-        console.log('주문 서 가져오기 에러', err);
+        console.log('주문서 가져오기 에러', err);
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useQueryRefetchingOnError(err, queryKeys.sellerOrderSheet);
+        const response = err as Error;
+        if (response.message === '401') {
+          queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
+          console.log('주문서가져오기 query 리 패치');
+        }
       },
       onSuccess: data => {
         console.log(data);

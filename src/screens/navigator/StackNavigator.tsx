@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import SignIn from '../auth/SignIn';
@@ -14,7 +14,14 @@ import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 
 const Stack = createStackNavigator<RootStackParamList>();
-
+const BackBtn = () => {
+  return (
+    <Image
+      source={require('../../asset/back-btn.png')}
+      style={{marginLeft: 20, width: 16, height: 14}}
+    />
+  );
+};
 export const StackNavigator = () => {
   return (
     <Stack.Navigator
@@ -36,6 +43,7 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       <Stack.Screen name="EnterComplete" component={EnterComplete} />

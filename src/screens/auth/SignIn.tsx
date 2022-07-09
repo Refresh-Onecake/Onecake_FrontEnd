@@ -28,7 +28,6 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<IRefreshToken | null>();
   const {
     control,
     handleSubmit,
@@ -129,7 +128,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
                 style={styles.textInput}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                selectionColor={AppStyles.color.placeholder}
+                placeholderTextColor={AppStyles.color.darkGray}
+                selectionColor={AppStyles.color.hotPink}
                 value={value}
               />
             )}
@@ -152,8 +152,10 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
                 onFocus={autoFocus}
                 onChangeText={onChange}
                 onBlur={onBlur}
+                secureTextEntry={true}
                 style={styles.textInput}
-                selectionColor={AppStyles.color.placeholder}
+                placeholderTextColor={AppStyles.color.darkGray}
+                selectionColor={AppStyles.color.hotPink}
               />
             )}
             name="password"
@@ -262,8 +264,7 @@ const styles = StyleSheet.create({
     width: 270,
     fontSize: 12,
     color: AppStyles.color.pink,
-    opacity: 0.7,
-    paddingTop: 2,
+    paddingTop: 3.66,
   },
   authText: {
     fontSize: 13,

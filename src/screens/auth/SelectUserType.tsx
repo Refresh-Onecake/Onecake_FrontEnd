@@ -6,9 +6,11 @@ import {
   Platform,
   TouchableOpacity,
   SafeAreaView,
+  View,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, Fragment} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
+
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
@@ -31,48 +33,57 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
   };
 
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <Text style={{fontSize: 18, fontWeight: '800', marginBottom: 48}}>
-        사용자 유형을 선택해주세요.
-      </Text>
-
-      {userTypeList.map((val, idx) => (
-        <Pressable
-          key={idx}
-          onPress={() => setSelectedUser(val)}
-          style={[
-            val === selectedUser ? styles.checkedIcon : styles.unCheckedIcon,
-            styles.typeBtn,
-          ]}>
-          <Image
-            resizeMode={val == appKeys.seller ? 'contain' : 'cover'}
-            style={styles.imgShape}
-            source={
-              val == appKeys.consumer
-                ? require('../../asset/customer.png')
-                : require('../../asset/seller.png')
-            }
-          />
-          <Text>{val === appKeys.consumer ? '소비자' : '판매자'}</Text>
-          {val === selectedUser && (
-            <Image
-              style={styles.checkIcon}
-              source={require('../../asset/checkIcon.png')}></Image>
-          )}
-        </Pressable>
-      ))}
-      <TouchableOpacity
-        style={styles.selectBtn}
-        onPress={() => goToSignUp(selectedUser)}>
-        <Text
-          style={{
-            color: AppStyles.color.white,
-            fontSize: AppStyles.font.middle,
-          }}>
-          선택하기
+    <Fragment>
+      <SafeAreaView style={styles.wrapper}>
+        <Text style={{fontSize: 18, fontWeight: '800', marginBottom: 48}}>
+          사용자 유형을 선택해주세요.
         </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+        <View>
+          {userTypeList.map((val, idx) => (
+            <Pressable
+              key={idx}
+              onPress={() => setSelectedUser(val)}
+              style={[
+                val === selectedUser
+                  ? styles.checkedIcon
+                  : styles.unCheckedIcon,
+                styles.typeBtn,
+              ]}>
+              <Image
+                resizeMode={val == appKeys.seller ? 'contain' : 'cover'}
+                style={styles.imgShape}
+                source={
+                  val == appKeys.consumer
+                    ? require('../../asset/customer.png')
+                    : require('../../asset/seller.png')
+                }
+              />
+              <Text style={styles.btnText}>
+                {val === appKeys.consumer ? '소비자' : '판매자'}
+              </Text>
+              {val === selectedUser && (
+                <Image
+                  style={styles.checkIcon}
+                  source={require('../../asset/checkIcon.png')}></Image>
+              )}
+            </Pressable>
+          ))}
+        </View>
+        <Pressable
+          style={styles.selectBtn}
+          onPress={() => goToSignUp(selectedUser)}>
+          <Text
+            style={{
+              color: AppStyles.color.white,
+              fontSize: 17,
+              fontWeight: '600',
+            }}>
+            선택하기
+          </Text>
+        </Pressable>
+      </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
+    </Fragment>
   );
 };
 
@@ -102,7 +113,7 @@ const styles = StyleSheet.create({
           height: 1,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 15,
+        shadowRadius: 16,
       },
       android: {
         elevation: 10,
@@ -129,11 +140,19 @@ const styles = StyleSheet.create({
     left: Platform.OS === 'android' ? 1 : -8,
     top: Platform.OS === 'android' ? 1 : -8,
   },
+  btnText: {
+    paddingTop: 9,
+    paddingBottom: 11,
+    fontWeight: '600',
+    fontSize: 15,
+    lineHeight: 18,
+  },
   selectBtn: {
-    position: 'absolute',
-    bottom: 1,
     width: '100%',
-    height: 90,
+    position: 'absolute',
+    bottom: 0,
+    justifyContent: 'center',
+    height: 40,
     paddingTop: 15,
     alignItems: 'center',
     backgroundColor: AppStyles.color.hotPink,

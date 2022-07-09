@@ -111,7 +111,7 @@ export const EnterMenu = ({
         navigation.navigate('EnterMenuSheet');
       },
       onError: e => {
-        console.error(e);
+        console.log(e);
       },
     },
   );

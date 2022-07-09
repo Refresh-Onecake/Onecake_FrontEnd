@@ -9,19 +9,24 @@ import {
   AppState,
   Platform,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {getMenuList} from '../../services/menuService';
-import {useQuery} from 'react-query';
+import {QueryClient, useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {Button} from '../common/Button';
 import {RootStackParamList} from '../../screens/navigator';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {IMenuList} from '../../services/menuService';
 import {MenuRenderList} from './MenuRenderList';
+import {focusManager} from 'react-query';
+import {useIsFocused} from '@react-navigation/native';
+
 export const MenuList = () => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const {data, status} = useQuery<IMenuList[]>(
     queryKeys.sellerMenuList,
     async () =>
@@ -33,13 +38,25 @@ export const MenuList = () => {
         }
       }),
     {
-      refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
+      retry: 10,
+      onSuccess: data => {
+        console.log(data);
+      },
       onError: err => {
-        console.log('여기서 떠야지 이놈아', err);
+        console.log('err');
+        const response = err as Error;
+        if (response.message === '401') {
+          queryClient.invalidateQueries(queryKeys.sellerMenuList);
+          console.log('쿼리 성공');
+        }
       },
     },
   );
-
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    focusManager.setFocused(isFocused);
+  }, [isFocused]);
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 20}}>
       {data && data?.length > 0 ? (

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import React, {FC, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {getStoreTitleInfo, IStoreTitleInfo} from '../../services/storeService';
@@ -16,12 +17,18 @@ import {storeIdState} from '../../recoil/atom';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appKeys, queryKeys} from '../../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Button} from '../../components';
 
 export const StoreTitleInfo: FC = () => {
   const queryClient = useQueryClient();
   const storeId = useRecoilValue(storeIdState);
   const [liked, setLiked] = useState<boolean>(false);
   const [likedNum, setLikedNum] = useState(0);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const {data} = useQuery<IStoreTitleInfo>(
     queryKeys.storeTitleInfo,
@@ -104,13 +111,31 @@ export const StoreTitleInfo: FC = () => {
             <Text style={{marginLeft: 5, marginRight: 5}}>찜</Text>
             <Text>{likedNum}</Text>
           </View>
-          <TouchableOpacity style={styles.userOption}>
+          <TouchableOpacity style={styles.userOption} onPress={toggleModal}>
             <Icon
               style={{marginRight: 5}}
               size={15}
               name="chat-processing-outline"></Icon>
             <Text>상담하기</Text>
           </TouchableOpacity>
+          <Modal isVisible={modalVisible}>
+            <View style={styles.modal}>
+              <Text style={styles.modalTitle}>{data?.storeName}</Text>
+              <TouchableOpacity
+                style={{position: 'absolute', left: '100%', bottom: '100%'}}
+                onPress={toggleModal}>
+                <Image
+                  style={styles.Xicon}
+                  source={require('../../asset/close_X.png')}></Image>
+              </TouchableOpacity>
+              <Image
+                style={styles.speaker}
+                source={require('../../asset/speaker.png')}></Image>
+              <View style={styles.btn}>
+                <Button text="카카오톡 채널로 이동"></Button>
+              </View>
+            </View>
+          </Modal>
         </View>
       </SafeAreaView>
       <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
@@ -138,6 +163,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  Xicon: {
+    height: 15,
+    width: 15,
+  },
+  btn: {width: 304, height: 44, alignSelf: 'center'},
   titleInfo: {
     top: '26%',
     position: 'absolute',
@@ -163,5 +193,26 @@ const styles = StyleSheet.create({
         elevation: 5,
       },
     }),
+  },
+  modal: {
+    alignSelf: 'center',
+    width: 350,
+    height: 390,
+    backgroundColor: AppStyles.color.white,
+    borderRadius: 30,
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: AppStyles.font.large,
+    fontWeight: '600',
+    alignSelf: 'center',
+  },
+  speaker: {
+    height: 270,
+    width: 300,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'red',
   },
 });

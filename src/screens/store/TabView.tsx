@@ -1,29 +1,52 @@
-import {StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native';
-import React, {useCallback, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  View,
+} from 'react-native';
+import React from 'react';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {AppStyles} from '../../styles/AppStyles';
-import {apiClient} from '../../services';
-import axios from 'axios';
-import {useForm} from 'react-hook-form';
+import {currentTabState} from '../../recoil/atom';
+import {storeTabKeys} from '../../enum/storeTabKeys';
+import {CakeList, StoreInfo, Review} from '../../components';
 
 const phoneWidth = Dimensions.get('window').width;
 const TabIndicatorWidth = (phoneWidth / 3).toFixed();
+const tabList = ['메뉴', '가게 정보', '리뷰'];
+export const TabView = () => {
+  const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
 
-export default function TabView() {
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <TouchableOpacity style={styles.indicator}>
-        <Text>메뉴</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.indicator}>
-        <Text>가게 정보</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.indicator}>
-        <Text>리뷰</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={styles.wrapper}>
+        {tabList.map((val, idx) => (
+          <TouchableOpacity
+            key={idx}
+            style={styles.indicator}
+            onPress={() => {
+              setCurrentTab(val);
+            }}>
+            <Text>{val}</Text>
+          </TouchableOpacity>
+        ))}
+      </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
+      <View style={styles.selectedView}>
+        {
+          {
+            [storeTabKeys.menu]: <CakeList />,
+            [storeTabKeys.storeInfo]: <StoreInfo />,
+            [storeTabKeys.review]: <Review />,
+          }[currentTab]
+        }
+      </View>
+    </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -36,5 +59,10 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.color.white,
     width: +TabIndicatorWidth,
     height: 47,
+  },
+  selectedView: {
+    width: '100%',
+    height: '39%',
+    backgroundColor: AppStyles.color.white,
   },
 });

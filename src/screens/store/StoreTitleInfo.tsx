@@ -10,7 +10,7 @@ import {
 import React, {FC, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {getStoreTitleInfo, IStoreTitleInfo} from '../../services/storeService';
-import {useMutation, useQuery, useQueryClient} from 'react-query';
+import {useQuery, useQueryClient} from 'react-query';
 import {useRecoilValue} from 'recoil';
 import {storeIdState} from '../../recoil/atom';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

@@ -26,6 +26,13 @@ export type IStoreInfo = {
   storeDescription: string;
 };
 
+export type IReview = {
+  profileImg: string;
+  userName: string;
+  timeHistory: string;
+  content: string;
+};
+
 export const getStoreTitleInfo = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
@@ -71,16 +78,13 @@ export const getStoreInfo = async (storeId: number) => {
 export const getCakeSize = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
-    const response = await fetch(
-      `${baseURL}/api/v1/consumer/stores/${storeId}/order/cakesize`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`${baseURL}${storeId}/order/cakesize`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response;
   }
 };

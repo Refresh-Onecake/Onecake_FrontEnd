@@ -1,4 +1,4 @@
-import {ScrollView, Text, StyleSheet} from 'react-native';
+import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
@@ -39,26 +39,40 @@ export const StoreInfo = () => {
 
   return (
     <ScrollView style={style.wrapper}>
-      <Text style={style.text}>영업 정보</Text>
-      <Text style={style.text}>운영 시간</Text>
-      <Text>{data?.operatingTime}</Text>
-      <Text style={style.text}>휴무일</Text>
-      <Text>{data?.dayOff}</Text>
-      <Text style={style.text}>{data?.address}</Text>
-      <Text>서울특별시 마포구</Text>
-      <Text style={style.text}>가게 설명</Text>
-      <Text>{data?.storeDescription}</Text>
+      <Text style={[style.text, {marginBottom: 38}]}>영업 정보</Text>
+      <View style={style.view}>
+        <Text style={style.text}>운영 시간</Text>
+        <Text>{data?.operatingTime}</Text>
+      </View>
+      <View style={style.view}>
+        <Text style={style.text}>휴무일</Text>
+        <Text>{data?.dayOff}</Text>
+      </View>
+      <View style={style.view}>
+        <Text style={style.text}>주소</Text>
+        <Text>{data?.address}</Text>
+      </View>
+      <View style={style.view}>
+        <Text style={style.text}>가게 설명</Text>
+        <Text>{data?.storeDescription}</Text>
+      </View>
     </ScrollView>
   );
 };
 
 const style = StyleSheet.create({
   wrapper: {
-    paddingTop: 20,
+    paddingTop: 25,
     paddingLeft: 20,
   },
   text: {
     fontSize: AppStyles.font.middle,
     fontWeight: '800',
+    width: 90,
+  },
+  view: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 10,
   },
 });

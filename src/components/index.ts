@@ -10,3 +10,7 @@ export * from './seller/ToggleList';
 export * from './seller/MenuRenderList';
 export * from './seller/OrderManageContent';
 export * from './seller/OrderManageFooter';
+
+export * from './customer/CakeList';
+export * from './customer/StoreInfo';
+export * from './customer/Review';

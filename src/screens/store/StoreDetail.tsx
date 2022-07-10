@@ -11,8 +11,8 @@ import {RootStackParamList} from '../navigator';
 import React, {FC, useRef, useEffect, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {BottomSheet, Button} from '../../components';
-import TabView from './TabView';
-import {IstoreTitleInfo, getCakeSize} from '../../services/storeService';
+import {TabView} from './TabView';
+import {getCakeSize} from '../../services/storeService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from '../../enum';
 import {StoreTitleInfo} from './StoreTitleInfo';
@@ -33,7 +33,6 @@ export const StoreDetail: FC<Props> = navigation => {
 
   return (
     <>
-      {/*TODO: 이미지 받아와야 함*/}
       <StoreTitleInfo></StoreTitleInfo>
       <TabView></TabView>
       <SafeAreaView style={styles.OrderBtnWrapper}>
@@ -57,60 +56,28 @@ export const StoreDetail: FC<Props> = navigation => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: 375,
-    height: '30%',
-  },
-  titleInfo: {
-    top: '25%',
-    position: 'absolute',
-    width: 350,
-    height: 146,
-    alignSelf: 'center',
-    borderRadius: 13,
-    backgroundColor: AppStyles.color.white,
-    justifyContent: 'space-between',
-    alignContent: 'center',
-    padding: AppStyles.padding.small,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 10,
-          height: 10,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
-  },
-  userOptionWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  userOption: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '50%',
-  },
-  heart: {
-    position: 'absolute',
-    right: 1,
-    marginRight: 20,
-    marginTop: 20,
-  },
   OrderBtnWrapper: {
     backgroundColor: AppStyles.color.white,
     position: 'absolute',
     bottom: 1,
     width: '100%',
-    height: 105,
+    height: '11%',
     alignSelf: 'center',
-    zIndex: 10,
-    elevation: Platform.OS === 'android' ? 50 : 0,
+    // elevation: Platform.OS === 'android' ? 50 : 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 1,
+          height: 1,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 50,
+      },
+    }),
   },
   OrderBtn: {
     height: 44,

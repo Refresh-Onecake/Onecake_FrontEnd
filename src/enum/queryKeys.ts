@@ -8,4 +8,6 @@ export const queryKeys = {
   sellerOrderList: ['sellerOrderList'] as const,
   sellerOrderSheet: ['sellerOrderSheet'] as const,
   storeTitleInfo: ['storeTitleInfo'] as const,
+  storeCakeList: ['storeCakeList'] as const,
+  storeInfo: ['storeInfo'] as const,
 };

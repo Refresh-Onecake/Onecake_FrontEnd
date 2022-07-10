@@ -2,29 +2,68 @@ import axios from 'axios';
 import {appKeys} from '../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://15.165.27.120:8080';
+const baseURL = 'http://15.165.27.120:8080/api/v1/consumer/stores/';
 
-export type IstoreTitleInfo = {
-  likedNum: number;
-  reviewNum: number;
-  storeDescription: string;
+export type IStoreTitleInfo = {
   storeImage: string;
   storeName: string;
+  storeDescription: string;
+  isLiked: boolean;
+  likeNum: number;
+};
+
+export type ICakeList = {
+  image: string;
+  menuName: string;
+  menuDescription: string;
+  price: string;
+};
+
+export type IStoreInfo = {
+  operatingTime: string;
+  dayOff: string;
+  address: string;
+  storeDescription: string;
 };
 
 export const getStoreTitleInfo = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
-    const response = await fetch(
-      `${baseURL}/api/v1/consumer/stores/${storeId}/mainInfo`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await fetch(`${baseURL}${storeId}/mainInfo`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
+    return response;
+  }
+};
+
+export const getCakeList = async (storeId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(`${baseURL}${storeId}/menuList`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  }
+};
+
+export const getStoreInfo = async (storeId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(`${baseURL}${storeId}/storeInfo`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response;
   }
 };

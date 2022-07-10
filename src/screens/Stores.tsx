@@ -16,9 +16,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from '../enum';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
+import {storeIdState} from '../recoil/atom';
+import {useRecoilState} from 'recoil';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [role, setRole] = useState<string>();
+  const [storeId, setStoreId] = useRecoilState(storeIdState);
   const [error, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
@@ -40,7 +43,10 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
         <>
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate('StoreDetail', {storeId: 1})}>
+            onPress={() => {
+              setStoreId(1);
+              navigation.navigate('StoreDetail');
+            }}>
             <Icon
               size={18}
               style={{position: 'absolute', right: 0}}

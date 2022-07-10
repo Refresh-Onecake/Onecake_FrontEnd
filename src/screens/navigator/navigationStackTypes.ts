@@ -16,7 +16,7 @@ export type RootStackParamList = {
   EnterMenu: undefined;
   EnterMenuSheet: undefined;
   //가게 관련
-  StoreDetail: {storeId: number};
+  StoreDetail: undefined;
   StackNavigator: {
     screen?: string | undefined;
   };

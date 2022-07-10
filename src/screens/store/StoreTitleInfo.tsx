@@ -4,42 +4,25 @@ import {
   View,
   Image,
   SafeAreaView,
+  TouchableOpacity,
   Platform,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {getStoreTitleInfo, IstoreTitleInfo} from '../../services/storeService';
-import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
+import {useQuery} from 'react-query';
 import {queryKeys} from '../../enum';
+import {useRecoilValue} from 'recoil';
+import {storeIdState} from '../../recoil/atom';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function StoreTitleInfo(storeId: number) {
-  // const getStoreDetailInfo = async () => {
-  //   // const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
-  //   const response = await fetch(
-  //     `${baseURL}/api/v1/consumer/stores/1/mainInfo`,
-  //     {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY1Njg3MzQ1M30.O3I4pIvxt0_lk-CkSBVVHUpcsLh_sWf5R9yNlyVP-_z7S8VDOW1574GrADuIh083erLf4JeehGcvRsbYN2_G7Q`,
-  //       },
-  //     },
-  //   )
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       IStoreDetailInfo.likedNum = data.likedNum;
-  //       IStoreDetailInfo.storeDescription = data.storeDescription;
-  //       IStoreDetailInfo.storeName = data.storeName;
-  //       console.log(data);
-  //     })
-  //     .catch(error => {
-  //       console.error('실패:', error);
-  //     });
-  // };
+export const StoreTitleInfo: FC = () => {
+  const storeId = useRecoilValue(storeIdState);
 
   const {data} = useQuery<IstoreTitleInfo>(
-    queryKeys.sellerMenuList,
+    queryKeys.storeTitleInfo,
     async () =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       await getStoreTitleInfo(storeId).then(res => {
         if (!res?.ok) {
           throw new Error(res?.status.toString());
@@ -72,27 +55,45 @@ export default function StoreTitleInfo(storeId: number) {
               fontSize: AppStyles.font.title,
               marginBottom: 10,
             }}>
-            {/*TODO: 받아와야 함*/}
             {data?.storeName}
           </Text>
-          {/*TODO: 설명 받아와야 함*/}
-          <Text>{data?.storeDescription}</Text>
+          <Text
+            style={{
+              fontSize: AppStyles.font.subTitle,
+              marginBottom: 20,
+            }}>
+            {data?.storeDescription}
+          </Text>
         </View>
         <View style={styles.userOptionWrapper}>
           <View
             style={[
               styles.userOption,
               {borderRightWidth: 1, borderColor: AppStyles.color.border},
-            ]}></View>
+            ]}>
+            {/*TODO: 눌렀을 때 색 채워지기, 개수 받아오기.*/}
+            <Icon size={15} name="heart-outline"></Icon>
+            <Text style={{marginLeft: 5, marginRight: 5}}>찜</Text>
+            {/* <Text>data?.storeLikeNum</Text> */}
+            <Text>개수</Text>
+          </View>
+          <TouchableOpacity style={styles.userOption}>
+            <Icon
+              style={{marginRight: 5}}
+              size={15}
+              name="chat-processing-outline"></Icon>
+            <Text>상담하기</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   image: {
-    width: 375,
+    width: '100%',
     height: '30%',
   },
   userOptionWrapper: {
@@ -101,14 +102,15 @@ const styles = StyleSheet.create({
   },
   userOption: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     width: '50%',
   },
   titleInfo: {
-    top: '25%',
+    top: '26%',
     position: 'absolute',
-    width: 350,
-    height: 146,
+    width: 370,
+    height: 147,
     alignSelf: 'center',
     borderRadius: 13,
     backgroundColor: AppStyles.color.white,

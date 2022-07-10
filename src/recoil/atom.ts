@@ -2,7 +2,7 @@ import {atom} from 'recoil';
 import {IFetchMenu} from '../screens/enterMenu';
 import {IRefreshToken} from '../services';
 import moment from 'moment';
-import {appKeys} from '../enum';
+import {appKeys, storeTabKeys} from '../enum';
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
 });
@@ -39,4 +39,14 @@ export const currentYearState = atom<number>({
 export const orderListModalState = atom<string>({
   key: 'orderListModalState',
   default: appKeys.orderList,
+});
+
+export const storeIdState = atom<number>({
+  key: 'storeIdState',
+  default: 0,
+});
+
+export const currentTabState = atom<string>({
+  key: 'currentTabState',
+  default: storeTabKeys.menu,
 });

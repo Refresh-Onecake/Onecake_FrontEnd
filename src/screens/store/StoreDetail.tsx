@@ -9,21 +9,22 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import React, {FC, useRef, useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AppStyles} from '../../styles/AppStyles';
 import {BottomSheet, Button} from '../../components';
 import TabView from './TabView';
 import {IstoreTitleInfo, getCakeSize} from '../../services/storeService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from '../../enum';
-import StoreTitleInfo from './StoreTitleInfo';
+import {StoreTitleInfo} from './StoreTitleInfo';
+import {storeIdState} from '../../recoil/atom';
+import {useRecoilValue} from 'recoil';
 
 type Props = StackScreenProps<RootStackParamList, 'StoreDetail'>;
 
-export const StoreDetail: FC<Props> = ({route, navigation}) => {
-  const storeId = route.params;
-  console.log(storeId);
+export const StoreDetail: FC<Props> = navigation => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const storeId = useRecoilValue(storeIdState);
 
   const showOrderList = async (storeId: number) => {
     const data = await getCakeSize(storeId);
@@ -32,21 +33,11 @@ export const StoreDetail: FC<Props> = ({route, navigation}) => {
 
   return (
     <>
-      {/*TODO: 눌렀을 때 색 채워지기*/}
-      <Icon size={24} name="heart-outline" style={styles.heart}></Icon>
       {/*TODO: 이미지 받아와야 함*/}
-      <StoreTitleInfo storeId={storeId}></StoreTitleInfo>
+      <StoreTitleInfo></StoreTitleInfo>
       <TabView></TabView>
       <SafeAreaView style={styles.OrderBtnWrapper}>
         {/* TODO: 주문서 */}
-        <View
-          style={{
-            width: '100%',
-            height: 40,
-            backgroundColor: 'red',
-            zIndex: 5,
-            position: 'absolute',
-          }}></View>
         <View style={styles.OrderBtn}>
           <Button
             text="주문서 작성하기"

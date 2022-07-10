@@ -14,6 +14,7 @@ import {useQuery, useQueryClient} from 'react-query';
 import {getCakeList, ICakeList} from '../../services/storeService';
 import {queryKeys} from '../../enum';
 import {FlatList} from 'react-native-gesture-handler';
+import {AppStyles} from '../../styles/AppStyles';
 
 export const CakeList: FC = () => {
   const queryClient = useQueryClient();
@@ -47,11 +48,13 @@ export const CakeList: FC = () => {
 
   const renderItem = (item: ListRenderItemInfo<ICakeList>) => {
     return (
-      <View>
+      <View style={styles.listView}>
         <Image style={styles.image} source={{uri: item.item.image}}></Image>
-        <Text>{item.item.menuName}</Text>
-        <Text>{item.item.menuDescription}</Text>
-        <Text>{item.item.price}</Text>
+        <View style={styles.infos}>
+          <Text style={styles.cakeTitle}>{item.item.menuName}</Text>
+          <Text style={styles.desc}>{item.item.menuDescription}</Text>
+          <Text style={styles.price}>{item.item.price}~</Text>
+        </View>
       </View>
     );
   };
@@ -64,8 +67,31 @@ export const CakeList: FC = () => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: 65,
-    height: 65,
+  listView: {
+    borderWidth: 0.7,
+    borderColor: AppStyles.color.border,
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    flex: 1,
+    flexDirection: 'row',
   },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 13,
+    alignSelf: 'center',
+  },
+  infos: {
+    flex: 1,
+    flexDirection: 'column',
+    marginLeft: 16,
+  },
+  cakeTitle: {
+    fontSize: AppStyles.font.middle,
+    fontWeight: '800',
+    marginBottom: 5,
+  },
+  desc: {marginBottom: 10},
+  price: {fontWeight: '600'},
 });

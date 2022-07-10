@@ -1,6 +1,6 @@
 import {
   Image,
-  ListRenderItem,
+  TouchableOpacity,
   ListRenderItemInfo,
   StyleSheet,
   Text,
@@ -15,6 +15,7 @@ import {getCakeList, ICakeList} from '../../services/storeService';
 import {queryKeys} from '../../enum';
 import {FlatList} from 'react-native-gesture-handler';
 import {AppStyles} from '../../styles/AppStyles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const CakeList: FC = () => {
   const queryClient = useQueryClient();
@@ -48,14 +49,15 @@ export const CakeList: FC = () => {
 
   const renderItem = (item: ListRenderItemInfo<ICakeList>) => {
     return (
-      <View style={styles.listView}>
+      <TouchableOpacity style={styles.listView}>
         <Image style={styles.image} source={{uri: item.item.image}}></Image>
         <View style={styles.infos}>
           <Text style={styles.cakeTitle}>{item.item.menuName}</Text>
           <Text style={styles.desc}>{item.item.menuDescription}</Text>
           <Text style={styles.price}>{item.item.price}~</Text>
+          <Icon style={styles.arrow} size={20} name="chevron-right"></Icon>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -94,4 +96,9 @@ const styles = StyleSheet.create({
   },
   desc: {marginBottom: 10},
   price: {fontWeight: '600'},
+  arrow: {
+    position: 'absolute',
+    right: 1,
+    top: '35%',
+  },
 });

@@ -16,102 +16,62 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {ISellerOrderList} from '../../services/orderService';
+import {
+  getSellerOrderList,
+  ISellerOrderList,
+} from '../../services/orderService';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';
 import {OrderManageContent} from '../../components';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {orderListModalState} from '../../recoil/atom';
-import {appKeys} from '../../enum';
+import {appKeys, orderStatusKeys, queryKeys} from '../../enum';
 import {OrderSheet} from './OrderSheet';
+import {useQuery} from 'react-query';
+import {useQueryRefetchingOnError} from '../../hooks';
 
 export type OrderManageListProps = {
-  orderData: ISellerOrderList[] | undefined;
   date: DateData | undefined;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
   close?: () => void;
 };
 export const OrderManageList: FC<OrderManageListProps> = ({
-  orderData,
   date,
   setModalVisible,
   close,
 }) => {
   const [orderListState, setOrderListState] =
     useRecoilState(orderListModalState);
-  const [received, setReceived] = useState<ISellerOrderList[]>([]);
-  const [accepted, setAccepted] = useState<ISellerOrderList[]>([]);
-  const [making, setMaking] = useState<ISellerOrderList[]>([]);
-  const [completed, setCompleted] = useState<ISellerOrderList[]>([]);
-  const [canceled, setCanceled] = useState<ISellerOrderList[]>([]);
 
-  const orderStatus = useMemo(() => {
-    return [
-      {
-        status: 'RECEIVED',
-        text: '주문 대기중',
-        data: received,
-      },
-      {
-        status: 'ACCEPTED',
-        text: '주문 완료',
-        data: accepted,
-      },
-      {
-        status: 'MAKING',
-        text: '제작중',
-        data: making,
-      },
-      {
-        status: 'COMPLETED',
-        text: '픽업 완료',
-        data: completed,
-      },
-      {
-        status: 'CANCELED',
-        text: '취소된 주문',
-        data: canceled,
-      },
-    ];
-  }, [accepted, canceled, completed, making, received]);
-
-  useEffect(() => {
-    if (orderListState === appKeys.orderList && orderData !== undefined) {
-      orderData.map(val => {
-        switch (val.status) {
-          case 'RECEIVED': {
-            setReceived(prev => [...prev, val]);
-            break;
-          }
-          case 'ACCEPTED': {
-            setAccepted(prev => [...prev, val]);
-            break;
-          }
-          case 'MAKING': {
-            setMaking(prev => [...prev, val]);
-            break;
-          }
-          case 'COMPLETED': {
-            setCompleted(prev => [...prev, val]);
-            break;
-          }
-          case 'CANCELED': {
-            setCanceled(prev => [...prev, val]);
-            break;
-          }
+  console.log(date?.dateString);
+  assert(
+    date !== undefined,
+    '특정 날짜의 주문을 보기 위해서는 날짜가 선택되어야한다.',
+  );
+  // 특정 날짜의 주문들 가져오기 위한 api
+  const {data, status} = useQuery<ISellerOrderList>(
+    queryKeys.sellerOrderList,
+    async () =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      await getSellerOrderList(date.dateString).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
         }
-      });
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(received);
-  //   console.log(accepted);
-  //   console.log(making);
-  //   console.log(completed);
-  //   console.log(canceled);
-  // }, [received, accepted, making, completed, canceled]);
+      }),
+    {
+      onError: err => {
+        console.log('특정 날짜의 주문을 보는 api에러 에러 발생');
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useQueryRefetchingOnError(err, queryKeys.sellerOrderList);
+      },
+      onSuccess: data => {
+        console.log(data);
+      },
+    },
+  );
 
   const BackBtnHandler = () => {
     orderListState === appKeys.orderList
@@ -136,18 +96,50 @@ export const OrderManageList: FC<OrderManageListProps> = ({
       </View>
       {orderListState === appKeys.orderList ? (
         <ScrollView style={{paddingTop: 10}}>
-          {orderStatus.map(({text, data}, idx) => (
-            <View key={idx} style={styles.contentView}>
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                  paddingBottom: 10,
-                  paddingTop: 24,
-                }}>
-                <OrderManageContent title={text} renderData={data} />
-              </View>
+          {data && (
+            <View>
+              {data.received.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.received}
+                    status={'주문대기중'}
+                  />
+                </View>
+              )}
+              {data.accepted.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.accepted}
+                    status={'주문완료'}
+                  />
+                </View>
+              )}
+              {data.making.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.making}
+                    status={'제작중'}
+                  />
+                </View>
+              )}
+              {data.completed.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.completed}
+                    status={'픽업 완로'}
+                  />
+                </View>
+              )}
+              {data.canceled.length > 0 && (
+                <View style={styles.contentView}>
+                  <OrderManageContent
+                    renderData={data.canceled}
+                    status={'취소된 주문'}
+                  />
+                </View>
+              )}
             </View>
-          ))}
+          )}
         </ScrollView>
       ) : (
         <>

@@ -1,7 +1,10 @@
 export const orderStatusKeys = {
-  주문대기중: 'RECEIVED',
-  주문완료: 'ACCEPTED',
-  제작중: 'MAKING',
-  픽업완료: 'COMPLETED',
-  취소된주문: 'CANCELED',
+  주문대기중: 'received',
+  주문완료: 'accepted',
+  제작중: 'making',
+  픽업완료: 'completed',
+  취소된주문: 'canceled',
 } as const;
+
+export type OrderStatusUnion =
+  typeof orderStatusKeys[keyof typeof orderStatusKeys];

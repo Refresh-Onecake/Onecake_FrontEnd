@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useQuery} from 'react-query';
+import {QueryClient, useQuery, useQueryClient} from 'react-query';
 import {DateData} from 'react-native-calendars';
 
 import {BottomSheet, ScrollCalendar} from '../../components';
@@ -25,33 +25,39 @@ export const SellerOrder = () => {
   const [clickedDate, setClickedDate] = useState<DateData>();
   const scrollYear = useRecoilValue(currentYearState);
 
-  const {data, status} = useQuery<ISellerOrderList[]>(
-    queryKeys.sellerOrderList,
-    async () =>
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      await getSellerOrderList().then(res => {
-        if (!res?.ok) {
-          console.log(res?.status.toString());
-          throw new Error(res?.status.toString());
-        } else {
-          if (res) return res.json();
-        }
-      }),
-    {
-      onError: err => {
-        console.log('여기서 떠야지 이놈아', err);
-      },
-      onSuccess: data => {
-        setOrderDate([]);
-        data.map((val, idx) => {
-          setOrderDate(prev => [...prev, val.orderDate]);
-        });
-      },
-    },
-  );
+  const queryClient = useQueryClient();
+
+  //주문 일자를 받아서 달력에 표시해주기 위한 query
+  // const {data, status} = useQuery<ISellerOrderList[]>(
+  //   queryKeys.sellerOrderList,
+  //   async () =>
+  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  //     await getSellerOrderList().then(res => {
+  //       if (!res?.ok) {
+  //         console.log(res?.status.toString());
+  //         throw new Error(res?.status.toString());
+  //       } else {
+  //         if (res) return res.json();
+  //       }
+  //     }),
+  //   {
+  //     onError: err => {
+  //       console.log('여기서 떠야지 이놈아', err);
+  //     },
+  //     onSuccess: data => {
+  //       setOrderDate([]);
+  //       data.map((val, idx) => {
+  //         setOrderDate(prev => [...prev, val.orderDate]);
+  //         console.log(orderDate);
+  //       });
+  //     },
+  //   },
+  // );
+
   const onDayPress = (date: DateData) => {
     setClickedDate(() => date);
     setModalVisible(true);
+    queryClient.invalidateQueries(queryKeys.sellerOrderList);
   };
 
   useEffect(() => {
@@ -90,7 +96,6 @@ export const SellerOrder = () => {
         height="100%">
         <View>
           <OrderManageList
-            orderData={data}
             date={clickedDate}
             setModalVisible={setModalVisible}
           />

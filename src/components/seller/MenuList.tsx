@@ -9,7 +9,7 @@ import {
   AppState,
   Platform,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import {getMenuList} from '../../services/menuService';
 import {QueryClient, useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../enum';
@@ -22,41 +22,14 @@ import {IMenuList} from '../../services/menuService';
 import {MenuRenderList} from './MenuRenderList';
 import {focusManager} from 'react-query';
 import {useIsFocused} from '@react-navigation/native';
+import {useQueryRefetchingOnError} from '../../hooks';
 
-export const MenuList = () => {
-  const queryClient = useQueryClient();
+export type MenuListProps = {
+  data: IMenuList[] | undefined;
+};
+export const MenuList: FC<MenuListProps> = ({data}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const {data, status} = useQuery<IMenuList[]>(
-    queryKeys.sellerMenuList,
-    async () =>
-      await getMenuList().then(res => {
-        if (!res?.ok) {
-          throw new Error(res?.status.toString());
-        } else {
-          if (res) return res.json();
-        }
-      }),
-    {
-      refetchOnWindowFocus: true,
-      retry: 10,
-      onSuccess: data => {
-        console.log(data);
-      },
-      onError: err => {
-        console.log('err');
-        const response = err as Error;
-        if (response.message === '401') {
-          queryClient.invalidateQueries(queryKeys.sellerMenuList);
-          console.log('쿼리 성공');
-        }
-      },
-    },
-  );
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    focusManager.setFocused(isFocused);
-  }, [isFocused]);
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 20}}>
       {data && data?.length > 0 ? (
@@ -72,7 +45,6 @@ export const MenuList = () => {
             />
           </View>
           <Text style={styles.title}>아직 등록된 메뉴가 없어요!</Text>
-
           <View style={styles.btnWrap}>
             <Button
               text="메뉴 추가하기"
@@ -103,20 +75,5 @@ const styles = StyleSheet.create({
     width: 270,
     height: 44,
     marginTop: 20,
-  },
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
-  // box-shadow: 0px 1px 9px 3px rgba(0, 0, 0, 0.07);
-  shadowView: {
-    ...Platform.select({
-      android: {
-        elevation: 3,
-      },
-      ios: {
-        shadowColor: '#000000',
-        shadowRadius: 9,
-        shadowOffset: {height: 1, width: 0},
-        shadowOpacity: 0.2,
-      },
-    }),
   },
 });

@@ -28,7 +28,7 @@ type ButtonProps = {
  *
  * 혹은 텍스트만 선언을 해주어도 됩니다.
  * <View style={{width: someWidth, height: someHeight}}>
- *   <Button title="버튼입니다." onPress={handleClick}/>
+ *   <Button text="버튼입니다." onPress={handleClick}/>
  * </View>
  */
 export const Button: FC<ButtonProps & TouchableOpacityProps> = ({

@@ -10,4 +10,5 @@ export const queryKeys = {
   storeTitleInfo: ['storeTitleInfo'] as const,
   storeCakeList: ['storeCakeList'] as const,
   storeInfo: ['storeInfo'] as const,
+  storeReviews: ['storeReviews'] as const,
 };

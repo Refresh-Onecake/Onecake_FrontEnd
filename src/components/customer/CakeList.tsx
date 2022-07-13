@@ -54,7 +54,7 @@ export const CakeList: FC = () => {
         <View style={styles.infos}>
           <Text style={styles.cakeTitle}>{item.item.menuName}</Text>
           <Text style={styles.desc}>{item.item.menuDescription}</Text>
-          <Text style={styles.price}>{item.item.price}~</Text>
+          <Text style={styles.price}>{item.item.price}원~</Text>
           <Icon style={styles.arrow} size={20} name="chevron-right"></Icon>
         </View>
       </TouchableOpacity>
@@ -70,13 +70,13 @@ export const CakeList: FC = () => {
 
 const styles = StyleSheet.create({
   listView: {
-    borderWidth: 0.7,
-    borderColor: AppStyles.color.border,
-    width: '100%',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderBottomColor: AppStyles.color.border,
+    borderBottomWidth: 0.7,
+    width: '90%',
+    paddingVertical: 15,
     flex: 1,
     flexDirection: 'row',
+    alignSelf: 'center',
   },
   image: {
     width: 70,

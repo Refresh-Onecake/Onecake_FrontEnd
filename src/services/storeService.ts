@@ -26,11 +26,20 @@ export type IStoreInfo = {
   storeDescription: string;
 };
 
+export type IReviewNume = {
+  reviewNum: number;
+};
+
 export type IReview = {
-  profileImg: string;
-  userName: string;
-  timeHistory: string;
-  content: string;
+  reviewNum: number;
+  reviews: [
+    {
+      profileImg: string;
+      userName: string;
+      timeHistory: string;
+      content: string;
+    },
+  ];
 };
 
 export const getStoreTitleInfo = async (storeId: number) => {
@@ -65,6 +74,20 @@ export const getStoreInfo = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(`${baseURL}${storeId}/storeInfo`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  }
+};
+
+export const getReviews = async (storeId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(`${baseURL}review/${storeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

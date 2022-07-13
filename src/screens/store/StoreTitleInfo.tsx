@@ -89,6 +89,7 @@ export const StoreTitleInfo: FC = () => {
           <Text
             style={{
               fontSize: AppStyles.font.title,
+              fontWeight: '800',
             }}>
             {data?.storeName}
           </Text>

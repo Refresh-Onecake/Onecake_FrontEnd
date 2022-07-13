@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -10,10 +10,14 @@ import Contact from '../Contact';
 import MyPage from '../MyPage';
 
 import {AppStyles} from '../../styles/AppStyles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {appKeys} from '../../enum';
+import {useAsync} from '../../hooks';
 
 const Tab = createBottomTabNavigator();
 
 export const MainNavigator = () => {
+  const [role, setRole] = useState<string | null>();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -24,18 +28,36 @@ export const MainNavigator = () => {
         name="홈"
         component={Home}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="home-heart" color={color} size={size} />
-          ),
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                style={{width: 20, height: 20}}
+                source={
+                  focused
+                    ? require('../../asset/home_active.png')
+                    : require('../../asset/home_none.png')
+                }
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
         name="가게"
         component={Stores}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="storefront-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                style={{width: 21, height: 21}}
+                source={
+                  focused
+                    ? require('../../asset/store_active.png')
+                    : require('../../asset/store_none.png')
+                }
+              />
+            );
+          },
           headerShown: true,
           headerTitle: '메뉴 관리',
         }}
@@ -44,27 +66,56 @@ export const MainNavigator = () => {
         name="주문"
         component={Order}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="calendar-month-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                style={{width: 20, height: 20}}
+                source={
+                  focused
+                    ? require('../../asset/calendar_active.png')
+                    : require('../../asset/calendar_none.png')
+                }
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
         name="상담"
         component={Contact}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="chat-processing-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                style={{width: 22, height: 22}}
+                source={
+                  focused
+                    ? require('../../asset/message_active.png')
+                    : require('../../asset/message_none.png')
+                }
+              />
+            );
+          },
+          headerShown: true,
+          headerTitle: '주문 상담',
         }}
       />
       <Tab.Screen
         name="마이페이지"
         component={MyPage}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="account-circle-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({focused}) => {
+            return (
+              <Image
+                style={{width: 20, height: 20}}
+                source={
+                  focused
+                    ? require('../../asset/people_active.png')
+                    : require('../../asset/people_none.png')
+                }
+              />
+            );
+          },
         }}
       />
     </Tab.Navigator>

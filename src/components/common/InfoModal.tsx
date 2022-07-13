@@ -28,7 +28,7 @@ const InfoModal: FC<InfoModalProps> = ({modalVisible, setModalVisible}) => {
             source={require('../../asset/checkIcon.png')}
           />
           <Text style={styles.title}>런칭 준비중</Text>
-          <Text style={styles.text}>현재기능은 현재 런칭 준비중입니다.</Text>
+          <Text style={styles.text}>해당 기능은 현재 런칭 준비중입니다.</Text>
 
           <View style={styles.flex} />
           <TouchableOpacity

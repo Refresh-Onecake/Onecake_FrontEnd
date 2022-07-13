@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     marginTop: 31,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
   },
   modal: {
     padding: AppStyles.padding.screen,

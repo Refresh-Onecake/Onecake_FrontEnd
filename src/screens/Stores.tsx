@@ -34,7 +34,7 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
 
   return (
     <SafeAreaView style={styles.view}>
-      {role === '' ? (
+      {role === 'SELLER' ? (
         // TODO: 사장님 페이지
         <>
           <MenuList />

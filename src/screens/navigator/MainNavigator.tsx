@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -23,6 +23,16 @@ export const MainNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: AppStyles.color.hotPink,
+        tabBarStyle: {
+          ...Platform.select({
+            ios: {
+              shadowColor: '#000000',
+              shadowRadius: 9,
+              shadowOffset: {height: -20, width: 0},
+              shadowOpacity: 0.05,
+            },
+          }),
+        },
       }}>
       <Tab.Screen
         name="홈"

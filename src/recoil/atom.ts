@@ -1,6 +1,8 @@
 import {atom} from 'recoil';
-import {IFetchMenu,} from '../screens/enterMenu';
-
+import {IFetchMenu} from '../screens/enterMenu';
+import {IRefreshToken} from '../services';
+import moment from 'moment';
+import {appKeys, storeTabKeys} from '../enum';
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
 });
@@ -19,4 +21,32 @@ export const cakeInfoState = atom<string[]>({
     '레터링 문구',
     '레퍼런스 사진',
   ],
+});
+
+export const accessTokenState = atom<IRefreshToken>({
+  key: 'accessTokenState',
+  default: {
+    accessToken: '',
+    refreshToken: '',
+  },
+});
+
+export const currentYearState = atom<number>({
+  key: 'currentYearState',
+  default: moment().year(),
+});
+
+export const orderListModalState = atom<string>({
+  key: 'orderListModalState',
+  default: appKeys.orderList,
+});
+
+export const storeIdState = atom<number>({
+  key: 'storeIdState',
+  default: 0,
+});
+
+export const currentTabState = atom<string>({
+  key: 'currentTabState',
+  default: storeTabKeys.menu,
 });

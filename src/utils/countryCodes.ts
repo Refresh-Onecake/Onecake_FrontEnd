@@ -4,6 +4,10 @@ export type ICountryCode = {
   code: string;
 };
 
+/**
+ * @author min
+ * @description 국가 이름, 국가 코드, 국가 전화 코드가 담긴 json 파일입니다.
+ */
 export const countryCodes = [
   {
     name: 'Afghanistan',

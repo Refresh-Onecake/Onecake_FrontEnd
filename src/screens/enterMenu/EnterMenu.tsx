@@ -1,7 +1,6 @@
 import {
   Image,
   Modal,
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -9,24 +8,25 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useMutation} from 'react-query';
+
 import {RootStackParamList} from '../navigator';
 import {AppStyles} from '../../styles/AppStyles';
 import {Controller, useForm} from 'react-hook-form';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {IEnterMenuInputForm} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {FlatList} from 'react-native-gesture-handler';
 import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
 import {useSetRecoilState} from 'recoil';
 import {storeMenuState} from '../../recoil/atom';
-import {useMutation} from 'react-query';
 import {fetchEnterPicture} from '../../services';
-import {Platform} from 'react-native';
+
 export const EnterMenu = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
@@ -94,16 +94,24 @@ export const EnterMenu = ({
   // }, [watch]);
 
   const pictureMutation = useMutation(
-    (pictureObj: IStoreImg) => fetchEnterPicture(pictureObj),
+    async (pictureObj: IStoreImg) =>
+      await fetchEnterPicture(pictureObj).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
     {
       onSuccess: data => {
         console.log(data);
         console.log('사진등록 성공');
+
         setMenuState(prev => ({...prev, cakeImage: data}));
         navigation.navigate('EnterMenuSheet');
       },
       onError: e => {
-        console.error(e);
+        console.log(e);
       },
     },
   );

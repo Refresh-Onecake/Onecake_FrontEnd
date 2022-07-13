@@ -27,6 +27,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'no-shadow': 'off',
         'no-undef': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-shadow': 'off',
         '@typescript-eslint/no-misused-promises': [

@@ -167,7 +167,14 @@ const styles = StyleSheet.create({
     height: 15,
     width: 15,
   },
-  btn: {width: 304, height: 44, alignSelf: 'center'},
+  btn: {
+    width: 304,
+    height: 44,
+    alignSelf: 'center',
+    bottom: 1,
+    position: 'absolute',
+    marginBottom: '5%',
+  },
   titleInfo: {
     top: '26%',
     position: 'absolute',
@@ -208,11 +215,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   speaker: {
-    height: 270,
-    width: 300,
+    height: 250,
+    width: 200,
+    marginTop: '5%',
     alignSelf: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
   },
 });

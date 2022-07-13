@@ -26,10 +26,15 @@ export const TabView = () => {
         {tabList.map((val, idx) => (
           <TouchableOpacity
             key={idx}
-            style={styles.indicator}
             onPress={() => {
               setCurrentTab(val);
-            }}>
+            }}
+            style={[
+              styles.indicator,
+              currentTab === val
+                ? styles.seletedIndicator
+                : styles.unSelectedIndicator,
+            ]}>
             <Text>{val}</Text>
           </TouchableOpacity>
         ))}
@@ -64,5 +69,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '39%',
     backgroundColor: AppStyles.color.white,
+  },
+  seletedIndicator: {
+    borderTopColor: AppStyles.color.hotPink,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderRightColor: AppStyles.color.lightGray,
+    borderLeftColor: AppStyles.color.lightGray,
+  },
+  unSelectedIndicator: {
+    borderBottomColor: AppStyles.color.lightGray,
+    borderBottomWidth: 1,
   },
 });

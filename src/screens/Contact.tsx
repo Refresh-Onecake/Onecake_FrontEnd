@@ -11,11 +11,14 @@ import {AppStyles} from '../styles/AppStyles';
 import {Button} from '../components';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
-import {appKeys} from '../enum';
+import {appKeys, queryKeys} from '../enum';
+import {useQuery, useQueryClient} from 'react-query';
+import {getSellerChatAddress} from '../services';
 
 const Contact = () => {
+  const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
-  const [error, resetError] = useAsync(async () => {
+  const [roleTokenError, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
       appKeys.roleTokenKey,
@@ -25,8 +28,37 @@ const Contact = () => {
     }
   });
 
+  const {data, refetch} = useQuery(
+    queryKeys.sellerChatAddress,
+    async () =>
+      await getSellerChatAddress().then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      onSuccess: data => {
+        console.log('이거 맞냐?');
+        console.log(data);
+      },
+      onError: err => {
+        console.log('셀러 URL 가져오기 오류');
+        const response = err as Error;
+        if (response.message === '401') {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+          queryClient.invalidateQueries(queryKeys.sellerChatAddress);
+          console.log(`${queryKeys.sellerChatAddress.toString()} 쿼리 성공`);
+        }
+      },
+    },
+  );
+
   const onClickOpenChat = useCallback(() => {
-    Linking.openURL('http://pf.kakao.com/_pRxlZxb');
+    // Linking.openURL('http://pf.kakao.com/_pRxlZxb');
+    refetch();
+    console.log(data);
   }, []);
 
   return (

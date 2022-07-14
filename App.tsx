@@ -13,6 +13,7 @@ import {MainNavigator, StackNavigator} from './src/screens/navigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys, queryKeys} from './src/enum';
 import {IRefreshTokenData, refetchToken} from './src/services';
+import {useAsync} from './src/hooks';
 
 interface IError {
   message: string;
@@ -44,7 +45,6 @@ const queryClient = new QueryClient({
 
 export default function App() {
   const RootStack = createStackNavigator<RootStackParamList>();
-
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>

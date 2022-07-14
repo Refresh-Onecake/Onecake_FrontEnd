@@ -42,3 +42,21 @@ export const fetchStoreEnterMenu = async (data: IFetchMenu) => {
     return response;
   }
 };
+
+export const deleteMenu = async (menuId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `http://15.165.27.120:8080/api/v1/seller/store/menu${menuId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response;
+  } else {
+    throw new Error('401');
+  }
+};

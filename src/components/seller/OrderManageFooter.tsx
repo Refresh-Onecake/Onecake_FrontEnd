@@ -86,7 +86,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     ChangeStatusMutation.mutate(orderId);
   };
 
-  const handleClickCancelOderSheet = () => {
+  const handleClickCancelOrderSheet = () => {
     cancelOrderSheetMutation.mutate({orderId, cancelReason});
   };
   return (
@@ -129,8 +129,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
               </View>
             </View>
           ),
-          ['CANCELED'.toString()]: <></>,
-          [orderStatusKeys.취소된주문]: (
+          ['CANCELED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button
@@ -156,7 +155,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
             selectedItem={cancelReason}
           />
           <View style={styles.modalBtnWrap}>
-            <Button text="취소하기" onPress={handleClickCancelOderSheet} />
+            <Button text="취소하기" onPress={handleClickCancelOrderSheet} />
           </View>
         </SafeAreaView>
       </Modal>

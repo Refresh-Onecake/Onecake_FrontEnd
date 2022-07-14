@@ -78,9 +78,9 @@ export const SellerOrder = () => {
           ]}>
           주문
         </Text>
-        <TouchableOpacity>
+        <View>
           <Text style={styles.headerText}>휴무</Text>
-        </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.week}>
         {WEEK.map((val, idx) => (

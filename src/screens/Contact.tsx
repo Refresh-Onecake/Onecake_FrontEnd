@@ -6,30 +6,51 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import {Button} from '../components';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
+import {appKeys} from '../enum';
 
 const Contact = () => {
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
+
   const onClickOpenChat = useCallback(() => {
     Linking.openURL('http://pf.kakao.com/_pRxlZxb');
   }, []);
+
   return (
     <SafeAreaView style={styles.view}>
-      <SafeAreaView style={styles.flex}>
-        <View>
-          <Image
-            style={{width: 318, height: 318}}
-            source={require('../asset/menuListNone.png')}
-          />
-        </View>
-        <Text style={styles.title}>
-          주문 상담은 카카오톡 체널로 진행합니다.
-        </Text>
-        <View style={styles.btnWrap}>
-          <Button text="카카오톡 체널로 이동" onPress={onClickOpenChat} />
-        </View>
-      </SafeAreaView>
+      {role === appKeys.seller ? (
+        <>
+          <SafeAreaView style={styles.flex}>
+            <View>
+              <Image
+                style={{width: 318, height: 318}}
+                source={require('../asset/menuListNone.png')}
+              />
+            </View>
+            <Text style={styles.title}>
+              주문 상담은 카카오톡 체널로 진행합니다.
+            </Text>
+            <View style={styles.btnWrap}>
+              <Button text="카카오톡 체널로 이동" onPress={onClickOpenChat} />
+            </View>
+          </SafeAreaView>
+        </>
+      ) : (
+        <></>
+      )}
     </SafeAreaView>
   );
 };

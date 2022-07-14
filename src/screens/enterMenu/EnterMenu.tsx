@@ -87,13 +87,6 @@ export const EnterMenu = ({
     menuImg && setValue('cakeImage', menuImg);
   }, [menuImg]);
 
-  // React.useEffect(() => {
-  //   const subscription = watch((value, {name, type}) =>
-  //     console.log(value, name, type),
-  //   );
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
   const pictureMutation = useMutation(
     async (pictureObj: IStoreImg) =>
       await fetchEnterPicture(pictureObj).then(async res => {

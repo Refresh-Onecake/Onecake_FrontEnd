@@ -25,8 +25,8 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
   const openDropdown = useCallback(() => {
     DropdownButton.current?.measure((_fx, _fy, _w, h, _px, py) => {
       console.log(py, _px, _w);
-      setDropdownTop(py);
-      setDropdownLeft(_px);
+      setDropdownTop(py + 20);
+      setDropdownLeft(_px - 185.44);
       setDropdownWidth(_w);
     });
     setVisible(true);

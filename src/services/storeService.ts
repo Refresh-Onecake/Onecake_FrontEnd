@@ -26,11 +26,7 @@ export type IStoreInfo = {
   storeDescription: string;
 };
 
-export type IReviewNume = {
-  reviewNum: number;
-};
-
-export type IReview = {
+export type IReviews = {
   reviewNum: number;
   reviews: [
     {

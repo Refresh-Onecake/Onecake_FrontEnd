@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {FC} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import {getReviews, IReview} from '../../services/storeService';
+import {getReviews, IReviews} from '../../services/storeService';
 import {AppStyles} from '../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
 import {useRecoilValue} from 'recoil';
@@ -19,7 +19,7 @@ export const Review: FC = () => {
   const queryClient = useQueryClient();
   const storeId = useRecoilValue(storeIdState);
 
-  const {data} = useQuery<IReview>(
+  const {data} = useQuery<IReviews>(
     queryKeys.storeReviews,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -49,7 +49,7 @@ export const Review: FC = () => {
     },
   );
 
-  const renderItem = (item: ListRenderItemInfo<IReview>) => {
+  const renderItem = (item: ListRenderItemInfo<IReviews>) => {
     const review = item.item;
     return (
       <View style={styles.wrapper}>

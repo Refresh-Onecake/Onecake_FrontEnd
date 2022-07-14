@@ -14,10 +14,14 @@ import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys, queryKeys} from '../enum';
 import {useQuery, useQueryClient} from 'react-query';
 import {getSellerChatAddress} from '../services';
+import {useGetSellerChatUrlQuery} from '../hooks/useGetSellerChatUrlQuery';
+import InfoModal from '../components/common/InfoModal';
 
 const Contact = () => {
   const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
+  const [url, setUrl] = useState<string>();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [roleTokenError, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
@@ -28,37 +32,10 @@ const Contact = () => {
     }
   });
 
-  const {data, refetch} = useQuery(
-    queryKeys.sellerChatAddress,
-    async () =>
-      await getSellerChatAddress().then(res => {
-        if (!res?.ok) {
-          throw new Error(res?.status.toString());
-        } else {
-          if (res) return res.text();
-        }
-      }),
-    {
-      onSuccess: data => {
-        console.log('이거 맞냐?');
-        console.log(data);
-      },
-      onError: err => {
-        console.log('셀러 URL 가져오기 오류');
-        const response = err as Error;
-        if (response.message === '401') {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          queryClient.invalidateQueries(queryKeys.sellerChatAddress);
-          console.log(`${queryKeys.sellerChatAddress.toString()} 쿼리 성공`);
-        }
-      },
-    },
-  );
-
+  const {data, refetch} = useGetSellerChatUrlQuery(queryClient);
   const onClickOpenChat = useCallback(() => {
-    // Linking.openURL('http://pf.kakao.com/_pRxlZxb');
     refetch();
-    console.log(data);
+    data === undefined ? setModalVisible(true) : Linking.openURL(data);
   }, []);
 
   return (
@@ -78,6 +55,12 @@ const Contact = () => {
             <View style={styles.btnWrap}>
               <Button text="카카오톡 채널로 이동" onPress={onClickOpenChat} />
             </View>
+            <InfoModal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              title={'카카오톡 채널'}
+              subTitle={'카카오톡 채널을 등록해주세요!'}
+            />
           </SafeAreaView>
         </>
       ) : (

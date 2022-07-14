@@ -20,6 +20,14 @@ type InfoModalProps = {
   subTitle: string;
 };
 
+/**
+ * @Author min
+ * @description 간단한 안내 메시지를 표시할때 사용합니다.
+ * @param modalVisible boolean
+ * @param setModalVisible Dispatch<SetStateAction<boolean>>
+ * @param title 모달 상단에 표시해줄 텍스트
+ * @param subTitle 모달 본문 텍스트
+ */
 const InfoModal: FC<InfoModalProps> = ({
   modalVisible,
   setModalVisible,

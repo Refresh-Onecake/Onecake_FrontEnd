@@ -16,9 +16,16 @@ import {AppStyles} from '../../styles/AppStyles';
 type InfoModalProps = {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
+  title: string;
+  subTitle: string;
 };
 
-const InfoModal: FC<InfoModalProps> = ({modalVisible, setModalVisible}) => {
+const InfoModal: FC<InfoModalProps> = ({
+  modalVisible,
+  setModalVisible,
+  title = '런칭 준비중',
+  subTitle = '해당 기능은 현재 런칭 준비중입니다.',
+}) => {
   return (
     <Modal visible={modalVisible} animationType="fade" transparent={true}>
       <SafeAreaView style={styles.centeredView}>
@@ -27,8 +34,8 @@ const InfoModal: FC<InfoModalProps> = ({modalVisible, setModalVisible}) => {
             style={{width: 53, height: 53, marginTop: 43}}
             source={require('../../asset/checkIcon.png')}
           />
-          <Text style={styles.title}>런칭 준비중</Text>
-          <Text style={styles.text}>해당 기능은 현재 런칭 준비중입니다.</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.text}>{subTitle}</Text>
 
           <View style={styles.flex} />
           <TouchableOpacity

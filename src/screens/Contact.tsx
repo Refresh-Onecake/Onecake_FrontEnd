@@ -41,10 +41,10 @@ const Contact = () => {
               />
             </View>
             <Text style={styles.title}>
-              주문 상담은 카카오톡 체널로 진행합니다.
+              주문 상담은 카카오톡 채널로 진행합니다.
             </Text>
             <View style={styles.btnWrap}>
-              <Button text="카카오톡 체널로 이동" onPress={onClickOpenChat} />
+              <Button text="카카오톡 채널로 이동" onPress={onClickOpenChat} />
             </View>
           </SafeAreaView>
         </>

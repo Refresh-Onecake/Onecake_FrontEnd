@@ -7,6 +7,7 @@ export type IMenuList = {
   menuName: string;
   menuDescription: string;
   price: number;
+  id: number;
 };
 
 export const getMenuList = async () => {
@@ -47,7 +48,7 @@ export const deleteMenu = async (menuId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/menu${menuId}`,
+      `http://15.165.27.120:8080/api/v1/seller/store/menu/${menuId}`,
       {
         method: 'DELETE',
         headers: {

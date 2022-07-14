@@ -8,31 +8,36 @@ import {
   SafeAreaView,
   View,
 } from 'react-native';
-import React, {useState, useRef, Fragment} from 'react';
+import React, {useState, useRef, Fragment, useEffect} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 
 import {appKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
+import InfoModal from '../../components/common/InfoModal';
 
 export const SelectUserType = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
   // checkIcon 하기 위한 것
-  const [selectedUser, setSelectedUser] = useState<string>(appKeys.consumer);
-
+  const [selectedUser, setSelectedUser] = useState<string>(appKeys.seller);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const userTypeList = [appKeys.consumer, appKeys.seller];
 
   const goToSignUp = (userType: string) => {
     console.log(userType);
     userType === appKeys.consumer
-      ? navigation.navigate('SignUp', {
-          userType: appKeys.consumer,
-        })
+      ? setModalVisible(true)
       : navigation.navigate('SignUp', {
           userType: appKeys.seller,
         });
   };
+
+  useEffect(() => {
+    if (selectedUser === appKeys.consumer) {
+      setModalVisible(true);
+    }
+  }, [selectedUser]);
 
   return (
     <Fragment>
@@ -85,6 +90,10 @@ export const SelectUserType = ({
         </Pressable>
       </SafeAreaView>
       <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
+      <InfoModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </Fragment>
   );
 };

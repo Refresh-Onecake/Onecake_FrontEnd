@@ -2,30 +2,104 @@ import {Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {FC, useState} from 'react';
 import Modal from 'react-native-modal';
 
-import {orderStatusKeys} from '../../enum';
+import {orderStatusKeys, queryKeys} from '../../enum';
 import {Button} from '../common/Button';
 import {AppStyles} from '../../styles/AppStyles';
 import {ModalHeader} from '../common/ModalHeader';
 import {RadioList} from '../common/RadioList';
+import {
+  orderSheetCancel,
+  orderSheetChangeState,
+} from '../../services/orderService';
+import {useMutation, useQueryClient} from 'react-query';
+import {getMultipleData} from '../../../App';
+import {refetchToken} from '../../services';
+import {useRecoilValue} from 'recoil';
+import {orderSheetIdState} from '../../recoil/atom';
 
 type OrderManageFooterProps = {
-  status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
+  // status: typeof orderStatusKeys[keyof typeof orderStatusKeys];
+  state: string;
 };
-
 export const cancelReasonList = ['고객 요청', '가게 사정', '재료 소진', '기타'];
 
-export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
+export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [cancelReason, setCancelReason] = useState<string>('');
+  const orderId = useRecoilValue(orderSheetIdState);
+  const queryClient = useQueryClient();
 
+  const ChangeStatusMutation = useMutation(
+    async (orderId: number) =>
+      await orderSheetChangeState(orderId).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        queryClient.invalidateQueries(queryKeys.sellerOrderList);
+        queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
+  const cancelOrderSheetMutation = useMutation(
+    async ({orderId, cancelReason}: {orderId: number; cancelReason: string}) =>
+      await orderSheetCancel(orderId, cancelReason).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            await refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        queryClient.invalidateQueries(queryKeys.sellerOrderList);
+        queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
+        setModalVisible(false);
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
+  const handleClickChangeStatus = () => {
+    ChangeStatusMutation.mutate(orderId);
+  };
+
+  const handleClickCancelOrderSheet = () => {
+    cancelOrderSheetMutation.mutate({orderId, cancelReason});
+  };
   return (
     <View>
       {
         {
-          [orderStatusKeys.주문대기중]: (
+          ['RECEIVED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
-                <Button text="주문 진행하기" />
+                <Button
+                  text="주문 진행하기"
+                  onPress={handleClickChangeStatus}
+                />
               </View>
               <View style={styles.btnWrap}>
                 <Button
@@ -35,29 +109,37 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
               </View>
             </View>
           ),
-          [orderStatusKeys.주문완료]: (
+          ['ACCEPTED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
-                <Button text="케이크 제작하기" />
+                <Button
+                  text="케이크 제작하기"
+                  onPress={handleClickChangeStatus}
+                />
               </View>
             </View>
           ),
-          [orderStatusKeys.제작중]: (
+          ['MAKING'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
-                <Button text="픽업 완료하기" />
+                <Button
+                  text="픽업 완료하기"
+                  onPress={handleClickChangeStatus}
+                />
               </View>
             </View>
           ),
-          [orderStatusKeys.픽업완료]: <></>,
-          [orderStatusKeys.취소된주문]: (
+          ['CANCELED'.toString()]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
-                <Button text="다시 진행하기" />
+                <Button
+                  text="다시 진행하기"
+                  onPress={handleClickChangeStatus}
+                />
               </View>
             </View>
           ),
-        }[status]
+        }[state]
       }
       <Modal
         isVisible={modalVisible}
@@ -73,7 +155,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({status}) => {
             selectedItem={cancelReason}
           />
           <View style={styles.modalBtnWrap}>
-            <Button text="취소하기" />
+            <Button text="취소하기" onPress={handleClickCancelOrderSheet} />
           </View>
         </SafeAreaView>
       </Modal>

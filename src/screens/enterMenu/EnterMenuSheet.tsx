@@ -78,6 +78,7 @@ export const EnterMenuSheet = ({
         consumerInput: customerInfoList,
         cakeInput: cakeInfoList,
       }));
+      console.log(storeMenu);
       menuMutation.mutate(storeMenu);
     }
   };

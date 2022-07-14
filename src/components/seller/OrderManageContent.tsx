@@ -8,29 +8,44 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {FC} from 'react';
-import {ISellerOrderList} from '../../services/orderService';
+import {
+  ISellerOrder,
+  ISellerOrderList,
+  IStoreMenuListDto,
+} from '../../services/orderService';
 import {AppStyles} from '../../styles/AppStyles';
 import {priceFormatParser} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../screens/navigator';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {orderListModalState} from '../../recoil/atom';
+import {orderListModalState, orderSheetIdState} from '../../recoil/atom';
 import {appKeys} from '../../enum';
 export type OrderManageContentProps = {
-  title: string;
-  renderData: ISellerOrderList[];
+  renderData: ISellerOrder[];
+  status: string;
 };
 export const OrderManageContent: FC<OrderManageContentProps> = ({
-  title,
   renderData,
+  status,
 }) => {
-  const RenderItem = ({item, idx}: {item: ISellerOrderList; idx: number}) => {
+  const RenderItem = ({
+    item,
+    idx,
+    id,
+  }: {
+    item: IStoreMenuListDto;
+    idx: number;
+    id: number;
+  }) => {
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
+    const [orderSheetId, setOrderSheetId] = useRecoilState(orderSheetIdState);
 
+    console.log(status);
     const onPressItem = () => {
       setOrderModalState(appKeys.orderListMore);
+      setOrderSheetId(id);
     };
     return (
       <TouchableOpacity
@@ -52,8 +67,8 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
           />
         </View>
         <View style={{flex: 1}}>
-          <Text style={styles.title}>{item.cakeTitle}</Text>
-          <Text style={styles.subTitle}>{item.cakeDescription}</Text>
+          <Text style={styles.title}>{item.menuName}</Text>
+          <Text style={styles.subTitle}>{item.menuDescription}</Text>
           <Text style={styles.price}>{priceFormatParser(item.price)}원~</Text>
         </View>
       </TouchableOpacity>
@@ -61,12 +76,17 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
   };
 
   return (
-    <View>
-      <Text style={styles.viewTitle}>{title}</Text>
+    <View
+      style={{
+        paddingHorizontal: 20,
+        paddingBottom: 10,
+        paddingTop: 24,
+      }}>
+      <Text style={styles.viewTitle}>{status}</Text>
       <View>
         {renderData.length > 0 &&
-          renderData.map((val, idx) => (
-            <RenderItem item={val} idx={idx} key={idx} />
+          renderData.map(({storeMenuListDto, id}, idx) => (
+            <RenderItem item={storeMenuListDto} idx={idx} id={id} key={id} />
           ))}
       </View>
     </View>
@@ -93,7 +113,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 13,
     lineHeight: 16,
-    paddingVertical: 4,
     color: AppStyles.color.black,
   },
   subTitle: {

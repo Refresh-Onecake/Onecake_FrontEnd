@@ -1,9 +1,11 @@
 import {Image, StyleSheet, Text, View, TextInput} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
-import {useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {
   getSellerOrderSheet,
+  IOrderSheet,
   ISellerOrderList,
+  setOrderSheetMemo,
 } from '../../services/orderService';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
@@ -11,14 +13,24 @@ import {dateFormatParser, timeFormatToKorea} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {OrderManageFooter} from '../../components';
+import {useRecoilValue} from 'recoil';
+import {orderSheetIdState} from '../../recoil/atom';
+import {useQueryRefetchingOnError} from '../../hooks';
+import {getMultipleData} from '../../../App';
+import {refetchToken} from '../../services';
 
 export const OrderSheet = () => {
+  const queryClient = useQueryClient();
+
   const [memo, setMemo] = useState<string>('');
-  const {data, status} = useQuery<ISellerOrderList>(
+  const orderId = useRecoilValue(orderSheetIdState);
+  const [imgUri, setImgUri] = useState<string | undefined>();
+
+  const {data, status} = useQuery<IOrderSheet>(
     queryKeys.sellerOrderSheet,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      await getSellerOrderSheet().then(res => {
+      await getSellerOrderSheet(orderId).then(res => {
         if (!res?.ok) {
           throw new Error(res?.status.toString());
         } else {
@@ -26,73 +38,89 @@ export const OrderSheet = () => {
         }
       }),
     {
-      refetchOnMount: 'always',
       onError: err => {
-        console.log('주문 서 가져오기 에러', err);
+        console.log('주문서 가져오기 에러', err);
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const response = err as Error;
+        if (response.message === '401') {
+          queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
+          console.log('주문서가져오기 query 리 패치');
+        }
       },
       onSuccess: data => {
         console.log(data);
+        data.form.map(val => {
+          if (val.includes('사진')) {
+            const parseImgUrl = val.substring(18, val.length);
+            setImgUri(parseImgUrl);
+          }
+        });
       },
     },
   );
-  console.log(data);
+
+  const memoMutation = useMutation(
+    async ({orderId, memo}: {memo: string; orderId: number}) =>
+      await setOrderSheetMemo(orderId, memo).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        console.log('메모등록 성공');
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
   const TextInputRef = useRef<TextInput | null>(null);
   const setFocus = useCallback(
     () => TextInputRef.current?.focus(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [TextInputRef.current],
   );
+
+  const handleSubmitMemo = () => {
+    memoMutation.mutate({orderId, memo});
+  };
+
   const autoFocus = useAutoFocus();
   return (
     <View style={styles.view}>
       <ScrollView style={styles.scrollView}>
         <AutoFocusProvider>
           <View style={styles.header}>
-            <Text style={styles.title}>{data?.cakeTitle}</Text>
+            <Text style={styles.title}>{data?.menuName}</Text>
             <Text style={styles.title}>{data?.price}원</Text>
           </View>
           <View>
-            {data?.consumerName && (
-              <Text style={styles.text}>
-                &#183; 고객 이름 : {data.consumerName}
+            {data?.form.map((val, idx) => (
+              <Text style={styles.text} key={idx}>
+                {val}
               </Text>
-            )}
-            {data?.consumerPhone && (
-              <Text style={styles.text}>
-                &#183; 전화번호 : {data.consumerPhone}
-              </Text>
-            )}
-            {data?.pickupDate && (
-              <Text style={styles.text}>
-                &#183; 픽업 날짜 : {dateFormatParser(data.pickupDate)}
-              </Text>
-            )}
-            {data?.pickupTime && (
-              <Text style={styles.text}>
-                &#183; 픽업 시간 : {timeFormatToKorea(data.pickupTime)}
-              </Text>
-            )}
-            {data?.cakeTaste && (
-              <Text style={styles.text}>
-                &#183; 케이크 맛 : {data.cakeTaste}
-              </Text>
-            )}
-            {data?.letter && (
-              <Text style={styles.text}>&#183; 레터링 : {data.letter}</Text>
-            )}
-            {data?.letterColor && (
-              <Text style={styles.text}>
-                &#183; 레터링 색상 : {data.letterColor}
-              </Text>
-            )}
-            {data?.cakeImage && (
-              <Text style={styles.text}>&#183; 레퍼런스 이미지 첨부</Text>
-            )}
+            ))}
           </View>
+
           <View>
-            {data?.cakeImage !== undefined ? (
+            {imgUri !== undefined ? (
               <View>
-                <Image source={{uri: data.cakeImage}} style={styles.img} />
+                <Image
+                  source={{
+                    uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+                  }}
+                  style={styles.img}
+                />
               </View>
             ) : (
               <View style={{...styles.img, backgroundColor: '#F6F6F6'}} />
@@ -102,17 +130,19 @@ export const OrderSheet = () => {
             <Text style={styles.memoTitle}>메모</Text>
             <TextInput
               onFocus={autoFocus}
+              value={data?.memo}
               style={styles.memoTextInput}
               placeholderTextColor={AppStyles.color.placeholder}
               placeholder="메모 작성(200자 이내)"
               selectionColor={'#FF4EA5'}
               maxLength={200}
               onChangeText={setMemo}
+              onSubmitEditing={handleSubmitMemo}
             />
           </View>
         </AutoFocusProvider>
       </ScrollView>
-      {data && <OrderManageFooter status={data.status} />}
+      {data && <OrderManageFooter state={data.state} />}
     </View>
   );
 };

@@ -25,7 +25,8 @@ import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
 import {useSetRecoilState} from 'recoil';
 import {storeMenuState} from '../../recoil/atom';
-import {fetchEnterPicture} from '../../services';
+import {fetchEnterPicture, refetchToken} from '../../services';
+import {getMultipleData} from '../../../App';
 
 export const EnterMenu = ({
   navigation,
@@ -86,23 +87,21 @@ export const EnterMenu = ({
     menuImg && setValue('cakeImage', menuImg);
   }, [menuImg]);
 
-  // React.useEffect(() => {
-  //   const subscription = watch((value, {name, type}) =>
-  //     console.log(value, name, type),
-  //   );
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
   const pictureMutation = useMutation(
     async (pictureObj: IStoreImg) =>
-      await fetchEnterPicture(pictureObj).then(res => {
+      await fetchEnterPicture(pictureObj).then(async res => {
         if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
           throw new Error(res?.status.toString());
         } else {
           if (res) return res.text();
         }
       }),
     {
+      retry: 3,
       onSuccess: data => {
         console.log(data);
         console.log('사진등록 성공');

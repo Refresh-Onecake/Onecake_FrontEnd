@@ -16,8 +16,8 @@ import {AppStyles} from '../../styles/AppStyles';
 type InfoModalProps = {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
-  title: string;
-  subTitle: string;
+  title?: string;
+  subTitle?: string;
 };
 
 /**

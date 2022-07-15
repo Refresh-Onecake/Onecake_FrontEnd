@@ -35,6 +35,7 @@ const Contact = () => {
   const {data, refetch} = useGetSellerChatUrlQuery(queryClient);
   const onClickOpenChat = useCallback(() => {
     refetch();
+    console.log(data);
     data === undefined ? setModalVisible(true) : Linking.openURL(data);
   }, []);
 

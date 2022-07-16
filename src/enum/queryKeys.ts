@@ -8,4 +8,5 @@ export const queryKeys = {
   sellerOrderList: ['sellerOrderList'] as const,
   sellerOrderSheet: ['sellerOrderSheet'] as const,
   sellerChatAddress: ['sellerChatAddress'] as const,
+  sellerMenuSheet: ['sellerMenuSheet'] as const,
 };

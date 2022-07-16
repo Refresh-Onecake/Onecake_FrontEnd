@@ -7,14 +7,17 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
+import {useLogoutAndReSignQuery} from '../../../hooks';
+import {fetchLogout, fetchResign} from '../../../services';
 
 export const SettingSeller = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const openModal = useCallback(() => {
     setModalVisible(() => true);
   }, []);
+  const logoutMutation = useLogoutAndReSignQuery(fetchLogout);
+  const resignMutation = useLogoutAndReSignQuery(fetchResign);
 
   const logout = useCallback(() => {
     Alert.alert(
@@ -27,10 +30,7 @@ export const SettingSeller = () => {
         {
           text: '로그아웃하기',
           onPress: () => {
-            AsyncStorage.clear();
-            navigation.reset({
-              routes: [{name: 'StackNavigator', params: {screen: 'SignIn'}}],
-            });
+            logoutMutation.mutate();
           },
         }, //버튼 제목
         // 이벤트 발생시 로그를 찍는다

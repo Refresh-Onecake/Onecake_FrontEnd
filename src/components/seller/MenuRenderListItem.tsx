@@ -4,6 +4,7 @@ import {AppStyles} from '../../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MenuRenderListDropdown} from './MenuRenderListDropdown';
 type MenuRenderListItemProps = {
+  menuId: number;
   idx: number;
   menuName: string;
   menuDescription: string;
@@ -11,6 +12,7 @@ type MenuRenderListItemProps = {
 };
 
 export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
+  menuId,
   idx,
   menuName,
   menuDescription,
@@ -66,6 +68,7 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
         <Icon name="dots-horizontal" size={20} color="#D9D9D9" />
       </TouchableOpacity>
       <MenuRenderListDropdown
+        menuId={menuId}
         visible={visible}
         setVisible={setVisible}
         dropdownLeft={dropdownLeft}

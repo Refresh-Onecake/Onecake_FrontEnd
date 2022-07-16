@@ -21,7 +21,7 @@ import {useRecoilValue} from 'recoil';
 
 type Props = StackScreenProps<RootStackParamList, 'StoreDetail'>;
 
-export const StoreDetail: FC<Props> = navigation => {
+export const StoreDetail: FC<Props> = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const storeId = useRecoilValue(storeIdState);

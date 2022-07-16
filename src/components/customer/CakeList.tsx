@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.7,
     width: '90%',
     paddingVertical: 15,
+    paddingTop: 25,
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'center',

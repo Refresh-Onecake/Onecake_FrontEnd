@@ -5,13 +5,41 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
+import {appKeys} from '../enum';
+import {StoreDetail} from './store';
+import {StoreTitleInfo} from './store/StoreTitleInfo';
+import {TabView} from './store/TabView';
+import {useRecoilState} from 'recoil';
+import {storeIdState} from '../recoil/atom';
 
 const Home = () => {
+  const [role, setRole] = useState<string>();
+  const [storeId, setStoreId] = useRecoilState(storeIdState);
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
   return (
     <SafeAreaView style={styles.view}>
-      <Text>Home</Text>
+      {role === 'SELLER' ? (
+        <>
+          <StoreTitleInfo></StoreTitleInfo>
+          <TabView></TabView>
+        </>
+      ) : (
+        <>
+          <Text>소비자홈</Text>
+        </>
+      )}
     </SafeAreaView>
   );
 };

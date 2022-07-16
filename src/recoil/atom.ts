@@ -43,7 +43,7 @@ export const orderListModalState = atom<string>({
 
 export const storeIdState = atom<number>({
   key: 'storeIdState',
-  default: 0,
+  default: 1,
 });
 
 export const currentTabState = atom<string>({

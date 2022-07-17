@@ -16,7 +16,7 @@ import {appKeys, queryKeys} from '../enum';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {storeIdState} from '../recoil/atom';
-import {useSetRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import {focusManager, useQuery, useQueryClient} from 'react-query';
 import {getMenuList, IMenuList} from '../services';
 import {useIsFocused} from '@react-navigation/native';
@@ -24,7 +24,7 @@ import {useIsFocused} from '@react-navigation/native';
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
-  const setStoreId = useSetRecoilState(storeIdState);
+  const setStoreId = useRecoilValue(storeIdState);
   const [error, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(

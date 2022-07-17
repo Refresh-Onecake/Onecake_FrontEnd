@@ -53,15 +53,15 @@ export const CakeList: FC = () => {
 
   const renderItem = (item: ListRenderItemInfo<ICakeList>) => {
     return (
-      <TouchableOpacity style={styles.listView}>
+      <View style={styles.listView}>
         <Image style={styles.image} source={{uri: item.item.image}}></Image>
         <View style={styles.infos}>
           <Text style={styles.cakeTitle}>{item.item.menuName}</Text>
           <Text style={styles.desc}>{item.item.menuDescription}</Text>
           <Text style={styles.price}>{item.item.price}원~</Text>
-          <Icon style={styles.arrow} size={20} name="chevron-right"></Icon>
+          {/* <Icon style={styles.arrow} size={20} name="chevron-right"></Icon> */}
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 

@@ -36,7 +36,7 @@ const Contact = () => {
 
   const onClickOpenChat = useCallback(() => {
     data === undefined ? setModalVisible(true) : Linking.openURL(data);
-  }, []);
+  }, [data]);
 
   return (
     <SafeAreaView style={styles.view}>

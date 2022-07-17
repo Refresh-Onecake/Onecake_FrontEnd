@@ -5,7 +5,6 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {useMutation} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
-import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import Postcode from 'react-native-daum-postcode';
 
@@ -64,18 +63,6 @@ export const EnterStore = ({
   // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
   const TextInputRef = useRef<TextInput | null>(null);
   const autoFocus = useAutoFocus();
-
-  // const sellerStoreQuery = useMutation(
-  //   (data: IApplyStore) => fetchEnterStoreJson(data),
-  //   {
-  //     onSuccess: Response => {
-  //       console.log(Response);
-  //     },
-  //     onError: errors => {
-  //       console.log(errors);
-  //     },
-  //   },
-  // );
 
   const pictureMutation = useMutation(
     async (pictureObj: IStoreImg) =>

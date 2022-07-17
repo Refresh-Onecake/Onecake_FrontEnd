@@ -37,7 +37,7 @@ export const fetchEnterStoreJson = async ({
       close_time,
     };
 
-    const data = await fetch('http://15.165.27.120:8080/api/v1/seller/store', {
+    const data = await fetch('https://want-onecake.com/api/v1/seller/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const fetchEnterPicture = async (storeImg: IStoreImg | string) => {
     const fd = new FormData();
     fd.append('image', storeImg);
 
-    const data = await fetch('http://15.165.27.120:8080/api/v1/member/image', {
+    const data = await fetch('https://want-onecake.com/api/v1/member/image', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

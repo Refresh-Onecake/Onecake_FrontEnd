@@ -15,8 +15,8 @@ export const getMenuList = async (menuId?: number) => {
   if (token) {
     const response = await fetch(
       menuId
-        ? `http://15.165.27.120:8080/api/v1/seller/store/menu/${menuId}`
-        : `http://15.165.27.120:8080/api/v1/seller/store/menu`,
+        ? `https://want-onecake.com/api/v1/seller/store/menu/${menuId}`
+        : `https://want-onecake.com/api/v1/seller/store/menu`,
       {
         method: 'GET',
         headers: {
@@ -33,8 +33,8 @@ export const fetchStoreEnterMenu = async (data: IFetchMenu, menuId: number) => {
   if (token) {
     const response = await fetch(
       menuId !== -1
-        ? `http://15.165.27.120:8080/api/v1/seller/store/menu/${menuId}`
-        : `http://15.165.27.120:8080/api/v1/seller/store/menu`,
+        ? `https://want-onecake.com/api/v1/seller/store/menu/${menuId}`
+        : `https://want-onecake.com/api/v1/seller/store/menu`,
       {
         method: menuId !== -1 ? `PUT` : `POST`,
         headers: {
@@ -52,7 +52,7 @@ export const deleteMenu = async (menuId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/menu/${menuId}`,
+      `https://want-onecake.com/api/v1/seller/store/menu/${menuId}`,
       {
         method: 'DELETE',
         headers: {

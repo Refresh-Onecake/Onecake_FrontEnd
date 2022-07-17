@@ -40,7 +40,7 @@ export type IRefreshTokenData = {
 };
 
 export const apiClient = axios.create({
-  baseURL: 'http://15.165.27.120:8080',
+  baseURL: 'https://want-onecake.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -93,7 +93,7 @@ export const refetchToken = async (
     tokens !== undefined,
     'token을 refresh 하기 위해서는 undefined가 아니어야 한다',
   );
-  await fetch('http://15.165.27.120:8080/api/v1/auth/reissue', {
+  await fetch('https://want-onecake.com/api/v1/auth/reissue', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -123,7 +123,7 @@ export const refetchToken = async (
 export const fetchLogout = async () => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
-    const res = await fetch(`http://15.165.27.120:8080/api/v1/auth/logout`, {
+    const res = await fetch(`https://want-onecake.com/api/v1/auth/logout`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -137,7 +137,7 @@ export const fetchLogout = async () => {
 export const fetchResign = async () => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
-    const res = await fetch(`http://15.165.27.120:8080/api/v1/seller/resign`, {
+    const res = await fetch(`https://want-onecake.com/api/v1/seller/resign`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

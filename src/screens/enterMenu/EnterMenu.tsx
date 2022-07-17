@@ -23,14 +23,21 @@ import {IEnterMenuInputForm} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
-import {useSetRecoilState} from 'recoil';
-import {storeMenuState} from '../../recoil/atom';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {menuEditSheetInfoState, storeMenuState} from '../../recoil/atom';
 import {fetchEnterPicture, refetchToken} from '../../services';
 import {getMultipleData} from '../../../App';
 
 export const EnterMenu = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  //주문서 수정 시 필요한 데이터
+  const editMenuSheetData = useRecoilValue(menuEditSheetInfoState);
+
+  useEffect(() => {
+    console.log(editMenuSheetData);
+  }, [editMenuSheetData]);
+
   // 드롭다운 관련 상태
   const [visible, setVisible] = useState(false);
   const [dropdownTop, setDropdownTop] = useState(0);
@@ -66,6 +73,23 @@ export const EnterMenu = ({
     toggleDropdown();
   };
 
+  useEffect(() => {
+    console.log(editMenuSheetData);
+    if (editMenuSheetData.cakeSize !== '') {
+      setValue('cakeSize', editMenuSheetData.cakeSize);
+      setSelectedCakeSize(editMenuSheetData.cakeSize);
+    }
+    if (editMenuSheetData.price !== 0) {
+      setValue('cakePrice', String(editMenuSheetData.price));
+    }
+    if (editMenuSheetData.menuDescription !== '') {
+      setValue('cakeDescription', editMenuSheetData.menuDescription);
+    }
+    if (editMenuSheetData.taste !== '') {
+      setValue('cakeTaste', editMenuSheetData.taste);
+    }
+  }, [editMenuSheetData]);
+
   const {
     control,
     handleSubmit,
@@ -89,13 +113,14 @@ export const EnterMenu = ({
 
   const pictureMutation = useMutation(
     async (pictureObj: IStoreImg) =>
+    
       await fetchEnterPicture(pictureObj).then(async res => {
         if (!res?.ok) {
           if (res?.status === 401) {
             const tokens = await getMultipleData();
             refetchToken(tokens);
+          
           }
-          throw new Error(res?.status.toString());
         } else {
           if (res) return res.text();
         }
@@ -105,7 +130,6 @@ export const EnterMenu = ({
       onSuccess: data => {
         console.log(data);
         console.log('사진등록 성공');
-
         setMenuState(prev => ({...prev, cakeImage: data}));
         navigation.navigate('EnterMenuSheet');
       },

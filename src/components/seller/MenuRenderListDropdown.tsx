@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import Modal from 'react-native-modal';
 import {commonStyles} from '../../styles/commonStyles';
@@ -21,6 +21,13 @@ import {
 import {deleteMenu, refetchToken} from '../../services';
 import {getMultipleData} from '../../../App';
 import {queryKeys} from '../../enum';
+import {useGetSellerMenuSheetByMenuId} from '../../hooks/useGetSellerMenuSheetByMenuId';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {menuEditSheetInfoState} from '../../recoil/atom';
+import {IEditFetchMenu, IFetchMenu} from '../../screens/enterMenu';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../screens/navigator';
 type MenuRenderListDropdownProps = {
   menuId: number;
   visible: boolean;
@@ -39,6 +46,7 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
   dropdownWidth,
 }) => {
   const queryClient = useQueryClient();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const menuDeleteMutation = useMutation(
     async (menuId: number) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -66,10 +74,19 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
     },
   );
 
-  const onClickDeleteMenu = () => {
+  const {data, refetch} = useGetSellerMenuSheetByMenuId(queryClient, menuId);
+
+  const onClickDeleteMenu = useCallback(() => {
     menuDeleteMutation.mutate(menuId);
-    console.log(menuId);
     setVisible(false);
+  }, []);
+
+  const onClickEditMenu = () => {
+    refetch();
+    console.log(data);
+    
+    setVisible(false);
+    navigation.navigate('EnterMenu');
   };
 
   return (
@@ -90,7 +107,8 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
           commonStyles.shadow,
         ]}>
         <TouchableOpacity
-          onPress={() => setVisible(false)}
+          // TODO: 메뉴 수정
+          onPress={onClickEditMenu}
           style={[
             styles.item,
             {

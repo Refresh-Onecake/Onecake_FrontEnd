@@ -14,4 +14,14 @@ export const commonStyles = StyleSheet.create({
       },
     }),
   },
+  shadowTop: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowRadius: 9,
+        shadowOffset: {height: -20, width: 0},
+        shadowOpacity: 0.05,
+      },
+    }),
+  },
 });

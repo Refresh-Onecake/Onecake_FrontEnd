@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 import {Image, Platform, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Home from '../Home';
 import Stores from '../Stores';
 import Order from '../Order';
 import Contact from '../Contact';
 import MyPage from '../MyPage';
-
 import {AppStyles} from '../../styles/AppStyles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appKeys} from '../../enum';
-import {useAsync} from '../../hooks';
 
 const Tab = createBottomTabNavigator();
 

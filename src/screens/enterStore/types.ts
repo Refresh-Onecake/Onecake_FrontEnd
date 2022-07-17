@@ -21,3 +21,15 @@ export type IAddress = {
   lnbr_mnnm: string;
   address_detail: string;
 };
+
+export type IFetchEnterStore = {
+  store_name: string;
+  business_registration_number: string;
+  store_phone_number: string;
+  store_discription: string;
+  kakao_channel_url: string;
+  address: IAddress;
+  store_image: string;
+  open_time: string;
+  close_time: string;
+};

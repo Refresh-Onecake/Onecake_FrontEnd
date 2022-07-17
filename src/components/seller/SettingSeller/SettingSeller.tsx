@@ -7,14 +7,17 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
+import {useLogoutAndReSignQuery} from '../../../hooks';
+import {fetchLogout, fetchResign} from '../../../services';
 
 export const SettingSeller = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const openModal = useCallback(() => {
     setModalVisible(() => true);
   }, []);
+  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
+  const resignMutation = useLogoutAndReSignQuery(fetchResign, navigation);
 
   const logout = useCallback(() => {
     Alert.alert(
@@ -27,16 +30,18 @@ export const SettingSeller = () => {
         {
           text: '로그아웃하기',
           onPress: () => {
-            AsyncStorage.clear();
-            navigation.reset({
-              routes: [{name: 'StackNavigator', params: {screen: 'SignIn'}}],
-            });
+            logoutMutation.mutate();
           },
-        }, //버튼 제목
-        // 이벤트 발생시 로그를 찍는다
+        },
       ],
       {cancelable: false},
     );
+  }, []);
+
+  const onClickReSign = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ReSign',
+    });
   }, []);
 
   return (
@@ -67,7 +72,7 @@ export const SettingSeller = () => {
             로그아웃
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickReSign}>
           <Text style={[styles.text, {fontWeight: '500'}]}>탈퇴하기</Text>
         </TouchableOpacity>
       </View>

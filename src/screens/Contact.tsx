@@ -11,11 +11,18 @@ import {AppStyles} from '../styles/AppStyles';
 import {Button} from '../components';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
-import {appKeys} from '../enum';
+import {appKeys, queryKeys} from '../enum';
+import {useQuery, useQueryClient} from 'react-query';
+import {getSellerChatAddress} from '../services';
+import {useGetSellerChatUrlQuery} from '../hooks/useGetSellerChatUrlQuery';
+import InfoModal from '../components/common/InfoModal';
 
 const Contact = () => {
+  const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
-  const [error, resetError] = useAsync(async () => {
+  const [url, setUrl] = useState<string>();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [roleTokenError, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
       appKeys.roleTokenKey,
@@ -25,9 +32,11 @@ const Contact = () => {
     }
   });
 
+  const {data} = useGetSellerChatUrlQuery(queryClient);
+
   const onClickOpenChat = useCallback(() => {
-    Linking.openURL('http://pf.kakao.com/_pRxlZxb');
-  }, []);
+    data === undefined ? setModalVisible(true) : Linking.openURL(data);
+  }, [data]);
 
   return (
     <SafeAreaView style={styles.view}>
@@ -46,6 +55,12 @@ const Contact = () => {
             <View style={styles.btnWrap}>
               <Button text="카카오톡 채널로 이동" onPress={onClickOpenChat} />
             </View>
+            <InfoModal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              title={'카카오톡 채널'}
+              subTitle={'카카오톡 채널을 등록해주세요!'}
+            />
           </SafeAreaView>
         </>
       ) : (

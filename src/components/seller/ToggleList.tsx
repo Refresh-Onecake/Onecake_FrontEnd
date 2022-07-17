@@ -30,6 +30,7 @@ export const ToggleList: FC<Props> = ({
   const handleAddIconClick = () => {
     setShowInput(!showInput);
   };
+  const textRef = useRef<TextInput | null>(null);
   const autoFocus = useAutoFocus();
   return (
     <View style={[styles.view]}>
@@ -77,9 +78,11 @@ export const ToggleList: FC<Props> = ({
                   selectionColor={AppStyles.color.placeholder}
                   placeholderTextColor={AppStyles.color.placeholder}
                   onChangeText={setNewDataListItem}
-                  onSubmitEditing={() =>
-                    setList(prev => [...prev, newDataListItem])
-                  }
+                  ref={textRef}
+                  onSubmitEditing={() => {
+                    setList(prev => [...prev, newDataListItem]);
+                    textRef.current?.clear();
+                  }}
                 />
               </View>
             </View>

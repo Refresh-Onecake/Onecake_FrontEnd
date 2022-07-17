@@ -1,7 +1,7 @@
 //prettier-ignore
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Alert, Image, Platform} from 'react-native';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {useMutation} from 'react-query';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useForm, Controller} from 'react-hook-form';
@@ -27,13 +27,18 @@ import DatePicker from 'react-native-date-picker';
 import {
   fetchEnterPicture,
   fetchEnterStoreJson,
+  fetchLogout,
   refetchToken,
 } from '../../services';
 import {getMultipleData} from '../../../App';
+import {useLogoutAndReSignQuery} from '../../hooks';
+import {useNavigation} from '@react-navigation/native';
 
-export const EnterStore = ({
-  navigation,
-}: StackScreenProps<RootStackParamList>) => {
+export const EnterStore = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  //로그아웃
+  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
+
   //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
   const [storeImgUrl, setStoreImgUrl] = useState<string>();
@@ -123,9 +128,7 @@ export const EnterStore = ({
       onSuccess: data => {
         console.log(data);
         console.log('입점신청 성공');
-        navigation.reset({
-          routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
-        });
+        logoutMutation.mutate();
       },
       onError: e => {
         console.log(e);

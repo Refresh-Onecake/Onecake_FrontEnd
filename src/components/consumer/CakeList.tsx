@@ -39,6 +39,7 @@ export const CakeList: FC = () => {
       cacheTime: Infinity,
       onSuccess: data => {
         console.log('cakeList', data);
+        console.log(data.image);
       },
       onError: err => {
         console.log('err');
@@ -67,15 +68,18 @@ export const CakeList: FC = () => {
 
   return (
     <View>
-      <FlatList data={data} renderItem={renderItem} />
-      <View style={styles.listView}>
-        <View style={styles.infos}>
-          <Text style={styles.cakeTitle}>testsetset</Text>
-          <Text style={styles.desc}>testset</Text>
-          <Text style={styles.price}>test원~</Text>
-          <Icon style={styles.arrow} size={20} name="chevron-right"></Icon>
+      {data?.image === undefined ? (
+        <View>
+          <Image
+            style={styles.cake}
+            source={require('../../asset/cake.png')}></Image>
+          <Text style={styles.noti}>
+            등록된 메뉴가 없어요. 가게 탭에서 메뉴를 추가해주세요.
+          </Text>
         </View>
-      </View>
+      ) : (
+        <FlatList data={data} renderItem={renderItem} />
+      )}
     </View>
   );
 };
@@ -114,5 +118,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 1,
     top: '35%',
+  },
+  noti: {
+    fontSize: AppStyles.font.middle,
+    marginVertical: 10,
+    alignSelf: 'center',
+  },
+  cake: {
+    height: 200,
+    width: 150,
+    marginTop: 30,
+    alignSelf: 'center',
   },
 });

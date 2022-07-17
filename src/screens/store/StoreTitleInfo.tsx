@@ -43,6 +43,7 @@ export const StoreTitleInfo: FC = () => {
       }),
     {
       refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
       onSuccess: data => {

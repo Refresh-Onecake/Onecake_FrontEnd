@@ -67,7 +67,7 @@ export const CakeList: FC = () => {
 
   return (
     <View>
-      {data?.image === undefined ? (
+      {data.length === 0 ? (
         <View>
           <Image
             style={styles.cake}

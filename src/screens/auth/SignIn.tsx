@@ -20,6 +20,8 @@ import {Button} from '../../components/common/Button';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import SplashScreen from 'react-native-splash-screen';
+import {useSetRecoilState} from 'recoil';
+import {storeIdState} from '../../recoil/atom';
 
 type IUserInfo = {
   id: string;
@@ -28,6 +30,8 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setStoreId = useSetRecoilState(storeIdState);
+
   const {
     control,
     handleSubmit,
@@ -51,8 +55,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     getMultipleData()
       .then(resp => {
         if (resp) {
-          navigation.navigate('MainNavigator', {
-            screen: 'Home',
+          navigation.reset({
+            routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
           });
           SplashScreen.hide();
         } else {
@@ -70,10 +74,12 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
 
   const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
     onSuccess: async data => {
+      setStoreId(data.storeId);
       await AsyncStorage.multiSet([
         [appKeys.accessTokenKey, data.accessToken],
         [appKeys.refreshTokenKey, data.refreshToken],
         [appKeys.roleTokenKey, data.role],
+        [appKeys.storeIdKey, String(data.storeId)],
       ]);
       navigation.navigate('MainNavigator', {
         screen: 'Home',

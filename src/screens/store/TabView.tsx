@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   selectedView: {
     width: '100%',
-    height: '39%',
+    flex: 1,
     backgroundColor: AppStyles.color.white,
   },
   seletedIndicator: {

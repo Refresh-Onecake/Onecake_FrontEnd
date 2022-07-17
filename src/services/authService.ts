@@ -75,6 +75,7 @@ export type ILoginResponse = {
   refreshToken: string;
   accessTokenExpiresIn: number;
   role: string;
+  storeId: number;
 };
 
 export const getUserData = async ({id, password}: ISignIn) => {

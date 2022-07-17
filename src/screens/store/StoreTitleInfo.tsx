@@ -18,13 +18,30 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appKeys, queryKeys} from '../../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button} from '../../components';
+import {useAsync} from '../../hooks';
+import {getStringValueFromAsyncStorage} from '../../utils';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigator';
+import {useNavigation} from '@react-navigation/native';
 
-export const StoreTitleInfo: FC = () => {
+export const StoreTitleInfo = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const queryClient = useQueryClient();
   const storeId = useRecoilValue(storeIdState);
   const [liked, setLiked] = useState<boolean>(false);
   const [likedNum, setLikedNum] = useState(0);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      console.log('role', fetchData);
+      setRole(fetchData);
+    }
+  });
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -43,6 +60,7 @@ export const StoreTitleInfo: FC = () => {
       }),
     {
       refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
       onSuccess: data => {
@@ -66,7 +84,7 @@ export const StoreTitleInfo: FC = () => {
     const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
     if (token) {
       const response = await fetch(
-        `http://15.165.27.120:8080/api/v1/consumer/stores/${storeId}/like`,
+        `https://want-onecake.com/api/v1/consumer/stores/${storeId}/like`,
         {
           method: 'POST',
           headers: {
@@ -112,7 +130,13 @@ export const StoreTitleInfo: FC = () => {
             <Text style={{marginLeft: 5, marginRight: 5}}>찜</Text>
             <Text>{likedNum}</Text>
           </View>
-          <TouchableOpacity style={styles.userOption} onPress={toggleModal}>
+          <TouchableOpacity
+            style={styles.userOption}
+            onPress={
+              role === 'SELLER'
+                ? () => navigation.navigate('MainNavigator', {screen: '상담'})
+                : toggleModal
+            }>
             <Icon
               style={{marginRight: 5}}
               size={15}

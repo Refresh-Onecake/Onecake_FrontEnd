@@ -62,6 +62,7 @@ export const menuEditSheetInfoState = atom<IEditFetchMenu>({
 export const EditTargetMenuIdState = atom<number>({
   key: 'EditTargetMenuIdState',
   default: -1,
+});
 
 export const currentTabState = atom<string>({
   key: 'currentTabState',

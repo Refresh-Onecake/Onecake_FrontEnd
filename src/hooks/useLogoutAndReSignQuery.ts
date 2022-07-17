@@ -8,8 +8,12 @@ import {fetchLogout, refetchToken} from '../services';
 
 export const useLogoutAndReSignQuery = (
   fetch: () => Promise<Response | undefined>,
+  navigation: StackNavigationProp<
+    RootStackParamList,
+    keyof RootStackParamList,
+    undefined
+  >,
 ) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   return useMutation(
     async () => {
       await fetch().then(async res => {

@@ -16,7 +16,7 @@ import {appKeys, queryKeys} from '../enum';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {storeIdState} from '../recoil/atom';
-import {useRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import {focusManager, useQuery, useQueryClient} from 'react-query';
 import {getMenuList, IMenuList} from '../services';
 import {useIsFocused} from '@react-navigation/native';
@@ -24,7 +24,7 @@ import {useIsFocused} from '@react-navigation/native';
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
-  const [storeId, setStoreId] = useRecoilState(storeIdState);
+  const setStoreId = useRecoilValue(storeIdState);
   const [error, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
@@ -84,7 +84,7 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              setStoreId(1);
+              setStoreId(0);
               navigation.navigate('StoreDetail');
             }}>
             <Icon

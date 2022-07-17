@@ -1,5 +1,5 @@
 //prettier-ignore
-import {Alert, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {Alert, Image, Linking, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -667,7 +667,13 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                   </TouchableOpacity>
                   <Text style={styles.h2}>전체 동의합니다.</Text>
                 </View>
-                <View style={styles.termModalWrap}>
+                <TouchableOpacity
+                  style={styles.termModalWrap}
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://makeus-challenge.notion.site/80a813b127b94fdebad8f6c39e462a4b',
+                    )
+                  }>
                   <TouchableOpacity
                     style={styles.iconWrapper}
                     onPress={() => {
@@ -688,8 +694,14 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                   <View style={styles.iconWrapper}>
                     <Image source={require('../../asset/chevron_right.png')} />
                   </View>
-                </View>
-                <View style={styles.termModalWrap}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.termModalWrap}
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://makeus-challenge.notion.site/b6ca04d692234d3197ca94459cdd472b',
+                    )
+                  }>
                   <TouchableOpacity
                     style={styles.iconWrapper}
                     onPress={() => {
@@ -710,7 +722,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                   <View style={styles.iconWrapper}>
                     <Image source={require('../../asset/chevron_right.png')} />
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
               {/* 회원가입 제출 버튼 */}
               <TouchableOpacity
@@ -725,11 +737,6 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                 ]}
                 onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.submitBtnText}>원케이크 시작하기</Text>
-              </TouchableOpacity>
-              {/* FIXME: 이후 개발 다 끝나면 삭제할 요소 */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate('EnterStart')}>
-                <Text>입점 신청 테스트</Text>
               </TouchableOpacity>
             </View>
           </AutoFocusProvider>

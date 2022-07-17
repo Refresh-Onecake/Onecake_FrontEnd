@@ -26,6 +26,9 @@ export type IOrderSheet = {
   memo: string;
 };
 
+
+
+
 // 특정 날짜의 주문들 가져오기
 export const getSellerOrderList = async (date: string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);

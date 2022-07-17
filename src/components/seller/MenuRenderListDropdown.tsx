@@ -79,12 +79,12 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
   const onClickDeleteMenu = useCallback(() => {
     menuDeleteMutation.mutate(menuId);
     setVisible(false);
-  }, []);
+  }, [menuId]);
 
   const onClickEditMenu = () => {
     refetch();
     console.log(data);
-    
+
     setVisible(false);
     navigation.navigate('EnterMenu');
   };

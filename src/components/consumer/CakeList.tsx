@@ -39,7 +39,6 @@ export const CakeList: FC = () => {
       cacheTime: Infinity,
       onSuccess: data => {
         console.log('cakeList', data);
-        console.log(data.image);
       },
       onError: err => {
         console.log('err');

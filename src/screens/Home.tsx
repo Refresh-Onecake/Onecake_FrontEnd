@@ -54,7 +54,7 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
     <SafeAreaView style={styles.view}>
       {role === 'SELLER' ? (
         storeId === 0 ? (
-          <SafeAreaView style={styles.flex}>
+          <View style={styles.flex}>
             <View>
               <Image
                 style={{width: 318, height: 318}}
@@ -72,11 +72,11 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
                 }}
               />
             </View>
-          </SafeAreaView>
+          </View>
         ) : (
           <>
-            <StoreTitleInfo></StoreTitleInfo>
-            <TabView></TabView>
+            <StoreTitleInfo />
+            <TabView />
           </>
         )
       ) : (

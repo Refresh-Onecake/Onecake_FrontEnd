@@ -33,8 +33,8 @@ export const StoreDetail: FC<Props> = () => {
 
   return (
     <>
-      <StoreTitleInfo></StoreTitleInfo>
-      <TabView></TabView>
+      <StoreTitleInfo />
+      <TabView />
       <SafeAreaView style={styles.OrderBtnWrapper}>
         {/* TODO: 주문서 */}
         <View style={styles.OrderBtn}>

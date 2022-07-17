@@ -33,6 +33,7 @@ export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
               menuName={val.menuName}
               menuDescription={val.menuDescription}
               price={val.price}
+              image={val.image}
             />
           ))}
       </ScrollView>

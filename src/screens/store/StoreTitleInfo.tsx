@@ -100,8 +100,8 @@ export const StoreTitleInfo = () => {
 
   return (
     <>
-      <Image style={styles.image} source={{uri: data?.storeImage}}></Image>
-      <SafeAreaView style={styles.back}></SafeAreaView>
+      <Image style={styles.image} source={{uri: data?.storeImage}} />
+      <View style={styles.back} />
       <SafeAreaView style={styles.titleInfo}>
         <View>
           <Text
@@ -125,7 +125,7 @@ export const StoreTitleInfo = () => {
               {borderRightWidth: 1, borderColor: AppStyles.color.border},
             ]}>
             <TouchableOpacity onPress={pressHeart}>
-              <Icon size={15} name={liked ? 'heart' : 'heart-outline'}></Icon>
+              <Icon size={15} name={liked ? 'heart' : 'heart-outline'} />
             </TouchableOpacity>
             <Text style={{marginLeft: 5, marginRight: 5}}>찜</Text>
             <Text>{likedNum}</Text>
@@ -140,7 +140,8 @@ export const StoreTitleInfo = () => {
             <Icon
               style={{marginRight: 5}}
               size={15}
-              name="chat-processing-outline"></Icon>
+              name="chat-processing-outline"
+            />
             <Text>상담하기</Text>
           </TouchableOpacity>
           <Modal isVisible={modalVisible}>
@@ -163,7 +164,6 @@ export const StoreTitleInfo = () => {
           </Modal>
         </View>
       </SafeAreaView>
-      <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
     </>
   );
 };
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   back: {
     width: '100%',
-    height: '13%',
+    height: '8%',
     backgroundColor: AppStyles.color.white,
     marginBottom: 10,
   },
@@ -215,8 +215,8 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 10,
-          height: 10,
+          width: 3,
+          height: 3,
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,

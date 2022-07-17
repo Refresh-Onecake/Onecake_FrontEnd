@@ -22,7 +22,7 @@ export const TabView = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.wrapper}>
+      <View style={styles.wrapper}>
         {tabList.map((val, idx) => (
           <TouchableOpacity
             key={idx}
@@ -38,8 +38,7 @@ export const TabView = () => {
             <Text>{val}</Text>
           </TouchableOpacity>
         ))}
-      </SafeAreaView>
-      <SafeAreaView style={{backgroundColor: AppStyles.color.white}} />
+      </View>
       <View style={styles.selectedView}>
         {
           {

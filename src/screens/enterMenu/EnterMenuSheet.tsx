@@ -73,7 +73,7 @@ export const EnterMenuSheet = ({
         resetEditTargetMenuId();
         console.log('메뉴 등록 성공', data);
         navigation.reset({
-          routes: [{name: 'MainNavigator', params: {screen: 'Store'}}],
+          routes: [{name: 'MainNavigator', params: {screen: '가게'}}],
         });
       },
       onError: e => {
@@ -119,7 +119,6 @@ export const EnterMenuSheet = ({
         consumerInput: customerInfoList,
         cakeInput: cakeInfoList,
       }));
-      console.log(storeMenu);
       menuMutation.mutate(storeMenu);
     }
   };

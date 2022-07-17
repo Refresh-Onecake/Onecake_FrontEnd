@@ -9,6 +9,7 @@ type MenuRenderListItemProps = {
   menuName: string;
   menuDescription: string;
   price: number;
+  image: string;
 };
 
 export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
@@ -17,6 +18,7 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
   menuName,
   menuDescription,
   price,
+  image,
 }) => {
   const [visible, setVisible] = useState(false);
   const [dropdownTop, setDropdownTop] = useState(0);
@@ -49,12 +51,7 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
       ]}>
       <View style={{paddingRight: 11.61}}>
         {/* FIXME: 이후 item.uri로 변경할 예정 */}
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
-          }}
-        />
+        <Image style={styles.image} source={{uri: image}} />
       </View>
       <View style={{flex: 1}}>
         <Text style={styles.title}>{menuName}</Text>

@@ -37,4 +37,12 @@ export const AppStyles = {
     title: 23,
     xlarge: 24,
   },
+  fontStyle: {
+    thin: 'NotoSansKR-Thin',
+    light: 'NotoSansKR-Light',
+    regular: 'NotoSansKR-Regular',
+    medium: 'NotoSansKR-Medium',
+    bold: 'NotoSansKR-Bold',
+    black: 'NotoSansKR-Black',
+  },
 };

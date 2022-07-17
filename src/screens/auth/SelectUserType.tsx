@@ -16,7 +16,9 @@ import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
 import InfoModal from '../../components/common/InfoModal';
 
-const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
+export const SelectUserType = ({
+  navigation,
+}: StackScreenProps<RootStackParamList>) => {
   // checkIcon 하기 위한 것
   const [selectedUser, setSelectedUser] = useState<string>(appKeys.seller);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -95,8 +97,6 @@ const SelectUserType = ({navigation}: StackScreenProps<RootStackParamList>) => {
     </Fragment>
   );
 };
-
-export default SelectUserType;
 
 const styles = StyleSheet.create({
   wrapper: {

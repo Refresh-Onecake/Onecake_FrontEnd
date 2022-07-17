@@ -2,14 +2,13 @@ import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import SignUp from '../auth/SignUp';
 import SignIn from '../auth/SignIn';
-import SelectUserType from '../auth/SelectUserType';
-import FindPwd from '../auth/FindPwd';
-import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
+import {SignUp, SelectUserType, FindPwd} from '../auth';
+import {StoreDetail} from '../store';
 import {RootStackParamList} from './navigationStackTypes';
 import {MainNavigator} from './MainNavigator';
 import {EnterMenuSheet} from '../enterMenu/EnterMenuSheet';
+import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
 import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
@@ -50,7 +49,7 @@ export const StackNavigator = () => {
       />
       <Stack.Screen name="EnterComplete" component={EnterComplete} />
       <Stack.Screen name="EnterStart" component={EnterStart} />
-      {/* 가게 */}
+      <Stack.Screen name="StoreDetail" component={StoreDetail} />
       <Stack.Screen
         name="EnterMenu"
         component={EnterMenu}

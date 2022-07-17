@@ -14,3 +14,7 @@ export * from './seller/OrderManageContent';
 export * from './seller/OrderManageFooter';
 export * from './seller/MenuRenderListItem';
 export * from './seller/MenuRenderListDropdown';
+
+export * from './customer/CakeList';
+export * from './customer/StoreInfo';
+export * from './customer/Review';

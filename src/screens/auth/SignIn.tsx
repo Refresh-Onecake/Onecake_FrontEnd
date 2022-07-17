@@ -8,14 +8,7 @@ import {
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {RootStackParamList} from '../navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';

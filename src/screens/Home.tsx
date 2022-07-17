@@ -1,4 +1,10 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  // TouchableOpacity,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../styles/AppStyles';
 

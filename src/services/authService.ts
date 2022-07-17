@@ -40,7 +40,7 @@ export type IRefreshTokenData = {
 };
 
 export const apiClient = axios.create({
-  baseURL: 'http://15.165.27.120:8080',
+  baseURL: 'https://want-onecake.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -75,6 +75,7 @@ export type ILoginResponse = {
   refreshToken: string;
   accessTokenExpiresIn: number;
   role: string;
+  storeId: number;
 };
 
 export const getUserData = async ({id, password}: ISignIn) => {

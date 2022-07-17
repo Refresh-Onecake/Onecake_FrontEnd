@@ -2,7 +2,7 @@ import axios from 'axios';
 import {appKeys} from '../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://15.165.27.120:8080/api/v1/consumer/stores/';
+const baseURL = 'https://want-onecake.com/api/v1/consumer/stores/';
 
 export type IStoreTitleInfo = {
   storeImage: string;
@@ -68,6 +68,7 @@ export const getCakeList = async (storeId: number) => {
 
 export const getStoreInfo = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  console.log('shsohso');
   if (token) {
     const response = await fetch(`${baseURL}${storeId}/storeInfo`, {
       method: 'GET',

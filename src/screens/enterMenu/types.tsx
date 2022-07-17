@@ -20,5 +20,15 @@ export type IFetchMenu = {
   cakeTaste: string;
   consumerInput?: string[];
   cakeInput?: string[];
-  cakeImage? : string;
+  cakeImage?: string;
+};
+
+export type IEditFetchMenu = {
+  cakeSize: string;
+  price: number;
+  menuDescription: string;
+  taste: string;
+  consumerInput?: string[];
+  cakeInput?: string[];
+  cakeImage?: string;
 };

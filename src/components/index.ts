@@ -15,6 +15,6 @@ export * from './seller/OrderManageFooter';
 export * from './seller/MenuRenderListItem';
 export * from './seller/MenuRenderListDropdown';
 
-export * from './customer/CakeList';
-export * from './customer/StoreInfo';
-export * from './customer/Review';
+export * from './consumer/CakeList';
+export * from './consumer/StoreInfo';
+export * from './consumer/Review';

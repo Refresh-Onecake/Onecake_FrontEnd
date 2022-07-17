@@ -21,7 +21,7 @@ import {useRecoilValue} from 'recoil';
 
 type Props = StackScreenProps<RootStackParamList, 'StoreDetail'>;
 
-export const StoreDetail: FC<Props> = navigation => {
+export const StoreDetail: FC<Props> = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const storeId = useRecoilValue(storeIdState);
@@ -58,7 +58,6 @@ export const StoreDetail: FC<Props> = navigation => {
 const styles = StyleSheet.create({
   OrderBtnWrapper: {
     backgroundColor: AppStyles.color.white,
-    position: 'absolute',
     bottom: 1,
     width: '100%',
     height: '11%',

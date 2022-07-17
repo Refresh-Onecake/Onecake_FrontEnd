@@ -31,7 +31,7 @@ export const getSellerOrderList = async (date: string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/order/${date}`,
+      `https://want-onecake.com/api/v1/seller/store/order/${date}`,
       {
         method: 'GET',
         headers: {
@@ -48,7 +48,7 @@ export const getSellerOrderSheet = async (orderId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}`,
+      `https://want-onecake.com/api/v1/seller/store/order/form/${orderId}`,
       {
         method: 'GET',
         headers: {
@@ -65,7 +65,7 @@ export const setOrderSheetMemo = async (orderId: number, memo: string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/memo`,
+      `https://want-onecake.com/api/v1/seller/store/order/form/${orderId}/memo`,
       {
         method: 'POST',
         headers: {
@@ -84,7 +84,7 @@ export const orderSheetChangeState = async (orderId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/state`,
+      `https://want-onecake.com/api/v1/seller/store/order/form/${orderId}/state`,
       {
         method: 'POST',
         headers: {
@@ -102,7 +102,7 @@ export const orderSheetCancel = async (orderId: number, reason: string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const response = await fetch(
-      `http://15.165.27.120:8080/api/v1/seller/store/order/form/${orderId}/state/cancel`,
+      `https://want-onecake.com/api/v1/seller/store/order/form/${orderId}/state/cancel`,
       {
         method: 'POST',
         headers: {

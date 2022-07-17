@@ -27,6 +27,7 @@ export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
         {data &&
           data.map((val, idx) => (
             <MenuRenderListItem
+              menuId={val.id}
               key={idx}
               idx={idx}
               menuName={val.menuName}

@@ -32,11 +32,12 @@ export const Review: FC = () => {
       }),
     {
       refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
       onSuccess: data => {
-        console.log(data.reviewNum);
-        console.log(data.reviews);
+        console.log('review', data.reviewNum);
+        console.log('review', data.reviews);
       },
       onError: err => {
         console.log('err');

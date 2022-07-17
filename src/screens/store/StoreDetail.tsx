@@ -58,7 +58,6 @@ export const StoreDetail: FC<Props> = () => {
 const styles = StyleSheet.create({
   OrderBtnWrapper: {
     backgroundColor: AppStyles.color.white,
-    position: 'absolute',
     bottom: 1,
     width: '100%',
     height: '11%',

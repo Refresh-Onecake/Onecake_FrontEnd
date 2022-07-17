@@ -21,8 +21,8 @@ export const CakeList: FC = () => {
   const queryClient = useQueryClient();
   const storeId = useRecoilValue(storeIdState);
 
-  const {data} = useQuery<ICakeList[]>(
-    queryKeys.storeCakeList,
+  const {data} = useQuery<ICakeList>(
+    queryKeys.storeReviews,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       await getCakeList(storeId).then(res => {
@@ -34,8 +34,12 @@ export const CakeList: FC = () => {
       }),
     {
       refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
+      onSuccess: data => {
+        console.log('cakeList', data);
+      },
       onError: err => {
         console.log('err');
         const response = err as Error;
@@ -64,6 +68,14 @@ export const CakeList: FC = () => {
   return (
     <View>
       <FlatList data={data} renderItem={renderItem} />
+      <View style={styles.listView}>
+        <View style={styles.infos}>
+          <Text style={styles.cakeTitle}>testsetset</Text>
+          <Text style={styles.desc}>testset</Text>
+          <Text style={styles.price}>test원~</Text>
+          <Icon style={styles.arrow} size={20} name="chevron-right"></Icon>
+        </View>
+      </View>
     </View>
   );
 };
@@ -73,6 +85,7 @@ const styles = StyleSheet.create({
     borderBottomColor: AppStyles.color.border,
     borderBottomWidth: 0.7,
     width: '90%',
+    height: '100%',
     paddingVertical: 15,
     paddingTop: 25,
     flex: 1,

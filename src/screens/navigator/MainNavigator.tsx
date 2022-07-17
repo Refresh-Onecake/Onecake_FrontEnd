@@ -8,6 +8,7 @@ import Stores from '../Stores';
 import Order from '../Order';
 import Contact from '../Contact';
 import MyPage from '../MyPage';
+import {ReSign} from '../../components/seller/SettingSeller';
 
 import {AppStyles} from '../../styles/AppStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';

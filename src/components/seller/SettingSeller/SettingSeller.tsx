@@ -12,12 +12,12 @@ import {fetchLogout, fetchResign} from '../../../services';
 
 export const SettingSeller = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const openModal = useCallback(() => {
     setModalVisible(() => true);
   }, []);
-  const logoutMutation = useLogoutAndReSignQuery(fetchLogout);
-  const resignMutation = useLogoutAndReSignQuery(fetchResign);
+  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
+  const resignMutation = useLogoutAndReSignQuery(fetchResign, navigation);
 
   const logout = useCallback(() => {
     Alert.alert(
@@ -32,11 +32,16 @@ export const SettingSeller = () => {
           onPress: () => {
             logoutMutation.mutate();
           },
-        }, //버튼 제목
-        // 이벤트 발생시 로그를 찍는다
+        },
       ],
       {cancelable: false},
     );
+  }, []);
+
+  const onClickReSign = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ReSign',
+    });
   }, []);
 
   return (
@@ -67,7 +72,7 @@ export const SettingSeller = () => {
             로그아웃
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickReSign}>
           <Text style={[styles.text, {fontWeight: '500'}]}>탈퇴하기</Text>
         </TouchableOpacity>
       </View>

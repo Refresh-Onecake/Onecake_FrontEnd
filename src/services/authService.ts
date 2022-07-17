@@ -124,7 +124,7 @@ export const fetchLogout = async () => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
     const res = await fetch(`http://15.165.27.120:8080/api/v1/auth/logout`, {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },

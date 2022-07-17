@@ -11,7 +11,12 @@ import Postcode from 'react-native-daum-postcode';
 
 import {AppStyles} from '../../styles/AppStyles';
 import {RootStackParamList} from '../navigator';
-import {IAddress, IEnterStoreInputForm, IStoreImg} from './types';
+import {
+  IAddress,
+  IEnterStoreInputForm,
+  IFetchEnterStore,
+  IStoreImg,
+} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {
   assert,
@@ -23,15 +28,17 @@ import DatePicker from 'react-native-date-picker';
 import {
   fetchEnterPicture,
   fetchEnterStoreJson,
-  IApplyStore,
-  ISignUpRsp,
+  refetchToken,
 } from '../../services';
+import {getMultipleData} from '../../../App';
 
 export const EnterStore = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
   //가게 사진
   const [storeImg, setStoreImg] = useState<IStoreImg>();
+  const [storeImgUrl, setStoreImgUrl] = useState<string>();
+
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState<IAddress>();
@@ -56,11 +63,6 @@ export const EnterStore = ({
 
   // 키보드가 인풋을 가려서 포커싱 됐을 때 스크롤 되도록 하는 커스텀 훅
   const TextInputRef = useRef<TextInput | null>(null);
-  const setFocus = useCallback(
-    () => TextInputRef.current?.focus(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [TextInputRef.current],
-  );
   const autoFocus = useAutoFocus();
 
   // const sellerStoreQuery = useMutation(
@@ -75,63 +77,84 @@ export const EnterStore = ({
   //   },
   // );
 
-  // FIXME: API 붙이면 ASYNC AWAIT 함수형태로 변경할것
-  const onSubmit = async ({
+  const pictureMutation = useMutation(
+    async (pictureObj: IStoreImg) =>
+      await fetchEnterPicture(pictureObj).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        console.log('사진등록 성공');
+        const formValue = watch();
+        assert(address !== undefined, '입점신청에 주소는 무조건 신청해야한다.');
+        assert(data !== undefined, '사진 등록은 성공하였으나 s3문제가 발생');
+        const tmp = {
+          store_name: formValue.store_name,
+          business_registration_number: formValue.business_registration_number,
+          store_phone_number: formValue.store_phone_number,
+          store_discription: formValue.store_discription,
+          kakao_channel_url: formValue.kakao_channel_url,
+          address: address,
+          store_image: data,
+          open_time: openTime,
+          close_time: closeTime,
+        };
+        enterStoreMutation.mutate(tmp);
+      },
+      onError: e => {
+        console.log(e);
+      },
+    },
+  );
+
+  const enterStoreMutation = useMutation(
+    async (fetchData: IFetchEnterStore) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      await fetchEnterStoreJson(fetchData).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log(data);
+        console.log('입점신청 성공');
+        navigation.reset({
+          routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
+        });
+      },
+      onError: e => {
+        console.log(e);
+      },
+    },
+  );
+
+  const onSubmit = ({
     store_discription,
     store_name,
     business_registration_number,
     store_phone_number,
     kakao_channel_url,
   }: IEnterStoreInputForm) => {
-    if (storeImg && address) {
-      // TODO: API 통신이 들어가는 곳
-      // sellerStoreQuery.mutate(tmpFetchData);
-      // await fetchEnterStoreJson(tmpFetchData)
-      //   .then(async (response) => {
-      //     console.log('사진 전송 성공');
-      //     await fetchEnterPicture(storeImg)
-      //       .then(resp => {
-      //         console.log('성공');
-      //         navigation.navigate('EnterComplete');
-      //       })
-      //       .catch(e => console.log(e));
-      //   })
-      //   .catch(e => console.log(e));
-      await fetchEnterPicture(storeImg)
-        .then(async resp => {
-          console.log(resp);
-          assert(resp !== undefined, '사진 업로드 오류');
-          const tmpFetchData = {
-            store_name,
-            business_registration_number,
-            store_phone_number,
-            store_discription,
-            kakao_channel_url,
-            address: address,
-            store_image: resp.toString(),
-            open_time: openTime,
-            close_time: closeTime,
-          };
-          await fetchEnterStoreJson(tmpFetchData)
-            .then(resp => {
-              console.log('입점 신청 성공');
-              navigation.navigate('EnterComplete');
-            })
-            .catch(e => console.error(e));
-        })
-        .catch(e => console.error(e));
-    } else {
-      Alert.alert(
-        '입점 진행 오류',
-        '입점 절차 항목을 모두 입력 확인해주세요.',
-        [
-          {
-            text: '확인',
-            style: 'cancel',
-          },
-        ],
-      );
-    }
+    assert(storeImg !== undefined, '사진 업로드 오류');
+    pictureMutation.mutate(storeImg);
   };
   return (
     <Fragment>

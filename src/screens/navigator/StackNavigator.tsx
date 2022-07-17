@@ -13,6 +13,7 @@ import {EnterMenuSheet} from '../enterMenu/EnterMenuSheet';
 import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
+import {ReSign} from '../../components/seller/SettingSeller';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -85,6 +86,18 @@ export const StackNavigator = () => {
         component={OrderSheet}
         options={{
           presentation: 'card',
+        }}
+      />
+      {/* 탈퇴 */}
+      <Stack.Screen
+        name="ReSign"
+        component={ReSign}
+        options={{
+          headerShown: true,
+          headerTitle: '탈퇴하기',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
         }}
       />
     </Stack.Navigator>

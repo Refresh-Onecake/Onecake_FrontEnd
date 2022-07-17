@@ -5,28 +5,47 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RootStackParamList} from './navigator';
 import {StackScreenProps} from '@react-navigation/stack';
 import {StackActions, useNavigation} from '@react-navigation/native';
+import {useAsync} from '../hooks';
+import {getStringValueFromAsyncStorage} from '../utils';
+import {appKeys} from '../enum';
+import {SettingSeller} from '../components/seller/SettingSeller';
 
 const MyPage = () => {
-  const navigation = useNavigation();
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('AccessToken');
+      await AsyncStorage.clear();
     } catch (exception) {
       return false;
     }
   };
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      setRole(fetchData);
+    }
+  });
   return (
     <SafeAreaView style={styles.view}>
-      <TouchableOpacity onPress={handleLogout} style={{padding: 10}}>
-        <Text style={{fontSize: 40}}>로그아웃</Text>
-      </TouchableOpacity>
+      {role === appKeys.seller ? (
+        <View>
+          <SettingSeller />
+        </View>
+      ) : (
+        <View>
+          <Text>소비자</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

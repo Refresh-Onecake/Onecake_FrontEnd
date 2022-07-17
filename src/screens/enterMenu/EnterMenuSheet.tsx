@@ -9,44 +9,72 @@ import {
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 import {ToggleList} from '../../components';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from 'recoil';
 import {
   cakeInfoState,
   customerInfoState,
+  EditTargetMenuIdState,
+  menuEditSheetInfoState,
   storeMenuState,
 } from '../../recoil/atom';
-import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import {AutoFocusProvider} from '../../contexts';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {ScrollView} from 'react-native-gesture-handler';
-import {EnterMenu} from './EnterMenu';
-import {fetchEnterPicture, fetchStoreEnterMenu} from '../../services';
-import {useMutation} from 'react-query';
-import {IStoreImg} from '../enterStore';
+
+import {fetchStoreEnterMenu} from '../../services';
+import {useMutation, useQueryClient} from 'react-query';
 import {IFetchMenu} from './types';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
+import {queryKeys} from '../../enum';
 
 export const EnterMenuSheet = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  const menuEditSheetData = useRecoilValue(menuEditSheetInfoState);
+  const [customerInfo, setCustomerInfo] = useRecoilState(customerInfoState);
+  const [cakeInfo, setCakeInfo] = useRecoilState(cakeInfoState);
+  const resetMenuEditSheetData = useResetRecoilState(menuEditSheetInfoState);
+  const resetCustomerInfo = useResetRecoilState(customerInfoState);
+  const resetCakeInfo = useResetRecoilState(cakeInfoState);
+  const resetEditTargetMenuId = useResetRecoilState(EditTargetMenuIdState);
   // 추가했을 때 보여져야하는 목록
   const [customerInfoList, setCustomerInfoList] = useState<string[]>([]);
   const [cakeInfoList, setCakeInfoList] = useState<string[]>([]);
   const [errorText, setErrorText] = useState<boolean>(false);
-  const TextInputRef = useRef<TextInput | null>(null);
-  const setFocus = useCallback(
-    () => TextInputRef.current?.focus(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [TextInputRef.current],
-  );
   const [storeMenu, setStoreMenu] = useRecoilState(storeMenuState);
+  const EditTargetMenuId = useRecoilValue(EditTargetMenuIdState);
+  const queryClient = useQueryClient();
 
+  useEffect(() => {
+    console.log(EditTargetMenuId);
+  }, [EditTargetMenuId]);
   const menuMutation = useMutation(
-    (menuData: IFetchMenu) => fetchStoreEnterMenu(menuData),
+    async (menuData: IFetchMenu) =>
+      fetchStoreEnterMenu(menuData, EditTargetMenuId).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
     {
       onSuccess: data => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        queryClient.invalidateQueries(queryKeys.sellerMenuList);
+        resetMenuEditSheetData();
+        resetCustomerInfo();
+        resetCakeInfo();
+        resetEditTargetMenuId();
         console.log('메뉴 등록 성공', data);
-        navigation.navigate('MainNavigator', {screen: 'Store'});
+        navigation.reset({
+          routes: [{name: 'MainNavigator', params: {screen: '가게'}}],
+        });
       },
       onError: e => {
         console.error(e);
@@ -56,6 +84,29 @@ export const EnterMenuSheet = ({
   useEffect(() => {
     console.log(storeMenu);
   }, [storeMenu]);
+
+  useEffect(() => {
+    if (menuEditSheetData.consumerInput) {
+      const duplicateArr = customerInfo;
+      for (const item of menuEditSheetData.consumerInput) {
+        if (!duplicateArr.includes(item)) {
+          duplicateArr.push(item);
+        }
+      }
+      setCustomerInfo(duplicateArr);
+      setCustomerInfoList(menuEditSheetData.consumerInput);
+    }
+    if (menuEditSheetData.cakeInput) {
+      const duplicateArr = cakeInfo;
+      for (const item of menuEditSheetData.cakeInput) {
+        if (!duplicateArr.includes(item)) {
+          duplicateArr.push(item);
+        }
+      }
+      setCakeInfo(duplicateArr);
+      setCakeInfoList(menuEditSheetData.cakeInput);
+    }
+  }, [menuEditSheetData]);
 
   const handleSubmit = () => {
     if (customerInfoList.length === 0 || cakeInfoList.length === 0) {

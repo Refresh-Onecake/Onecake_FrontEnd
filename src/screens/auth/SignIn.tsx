@@ -4,19 +4,24 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Platform,
+  Image,
 } from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {RootStackParamList} from '../navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import {AppStyles} from '../../styles/AppStyles';
 import {useMutation} from 'react-query';
 import {Controller, useForm} from 'react-hook-form';
-import {ISignIn, getUserData} from '../../services';
+import {ISignIn, getUserData, IRefreshToken} from '../../services';
 import {Button} from '../../components/common/Button';
+import {appKeys} from '../../enum';
+import {AutoFocusProvider, useAutoFocus} from '../../contexts';
+import SplashScreen from 'react-native-splash-screen';
+import {useSetRecoilState} from 'recoil';
+import {storeIdState} from '../../recoil/atom';
 
 type IUserInfo = {
   id: string;
@@ -25,6 +30,7 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setStoreId = useSetRecoilState(storeIdState);
 
   const {
     control,
@@ -37,23 +43,49 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     },
   });
 
+  useEffect(() => {
+    const getMultipleData = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem(appKeys.accessTokenKey);
+        return savedData;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMultipleData()
+      .then(resp => {
+        if (resp) {
+          navigation.reset({
+            routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
+          });
+          SplashScreen.hide();
+        } else {
+          SplashScreen.hide();
+        }
+      })
+      .catch(err => {
+        SplashScreen.hide();
+      });
+  }, []);
+
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
   const signInQuery = useMutation((user: ISignIn) => getUserData(user), {
-    onSuccess: data => {
-      // await AsyncStorage.multiSet([
-      //   ['AccessToken', data.accessToken],
-      //   ['RefreshToken', data.refreshToken],
-      // ]);
+    onSuccess: async data => {
+      setStoreId(data.storeId);
+      await AsyncStorage.multiSet([
+        [appKeys.accessTokenKey, data.accessToken],
+        [appKeys.refreshTokenKey, data.refreshToken],
+        [appKeys.roleTokenKey, data.role],
+        [appKeys.storeIdKey, String(data.storeId)],
+      ]);
       navigation.navigate('MainNavigator', {
         screen: 'Home',
       });
     },
-    // TODO: AccessToken값 만료 시 리프레시 토큰으로 재요청.
-    onError: (errors, query) => {
-      console.log(errors, query);
+    onError: errors => {
       toggleModal();
     },
   });
@@ -65,104 +97,119 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
     };
     signInQuery.mutate(user);
   };
-  //   const doSignIn = () => {
-  //     navigation.navigate('MainNavigator', {
-  //       screen: 'Home',
-  //     });
-  //   };
+
+  const TextInputRef = useRef<TextInput | null>(null);
+  const setFocus = useCallback(
+    () => TextInputRef.current?.focus(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [TextInputRef.current],
+  );
+  const autoFocus = useAutoFocus();
+
   return (
-    <SafeAreaProvider style={styles.signInWrapper}>
-      <View
-        style={{
-          width: 87,
-          height: 87,
-          backgroundColor: 'hotpink',
-          marginBottom: 17,
-        }}></View>
-      <Text
-        style={{
-          fontSize: 40,
-          fontWeight: '600',
-        }}>
-        Onecake.
-      </Text>
-      <View style={styles.inputWrapper}>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              placeholder="아이디"
-              style={styles.textInput}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="id"
-        />
+    <SafeAreaView style={styles.signInWrapper}>
+      <AutoFocusProvider contentContainerStyle={styles.signInWrapper}>
+        <View>
+          <Image
+            style={{width: 87.91, height: 87.91, marginBottom: 17.23}}
+            source={require('../../asset/login_logo.png')}
+          />
+        </View>
+        <View style={{paddingTop: 13.23, paddingBottom: 50.94}}>
+          <Image
+            style={{width: 143.38, height: 25.68, resizeMode: 'contain'}}
+            source={require('../../asset/login_title.png')}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                onFocus={autoFocus}
+                placeholder="아이디"
+                style={styles.textInput}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                placeholderTextColor={AppStyles.color.darkGray}
+                selectionColor={AppStyles.color.hotPink}
+                value={value}
+              />
+            )}
+            name="id"
+          />
+        </View>
         {errors.id && (
           <Text style={styles.errorText}>아이디를 입력해주세요</Text>
         )}
-      </View>
-      <View style={styles.inputWrapper}>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              placeholder="비밀번호"
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              style={styles.textInput}
-            />
-          )}
-          name="password"
-        />
+        <View style={styles.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="비밀번호"
+                value={value}
+                onFocus={autoFocus}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                secureTextEntry={true}
+                style={styles.textInput}
+                placeholderTextColor={AppStyles.color.darkGray}
+                selectionColor={AppStyles.color.hotPink}
+              />
+            )}
+            name="password"
+          />
+        </View>
         {errors.password && (
           <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
         )}
-      </View>
-      {/* <View style={{width: 270, padding: AppStyles.padding.screen, height: 42}}>
-        <Button onPress={handleSubmit(doSignIn)}>
-          <Text>로그인</Text>
-        </Button>
-      </View> */}
-
-      <View style={styles.loginBtn}>
-        <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
-      </View>
-      <View style={styles.texts}>
-        <Text onPress={() => navigation.navigate('SelectUserType')}>
-          회원가입
-        </Text>
-        <Text onPress={() => navigation.navigate('FindPwd')}>
-          비밀번호 찾기
-        </Text>
-      </View>
-      <Modal isVisible={modalVisible}>
-        <SafeAreaView style={styles.modal}>
-          <Text>
-            로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
-            입력해 주세요.
+        <View style={styles.loginBtn}>
+          <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
+        </View>
+        <View style={styles.texts}>
+          <Text
+            style={styles.authText}
+            onPress={() => navigation.navigate('SelectUserType')}>
+            회원가입
           </Text>
-          <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
-            <Text style={{color: AppStyles.color.white}}>확인</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </Modal>
-    </SafeAreaProvider>
+          <Text
+            style={styles.authText}
+            onPress={() => navigation.navigate('FindPwd')}>
+            아이디/비밀번호 찾기
+          </Text>
+        </View>
+        <Modal isVisible={modalVisible}>
+          <SafeAreaView style={styles.modal}>
+            <Text>
+              로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
+              입력해 주세요.
+            </Text>
+            <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
+              <Text style={{color: AppStyles.color.white}}>확인</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </Modal>
+      </AutoFocusProvider>
+    </SafeAreaView>
   );
 };
 
 export default SignIn;
 
 const styles = StyleSheet.create({
+  title: {
+    fontWeight: '700',
+    fontSize: 28,
+    lineHeight: 42,
+    paddingBottom: 52,
+  },
   signInWrapper: {
     backgroundColor: AppStyles.color.white,
     flex: 1,
@@ -172,13 +219,22 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     width: 270,
-    borderBottomWidth: 1,
-    height: 70,
+    borderBottomWidth: 0.7,
+    height: Platform.OS === 'android' ? 70 : 40,
     borderBottomColor: AppStyles.color.black,
   },
   textInput: {
+    fontSize: 13,
+    lineHeight: 16,
+    fontWeight: '400',
     width: 270,
+    ...Platform.select({
+      ios: {
+        height: 40,
+      },
+    }),
     borderBottomColor: AppStyles.color.border,
+    color: AppStyles.color.black,
   },
   loginBtn: {
     marginTop: 26,
@@ -186,10 +242,11 @@ const styles = StyleSheet.create({
     height: 42,
   },
   texts: {
-    width: 270,
+    width: 194,
     marginTop: 31,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   modal: {
     padding: AppStyles.padding.screen,
@@ -211,9 +268,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   errorText: {
+    width: 270,
     fontSize: 12,
     color: AppStyles.color.pink,
-    opacity: 0.7,
-    paddingTop: 2,
+    paddingTop: 3.66,
+  },
+  authText: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: AppStyles.color.black,
+    opacity: 0.5,
   },
 });

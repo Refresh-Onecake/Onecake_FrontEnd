@@ -17,37 +17,35 @@ export const EnterComplete = ({
 }: StackScreenProps<RootStackParamList>) => {
   return (
     <Fragment>
-      <SafeAreaView style={styles.view}>
-        <View style={styles.headerWrap}>
-          <View style={{marginTop: 40, marginBottom: 20}}>
-            <Image
-              style={{width: 56, height: 56}}
-              source={require('../../asset/checkIcon.png')}
-            />
-          </View>
-          <View>
-            <Image
-              style={{width: 230, height: 30}}
-              source={require('../../asset/enterStoreComplete.png')}
-            />
-          </View>
-        </View>
-        <View
-          style={{flex: 1, backgroundColor: AppStyles.color.backgroundGray}}
-        />
-        <TouchableOpacity
-          style={EnterStoreStyle.submitBtn}
-          onPress={() =>
-            navigation.navigate('MainNavigator', {
-              screen: 'Home',
-            })
-          }>
-          <Text style={EnterStoreStyle.submitText}>시작하기</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
       <SafeAreaView
-        style={{flex: 0, backgroundColor: AppStyles.color.hotPink}}
-      />
+        style={{
+          flex: 1,
+          backgroundColor: AppStyles.color.hotPink,
+        }}>
+        <View style={styles.view}>
+          <View style={styles.headerWrap}>
+            <View style={{marginTop: 40, marginBottom: 20}}></View>
+            <Text style={styles.Title}>입점신청을 완료했어요!</Text>
+            <Text style={styles.subTitle}>
+              원케이크에 오신 것을 환영합니다.
+            </Text>
+            <Text style={styles.subTitle}>
+              원케이크를 통해 케이크를 판매해보세요.
+            </Text>
+          </View>
+          <View style={{flex: 1}} />
+          <TouchableOpacity
+            style={EnterStoreStyle.submitBtn}
+            onPress={() =>
+              navigation.reset({
+                routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
+              })
+            }>
+            <Text style={EnterStoreStyle.submitText}>시작하기</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </Fragment>
   );
 };
@@ -66,5 +64,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: AppStyles.padding.screen,
     height: '25%',
     paddingBottom: AppStyles.padding.screen,
+  },
+  Title: {
+    width: '100%',
+    fontWeight: '700',
+    fontSize: 23,
+    color: AppStyles.color.black,
+    marginBottom: 14,
+  },
+  subTitle: {
+    width: '100%',
+    color: AppStyles.color.black,
+    opacity: 0.5,
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 22,
   },
 });

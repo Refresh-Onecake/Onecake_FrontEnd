@@ -1,7 +1,6 @@
 import {
   Image,
   Modal,
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -9,27 +8,36 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useMutation} from 'react-query';
+
 import {RootStackParamList} from '../navigator';
 import {AppStyles} from '../../styles/AppStyles';
 import {Controller, useForm} from 'react-hook-form';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {IEnterMenuInputForm} from './types';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
-import {FlatList} from 'react-native-gesture-handler';
 import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
-import {useSetRecoilState} from 'recoil';
-import {storeMenuState} from '../../recoil/atom';
-import {useMutation} from 'react-query';
-import {fetchEnterPicture} from '../../services';
-import {Platform} from 'react-native';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {menuEditSheetInfoState, storeMenuState} from '../../recoil/atom';
+import {fetchEnterPicture, refetchToken} from '../../services';
+import {getMultipleData} from '../../../App';
+
 export const EnterMenu = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
+  //주문서 수정 시 필요한 데이터
+  const editMenuSheetData = useRecoilValue(menuEditSheetInfoState);
+
+  useEffect(() => {
+    console.log(editMenuSheetData);
+  }, [editMenuSheetData]);
+
   // 드롭다운 관련 상태
   const [visible, setVisible] = useState(false);
   const [dropdownTop, setDropdownTop] = useState(0);
@@ -65,6 +73,23 @@ export const EnterMenu = ({
     toggleDropdown();
   };
 
+  useEffect(() => {
+    console.log(editMenuSheetData);
+    if (editMenuSheetData.cakeSize !== '') {
+      setValue('cakeSize', editMenuSheetData.cakeSize);
+      setSelectedCakeSize(editMenuSheetData.cakeSize);
+    }
+    if (editMenuSheetData.price !== 0) {
+      setValue('cakePrice', String(editMenuSheetData.price));
+    }
+    if (editMenuSheetData.menuDescription !== '') {
+      setValue('cakeDescription', editMenuSheetData.menuDescription);
+    }
+    if (editMenuSheetData.taste !== '') {
+      setValue('cakeTaste', editMenuSheetData.taste);
+    }
+  }, [editMenuSheetData]);
+
   const {
     control,
     handleSubmit,
@@ -86,16 +111,22 @@ export const EnterMenu = ({
     menuImg && setValue('cakeImage', menuImg);
   }, [menuImg]);
 
-  // React.useEffect(() => {
-  //   const subscription = watch((value, {name, type}) =>
-  //     console.log(value, name, type),
-  //   );
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
   const pictureMutation = useMutation(
-    (pictureObj: IStoreImg) => fetchEnterPicture(pictureObj),
+    async (pictureObj: IStoreImg) =>
+    
+      await fetchEnterPicture(pictureObj).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          
+          }
+        } else {
+          if (res) return res.text();
+        }
+      }),
     {
+      retry: 3,
       onSuccess: data => {
         console.log(data);
         console.log('사진등록 성공');
@@ -103,7 +134,7 @@ export const EnterMenu = ({
         navigation.navigate('EnterMenuSheet');
       },
       onError: e => {
-        console.error(e);
+        console.log(e);
       },
     },
   );

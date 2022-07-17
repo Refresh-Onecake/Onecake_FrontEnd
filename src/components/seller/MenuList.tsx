@@ -6,41 +6,35 @@ import {
   StyleSheet,
   Text,
   View,
+  AppState,
+  Platform,
 } from 'react-native';
-import React from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import {getMenuList} from '../../services/menuService';
-import {useQuery} from 'react-query';
+import {QueryClient, useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {Button} from '../common/Button';
 import {RootStackParamList} from '../../screens/navigator';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {IMenuList} from '../../services/menuService';
+import {MenuRenderList} from './MenuRenderList';
+import {focusManager} from 'react-query';
+import {useIsFocused} from '@react-navigation/native';
+import {useQueryRefetchingOnError} from '../../hooks';
 
-export const MenuList = () => {
+export type MenuListProps = {
+  data: IMenuList[] | undefined;
+};
+export const MenuList: FC<MenuListProps> = ({data}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  // const {data, status} = useQuery<IMenuList[]>(
-  //   queryKeys.sellerMenuList,
-  //   getMenuList,
-  //   {
-  //     onError: () => {
-  //       console.error('뭐지뭐지?');
-  //     },
-  //     onSuccess: () => {
-  //       console.log(data);
-  //     },
-  //   },
-  // );
 
-  // data && data?.length > 0
   return (
-    <View>
-      {false ? (
+    <SafeAreaView style={{flex: 1, marginBottom: 20}}>
+      {data && data?.length > 0 ? (
         //TODO: 메뉴 데이터가 존재할 때
-        <View style={styles.flex}>
-          <Text>데이터있음</Text>
-        </View>
+        <MenuRenderList data={data} />
       ) : (
         // TODO: 메뉴 데이터가 존재하지 않을 때
         <SafeAreaView style={styles.flex}>
@@ -51,7 +45,6 @@ export const MenuList = () => {
             />
           </View>
           <Text style={styles.title}>아직 등록된 메뉴가 없어요!</Text>
-
           <View style={styles.btnWrap}>
             <Button
               text="메뉴 추가하기"
@@ -64,7 +57,7 @@ export const MenuList = () => {
           </View>
         </SafeAreaView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

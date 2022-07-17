@@ -1,6 +1,10 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RootStackParamList} from '../screens/navigator';
+import {appKeys} from '../enum';
+import {KeyValuePair} from '@react-native-async-storage/async-storage/lib/typescript/types';
+import {assert} from '../utils';
+import {Query, QueryKey} from 'react-query';
 
 export type ISignUp = {
   user_id: string;
@@ -23,8 +27,20 @@ export type IUserData = {
   TokenExpires: number;
 };
 
+export type IRefreshToken = {
+  refreshToken: IUserData['refreshToken'] | null;
+  accessToken: IUserData['accessToken'] | null;
+};
+
+export type IRefreshTokenData = {
+  accessToken: string;
+  accessTokenExpiresIn: number;
+  grantType: string;
+  refreshToken: string;
+};
+
 export const apiClient = axios.create({
-  baseURL: 'http://15.165.27.120:8080',
+  baseURL: 'https://want-onecake.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -53,11 +69,85 @@ export type ISignIn = {
   password: IUserData['password'];
 };
 
-//TODO: 토큰 저장 로직의 위치가 어디가 좋을까, 헤더에 담는 것도 해야 함
+export type ILoginResponse = {
+  grantType: string;
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresIn: number;
+  role: string;
+  storeId: number;
+};
+
 export const getUserData = async ({id, password}: ISignIn) => {
-  const {data} = await apiClient.post<IUserData>('/api/v1/auth/login', {
+  const {data} = await apiClient.post<ILoginResponse>('/api/v1/auth/login', {
     user_id: id,
     password: password,
   });
+  await AsyncStorage.multiSet([
+    ['AccessToken', data.accessToken],
+    ['RefreshToken', data.refreshToken],
+  ]);
   return data;
+};
+
+export const refetchToken = async (
+  tokens: readonly KeyValuePair[] | undefined,
+  query?: Query<unknown, unknown, unknown, QueryKey>,
+) => {
+  assert(
+    tokens !== undefined,
+    'token을 refresh 하기 위해서는 undefined가 아니어야 한다',
+  );
+  await fetch('https://want-onecake.com/api/v1/auth/reissue', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      accessToken: tokens[0][1],
+      refreshToken: tokens[1][1],
+    }),
+  })
+    .then(res => res.json())
+    .then(async (data: IRefreshTokenData) => {
+      await AsyncStorage.multiSet(
+        [
+          [appKeys.accessTokenKey, data.accessToken],
+          [appKeys.refreshTokenKey, data.refreshToken],
+        ],
+        () => {
+          console.log('기존 토큰 리프레쉬');
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          query && console.log(`호출 api ${query.queryHash}`);
+        },
+      );
+    });
+};
+
+export const fetchLogout = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const res = await fetch(`https://want-onecake.com/api/v1/auth/logout`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  }
+};
+
+//
+export const fetchResign = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const res = await fetch(`https://want-onecake.com/api/v1/seller/resign`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  }
 };

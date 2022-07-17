@@ -108,17 +108,20 @@ export const EnterMenuSheet = ({
     }
   }, [menuEditSheetData]);
 
+  useEffect(() => {
+    setStoreMenu(prev => ({
+      ...prev,
+      consumerInput: customerInfoList,
+      cakeInput: cakeInfoList,
+    }));
+  }, [customerInfoList, cakeInfoList, setStoreMenu]);
+
   const handleSubmit = () => {
     if (customerInfoList.length === 0 || cakeInfoList.length === 0) {
       setErrorText(true);
     } else {
       // TODO: API통신이 발생하는 구간
       setErrorText(false);
-      setStoreMenu(prev => ({
-        ...prev,
-        consumerInput: customerInfoList,
-        cakeInput: cakeInfoList,
-      }));
       menuMutation.mutate(storeMenu);
     }
   };

@@ -22,6 +22,8 @@ import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import SplashScreen from 'react-native-splash-screen';
 import {useSetRecoilState} from 'recoil';
 import {storeIdState} from '../../recoil/atom';
+import InfoModal from '../../components/common/InfoModal';
+import {StackScreenProps} from '@react-navigation/stack';
 
 type IUserInfo = {
   id: string;
@@ -30,6 +32,7 @@ type IUserInfo = {
 
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [findIdVisible, setFindIdVisible] = useState<boolean>(false);
   const setStoreId = useSetRecoilState(storeIdState);
 
   const {
@@ -179,9 +182,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             onPress={() => navigation.navigate('SelectUserType')}>
             회원가입
           </Text>
-          <Text
-            style={styles.authText}
-            onPress={() => navigation.navigate('FindPwd')}>
+          <Text style={styles.authText} onPress={() => setFindIdVisible(true)}>
             아이디/비밀번호 찾기
           </Text>
         </View>
@@ -196,6 +197,12 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             </TouchableOpacity>
           </SafeAreaView>
         </Modal>
+        <InfoModal
+          modalVisible={findIdVisible}
+          setModalVisible={setFindIdVisible}
+          title={'아이디/비밀번호 찾기'}
+          subTitle={'관리자에게 문의 부탁드립니다.'}
+        />
       </AutoFocusProvider>
     </SafeAreaView>
   );

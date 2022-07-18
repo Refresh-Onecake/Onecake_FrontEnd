@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {AppStyles} from '../../styles/AppStyles';
 import {currentTabState} from '../../recoil/atom';
 import {storeTabKeys} from '../../enum/storeTabKeys';
@@ -62,6 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: AppStyles.color.white,
     width: +TabIndicatorWidth,
+    marginTop: 10,
     height: 47,
   },
   selectedView: {

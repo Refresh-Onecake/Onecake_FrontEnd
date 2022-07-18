@@ -21,7 +21,7 @@ export const CakeList: FC = () => {
   const queryClient = useQueryClient();
   const storeId = useRecoilValue(storeIdState);
 
-  const {data} = useQuery<ICakeList>(
+  const {data} = useQuery<ICakeList[]>(
     queryKeys.storeReviews,
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -38,7 +38,7 @@ export const CakeList: FC = () => {
       staleTime: 5000,
       cacheTime: Infinity,
       onSuccess: data => {
-        console.log('cakeList', data);
+        console.log('cakeList', data.length);
       },
       onError: err => {
         console.log('err');
@@ -67,7 +67,7 @@ export const CakeList: FC = () => {
 
   return (
     <View>
-      {data.length === 0 ? (
+      {data && data.length === 0 ? (
         <View>
           <Image
             style={styles.cake}

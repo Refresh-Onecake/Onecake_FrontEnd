@@ -113,6 +113,7 @@ export const StoreTitleInfo = () => {
           </Text>
           <Text
             style={{
+              marginTop: 10,
               fontSize: AppStyles.font.subTitle,
             }}>
             {data?.storeDescription}
@@ -175,12 +176,20 @@ const styles = StyleSheet.create({
   },
   back: {
     width: '100%',
-    height: '8%',
+    ...Platform.select({
+      android: {
+        height: '15%',
+      },
+      ios: {
+        height: '1%',
+        marginBottom: 20,
+      },
+    }),
     backgroundColor: AppStyles.color.white,
-    marginBottom: 10,
   },
   userOptionWrapper: {
     flexDirection: 'row',
+    marginTop: 10,
   },
   userOption: {
     width: '50%',
@@ -204,13 +213,14 @@ const styles = StyleSheet.create({
     top: '26%',
     position: 'absolute',
     width: 370,
-    height: '15%',
+    height: '16%',
     alignSelf: 'center',
     borderRadius: 13,
     backgroundColor: AppStyles.color.white,
     justifyContent: 'space-evenly',
     alignContent: 'center',
     paddingHorizontal: AppStyles.padding.small,
+    paddingVertical: 10,
     ...Platform.select({
       ios: {
         shadowColor: '#000',

@@ -4,11 +4,10 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {Dispatch, FC, SetStateAction} from 'react';
-import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {commonStyles} from '../../styles/commonStyles';
 import {Button} from './Button';
 import {AppStyles} from '../../styles/AppStyles';

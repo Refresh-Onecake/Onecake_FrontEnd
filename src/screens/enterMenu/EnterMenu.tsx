@@ -113,13 +113,11 @@ export const EnterMenu = ({
 
   const pictureMutation = useMutation(
     async (pictureObj: IStoreImg) =>
-    
       await fetchEnterPicture(pictureObj).then(async res => {
         if (!res?.ok) {
           if (res?.status === 401) {
             const tokens = await getMultipleData();
             refetchToken(tokens);
-          
           }
         } else {
           if (res) return res.text();
@@ -253,6 +251,7 @@ export const EnterMenu = ({
               control={control}
               rules={{
                 required: true,
+                pattern: /^[0-9]*$/,
               }}
               render={({field: {onBlur, onChange, value}}) => (
                 <View>
@@ -263,7 +262,7 @@ export const EnterMenu = ({
                       onFocus={autoFocus}
                       value={value}
                       selectionColor={AppStyles.color.placeholder}
-                      placeholder="최소 가격을 입력해주세요."
+                      placeholder="최소 가격은 숫자만 입력 가능합니다."
                       placeholderTextColor={AppStyles.color.placeholder}
                       style={styles.textInput}
                       onChangeText={onChange}
@@ -275,7 +274,7 @@ export const EnterMenu = ({
             />
             {errors.cakePrice && (
               <Text style={EnterStoreStyles.errorText}>
-                최소 가격을 입력해주세요.
+                가격은 숫자만 입력 가능합니다.
               </Text>
             )}
             {/* 메뉴 설명 입력항목 */}

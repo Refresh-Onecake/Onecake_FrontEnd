@@ -48,7 +48,7 @@ export const MainNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="가게"
+        name="메뉴"
         component={Stores}
         options={{
           tabBarIcon: ({focused}) => {

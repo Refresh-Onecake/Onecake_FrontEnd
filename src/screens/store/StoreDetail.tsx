@@ -35,7 +35,7 @@ export const StoreDetail: FC<Props> = () => {
     <>
       <StoreTitleInfo />
       <TabView />
-      <SafeAreaView style={styles.OrderBtnWrapper}>
+      <View style={styles.OrderBtnWrapper}>
         {/* TODO: 주문서 */}
         <View style={styles.OrderBtn}>
           <Button
@@ -50,7 +50,7 @@ export const StoreDetail: FC<Props> = () => {
             <Text>케이크사이즈</Text>
           </View>
         </BottomSheet>
-      </SafeAreaView>
+      </View>
     </>
   );
 };

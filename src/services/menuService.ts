@@ -31,6 +31,7 @@ export const getMenuList = async (menuId?: number) => {
 export const fetchStoreEnterMenu = async (data: IFetchMenu, menuId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
+    console.log(menuId);
     const response = await fetch(
       menuId !== -1
         ? `https://want-onecake.com/api/v1/seller/store/menu/${menuId}`

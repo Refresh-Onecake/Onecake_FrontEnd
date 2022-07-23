@@ -256,6 +256,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				971ACBFA77EA2774048667CE /* [CP] Copy Pods Resources */,
+				BF870D01DC21EB2465EC1A05 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -279,6 +280,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				71A89B10BF6636EAA0C86F1E /* [CP] Copy Pods Resources */,
 				781CB335202A22623D35432B /* [CP-User] [RNFB] Core Configuration */,
+				73A98A128007F6140E9C01EF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -399,6 +401,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd/Pods-Onecake_FrontEnd-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		73A98A128007F6140E9C01EF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd/Pods-Onecake_FrontEnd-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd/Pods-Onecake_FrontEnd-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd/Pods-Onecake_FrontEnd-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		781CB335202A22623D35432B /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -427,6 +446,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd-Onecake_FrontEndTests/Pods-Onecake_FrontEnd-Onecake_FrontEndTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BF870D01DC21EB2465EC1A05 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd-Onecake_FrontEndTests/Pods-Onecake_FrontEnd-Onecake_FrontEndTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd-Onecake_FrontEndTests/Pods-Onecake_FrontEnd-Onecake_FrontEndTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Onecake_FrontEnd-Onecake_FrontEndTests/Pods-Onecake_FrontEnd-Onecake_FrontEndTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DA28F18E101F33CD3A6080CF /* [CP] Check Pods Manifest.lock */ = {

@@ -44,7 +44,9 @@ export const StoreInfo = () => {
 
   return (
     <ScrollView style={style.wrapper}>
-      <Text style={[style.text, {marginBottom: 38}]}>영업 정보</Text>
+      <Text style={[style.text, {marginBottom: 24.51, fontWeight: '600'}]}>
+        영업 정보
+      </Text>
 
       <View style={style.view}>
         <Text style={style.text}>운영 시간</Text>
@@ -73,7 +75,6 @@ const style = StyleSheet.create({
   },
   text: {
     fontSize: 13,
-    fontWeight: '800',
     width: 60,
     marginRight: 40,
   },
@@ -85,5 +86,9 @@ const style = StyleSheet.create({
   },
   dataText: {
     flex: 1,
+    color: '#7D7D7D',
+    fontWeight: '400',
+    fontSize: 13,
+    lineHeight: 20,
   },
 });

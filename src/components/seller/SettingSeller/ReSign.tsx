@@ -6,17 +6,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {Button} from '../../common/Button';
 import {commonStyles} from '../../../styles/commonStyles';
-import {useLogoutAndReSignQuery} from '../../../hooks';
+import {
+  useAsync,
+  useGetMemberInfoQuery,
+  useLogoutAndReSignQuery,
+} from '../../../hooks';
 import {fetchResign} from '../../../services';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
+import {useQueryClient} from 'react-query';
 
 export const ReSign = () => {
+  const queryClient = useQueryClient();
+  const {data} = useGetMemberInfoQuery(queryClient);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const resignMutation = useLogoutAndReSignQuery(fetchResign, navigation);
 
@@ -27,7 +34,9 @@ export const ReSign = () => {
   return (
     <Fragment>
       <SafeAreaView style={styles.wrap}>
-        <Text style={styles.title}>onecake님과 이별이라니 너무 아쉬워요.</Text>
+        <Text style={styles.title}>
+          {data && data.userName}님과 이별이라니 너무 아쉬워요.
+        </Text>
         <Text style={styles.subTitle}>
           계정을 삭제하면 모든 활동 정보가 사라집니다. 진짜로 탈퇴하시겠어요?
         </Text>

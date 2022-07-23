@@ -128,7 +128,8 @@ export const EnterStore = () => {
       onSuccess: data => {
         console.log(data);
         console.log('입점신청 성공');
-        logoutMutation.mutate();
+        navigation.navigate('EnterComplete');
+        // logoutMutation.mutate();
       },
       onError: e => {
         console.log(e);

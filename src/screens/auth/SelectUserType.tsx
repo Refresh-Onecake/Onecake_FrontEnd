@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     height: 40,
-    paddingTop: 15,
     alignItems: 'center',
     backgroundColor: AppStyles.color.hotPink,
   },

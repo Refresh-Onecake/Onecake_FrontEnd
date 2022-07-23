@@ -6,6 +6,7 @@ import {
   Text,
   Platform,
   Image,
+  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useCallback, useEffect, useRef, useState} from 'react';

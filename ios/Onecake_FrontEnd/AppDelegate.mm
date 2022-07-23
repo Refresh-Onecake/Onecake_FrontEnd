@@ -44,6 +44,10 @@
 #endif
 
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"Onecake_FrontEnd", nil);
+  
+  if (@available(iOS 13.0, *)) {
+    rootView.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+  }
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];

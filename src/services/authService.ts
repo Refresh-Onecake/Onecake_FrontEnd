@@ -151,3 +151,16 @@ export const fetchResign = async () => {
     return res;
   }
 };
+
+export const getMemberInfo = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const res = await fetch(`https://want-onecake.com/api/v1/member`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  }
+};

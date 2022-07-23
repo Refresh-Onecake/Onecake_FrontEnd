@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys, queryKeys} from './src/enum';
 import {IRefreshTokenData, refetchToken} from './src/services';
 import {useAsync} from './src/hooks';
+import {StatusBar} from 'react-native';
 
 interface IError {
   message: string;
@@ -49,6 +50,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <SafeAreaProvider>
+          <StatusBar barStyle="dark-content" />
           <NavigationContainer>
             <RootStack.Navigator
               initialRouteName="StackNavigator"

@@ -123,7 +123,11 @@ export const StoreTitleInfo = () => {
           <View
             style={[
               styles.userOption,
-              {borderRightWidth: 1, borderColor: AppStyles.color.border},
+              {
+                borderRightWidth: 1,
+                borderColor: AppStyles.color.border,
+                backgroundColor: 'red',
+              },
             ]}>
             <TouchableOpacity onPress={pressHeart}>
               <Icon size={15} name={liked ? 'heart' : 'heart-outline'} />

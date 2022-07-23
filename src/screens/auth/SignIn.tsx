@@ -33,6 +33,7 @@ type IUserInfo = {
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [findIdVisible, setFindIdVisible] = useState<boolean>(false);
+  const [findPwdVisible, setFindPwdVisible] = useState<boolean>(false);
   const setStoreId = useSetRecoilState(storeIdState);
 
   const {
@@ -178,12 +179,31 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         </View>
         <View style={styles.texts}>
           <Text
-            style={styles.authText}
+            style={[
+              styles.authText,
+              {
+                borderRightColor: AppStyles.color.IconColor,
+                borderRightWidth: 1,
+                width: 60,
+              },
+            ]}
             onPress={() => navigation.navigate('SelectUserType')}>
             회원가입
           </Text>
-          <Text style={styles.authText} onPress={() => setFindIdVisible(true)}>
-            아이디/비밀번호 찾기
+          <Text
+            style={[
+              styles.authText,
+              {
+                borderRightColor: AppStyles.color.IconColor,
+                borderRightWidth: 1,
+                width: 70,
+              },
+            ]}
+            onPress={() => setFindIdVisible(true)}>
+            아이디 찾기
+          </Text>
+          <Text style={styles.authText} onPress={() => setFindPwdVisible(true)}>
+            비밀번호 찾기
           </Text>
         </View>
         <Modal isVisible={modalVisible}>
@@ -200,8 +220,14 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         <InfoModal
           modalVisible={findIdVisible}
           setModalVisible={setFindIdVisible}
-          title={'아이디/비밀번호 찾기'}
-          subTitle={'관리자에게 문의 부탁드립니다.'}
+          title={'아이디 찾기'}
+          subTitle={'아이디 찾기는 관리자에게 문의 부탁드립니다.'}
+        />
+        <InfoModal
+          modalVisible={findPwdVisible}
+          setModalVisible={setFindPwdVisible}
+          title={'비밀번호 찾기'}
+          subTitle={'비밀번호 찾기는 관리자에게 문의 부탁드립니다.'}
         />
       </AutoFocusProvider>
     </SafeAreaView>
@@ -249,7 +275,7 @@ const styles = StyleSheet.create({
     height: 42,
   },
   texts: {
-    width: 194,
+    width: 240,
     marginTop: 31,
     flexDirection: 'row',
     justifyContent: 'space-around',

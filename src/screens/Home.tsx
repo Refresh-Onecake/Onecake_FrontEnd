@@ -20,6 +20,9 @@ import {storeIdState} from '../recoil/atom';
 import {useIsFocused} from '@react-navigation/native';
 import {focusManager} from 'react-query';
 import {Button} from '../components';
+import {HotCakes} from '../components/consumer/Home/HotCakes';
+import {AnniversaryCakes} from '../components/consumer/Home/AnniversaryCakes';
+import {CityCakes} from '../components/consumer/Home/CityCakes';
 
 const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [role, setRole] = useState<string>();
@@ -52,7 +55,7 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
 
   return (
     <SafeAreaView style={styles.view}>
-      {role === 'SELLER' ? (
+      {role === 'CONSUMER' ? (
         storeId === 0 ? (
           <View style={styles.flex}>
             <View>
@@ -81,7 +84,9 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
         )
       ) : (
         <>
-          <Text>소비자홈</Text>
+          <HotCakes />
+          <AnniversaryCakes />
+          <CityCakes />
         </>
       )}
     </SafeAreaView>

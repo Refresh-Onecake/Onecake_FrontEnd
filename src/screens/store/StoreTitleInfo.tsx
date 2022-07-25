@@ -126,7 +126,6 @@ export const StoreTitleInfo = () => {
               {
                 borderRightWidth: 1,
                 borderColor: AppStyles.color.border,
-                backgroundColor: 'red',
               },
             ]}>
             <TouchableOpacity onPress={pressHeart}>

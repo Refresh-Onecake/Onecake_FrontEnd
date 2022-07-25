@@ -102,12 +102,12 @@ export const StoreTitleInfo = () => {
     <>
       <Image style={styles.image} source={{uri: data?.storeImage}} />
       <View style={styles.back} />
-      <SafeAreaView style={styles.titleInfo}>
+      <View style={styles.titleInfo}>
         <View>
           <Text
             style={{
               fontSize: AppStyles.font.title,
-              fontWeight: '800',
+              fontWeight: '500',
             }}>
             {data?.storeName}
           </Text>
@@ -168,7 +168,7 @@ export const StoreTitleInfo = () => {
             </View>
           </Modal>
         </View>
-      </SafeAreaView>
+      </View>
     </>
   );
 };
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         height: '15%',
       },
       ios: {
-        height: '1%',
+        paddingTop: 30,
         marginBottom: 20,
       },
     }),
@@ -229,10 +229,10 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 3,
-          height: 3,
+          width: 2,
+          height: 2,
         },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.4,
         shadowRadius: 10,
       },
       android: {

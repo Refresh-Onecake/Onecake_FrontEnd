@@ -12,6 +12,8 @@ export const CityCakes = () => {
 
 const styles = StyleSheet.create({
   title: {
+    marginTop: 35,
+    marginLeft: 16,
     fontWeight: '800',
     color: AppStyles.color.black,
     fontSize: 19,

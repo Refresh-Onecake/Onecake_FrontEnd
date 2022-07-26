@@ -6,7 +6,6 @@ import {
   Text,
   Platform,
   Image,
-  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
@@ -299,7 +298,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   bar: {
-    height: '90%',
+    height: '100%',
     borderColor: 'grey',
     width: 1,
     backgroundColor: AppStyles.color.IconColor,

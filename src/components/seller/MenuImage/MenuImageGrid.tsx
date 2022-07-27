@@ -26,7 +26,7 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
 
   return (
     <View>
-      {images && images.length > 2 ? (
+      {images && images.length > 0 && (
         <FlatList
           data={images}
           numColumns={NUM_COLUMNS}
@@ -39,21 +39,6 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
             />
           )}
         />
-      ) : (
-        <View style={styles.flex}>
-          <MenuImageUploadItem width={currentWidthUsingDimensions} />
-          {images && (
-            <View style={{marginLeft: 3}}>
-              <Image
-                style={{
-                  width: currentWidthUsingDimensions,
-                  height: currentWidthUsingDimensions,
-                }}
-                source={{uri: images[1].image}}
-              />
-            </View>
-          )}
-        </View>
       )}
     </View>
   );

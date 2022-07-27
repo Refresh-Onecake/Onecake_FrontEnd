@@ -1,6 +1,7 @@
 import {
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   // TouchableOpacity,
   Text,
@@ -18,13 +19,14 @@ import {TabView} from './store/TabView';
 import {useRecoilState} from 'recoil';
 import {storeIdState} from '../recoil/atom';
 import {useIsFocused} from '@react-navigation/native';
-import {focusManager} from 'react-query';
+import {focusManager, useQueryClient} from 'react-query';
 import {Button} from '../components';
 import {HotCakes} from '../components/consumer/Home/HotCakes';
 import {AnniversaryCakes} from '../components/consumer/Home/AnniversaryCakes';
 import {CityCakes} from '../components/consumer/Home/CityCakes';
 
 const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
+  const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
   const [storeId, setStoreId] = useRecoilState(storeIdState);
   const [error, resetError] = useAsync(async () => {
@@ -83,11 +85,11 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
           </>
         )
       ) : (
-        <>
+        <ScrollView>
           <HotCakes />
           <AnniversaryCakes />
           <CityCakes />
-        </>
+        </ScrollView>
       )}
     </SafeAreaView>
   );

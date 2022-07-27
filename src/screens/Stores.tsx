@@ -9,7 +9,7 @@ import {
 import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {MenuList} from '../components/seller/MenuList';
+import {MenuList} from '../components/seller/MenuList/MenuList';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from './navigator';
 import {appKeys, queryKeys} from '../enum';

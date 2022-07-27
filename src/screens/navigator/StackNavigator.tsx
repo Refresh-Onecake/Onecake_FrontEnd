@@ -13,6 +13,7 @@ import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 import {ReSign} from '../../components/seller/SettingSeller';
+import {MenuImage} from '../menuImage';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -94,6 +95,18 @@ export const StackNavigator = () => {
         options={{
           headerShown: true,
           headerTitle: '탈퇴하기',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+        }}
+      />
+      {/* 메뉴 이미지 */}
+      <Stack.Screen
+        name="menuImage"
+        component={MenuImage}
+        options={{
+          headerShown: true,
+          headerTitle: '메뉴 이미지',
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,

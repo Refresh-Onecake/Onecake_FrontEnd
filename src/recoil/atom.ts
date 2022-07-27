@@ -64,6 +64,10 @@ export const EditTargetMenuIdState = atom<number>({
   default: -1,
 });
 
+export const orderSheetIdState = atom<number>({
+  key: 'orderSheetIdState',
+});
+
 export const currentTabState = atom<string>({
   key: 'currentTabState',
   default: storeTabKeys.menu,

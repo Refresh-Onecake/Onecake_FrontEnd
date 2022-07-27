@@ -9,25 +9,25 @@ import {
   View,
 } from 'react-native';
 import React, {FC, useCallback, useEffect} from 'react';
-import {AppStyles} from '../../styles/AppStyles';
+import {AppStyles} from '../../../styles/AppStyles';
 import Modal from 'react-native-modal';
-import {commonStyles} from '../../styles/commonStyles';
+import {commonStyles} from '../../../styles/commonStyles';
 import {
   QueryClient,
   useMutation,
   useQueries,
   useQueryClient,
 } from 'react-query';
-import {deleteMenu, refetchToken} from '../../services';
-import {getMultipleData} from '../../../App';
-import {queryKeys} from '../../enum';
-import {useGetSellerMenuSheetByMenuId} from '../../hooks/useGetSellerMenuSheetByMenuId';
+import {getMultipleData} from '../../../../App';
+import {queryKeys} from '../../../enum';
+import {useGetSellerMenuSheetByMenuId} from '../../../hooks/useGetSellerMenuSheetByMenuId';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {menuEditSheetInfoState} from '../../recoil/atom';
-import {IEditFetchMenu, IFetchMenu} from '../../screens/enterMenu';
+import {menuEditSheetInfoState} from '../../../recoil/atom';
+import {IEditFetchMenu, IFetchMenu} from '../../../screens/enterMenu';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../screens/navigator';
+import {RootStackParamList} from '../../../screens/navigator';
+import {deleteMenu, refetchToken} from '../../../services';
 type MenuRenderListDropdownProps = {
   menuId: number;
   visible: boolean;
@@ -118,7 +118,10 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
             },
           ]}>
           <Text style={styles.text}>메뉴 수정하기</Text>
-          <Image style={styles.img} source={require('../../asset/edit.png')} />
+          <Image
+            style={styles.img}
+            source={require('../../../asset/edit.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={onClickDeleteMenu}
@@ -126,7 +129,7 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
           <Text style={styles.text}>메뉴 삭제하기</Text>
           <Image
             style={styles.img}
-            source={require('../../asset/delete.png')}
+            source={require('../../../asset/delete.png')}
           />
         </TouchableOpacity>
       </SafeAreaView>

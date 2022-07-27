@@ -1,8 +1,9 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useRef, useState} from 'react';
-import {AppStyles} from '../../styles/AppStyles';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MenuRenderListDropdown} from './MenuRenderListDropdown';
+import {AppStyles} from '../../../styles/AppStyles';
 type MenuRenderListItemProps = {
   menuId: number;
   idx: number;

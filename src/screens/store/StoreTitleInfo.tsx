@@ -17,12 +17,13 @@ import {storeIdState} from '../../recoil/atom';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appKeys, queryKeys} from '../../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Button} from '../../components';
+
 import {useAsync} from '../../hooks';
 import {getStringValueFromAsyncStorage} from '../../utils';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import {useNavigation} from '@react-navigation/native';
+import {Button} from '../../components/common';
 
 export const StoreTitleInfo = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -157,13 +158,15 @@ export const StoreTitleInfo = () => {
                 onPress={toggleModal}>
                 <Image
                   style={styles.Xicon}
-                  source={require('../../asset/close_X.png')}></Image>
+                  source={require('../../asset/close_X.png')}
+                />
               </TouchableOpacity>
               <Image
                 style={styles.speaker}
-                source={require('../../asset/speaker.png')}></Image>
+                source={require('../../asset/speaker.png')}
+              />
               <View style={styles.btn}>
-                <Button text="카카오톡 채널로 이동"></Button>
+                <Button text="카카오톡 채널로 이동" />
               </View>
             </View>
           </Modal>

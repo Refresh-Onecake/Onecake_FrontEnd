@@ -22,5 +22,6 @@ export type RootStackParamList = {
   };
   OrderManageList: undefined;
   OrderSheet: undefined;
+  OrderDetail: undefined;
   ReSign: undefined;
 };

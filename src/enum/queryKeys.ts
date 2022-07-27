@@ -13,4 +13,6 @@ export const queryKeys = {
   sellerChatAddress: ['sellerChatAddress'] as const,
   sellerMenuSheet: ['sellerMenuSheet'] as const,
   memberInfo: ['memberInfo'] as const,
+  hotCakeList: ['hotCakeList'] as const,
+  cityCakeList: ['cityCakeList'] as const,
 };

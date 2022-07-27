@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 import {IEditFetchMenu, IFetchMenu} from '../screens/enterMenu';
-import {IRefreshToken} from '../services';
+import {IMenuList, IRefreshToken} from '../services';
 import moment from 'moment';
 import {appKeys, storeTabKeys} from '../enum';
 export const storeMenuState = atom<IFetchMenu>({
@@ -71,4 +71,15 @@ export const orderSheetIdState = atom<number>({
 export const currentTabState = atom<string>({
   key: 'currentTabState',
   default: storeTabKeys.menu,
+});
+
+export const menuRenderListItemState = atom<IMenuList>({
+  key: 'menuRenderListItemState',
+  default: {
+    image: '',
+    menuName: '',
+    menuDescription: '',
+    price: 0,
+    id: 0,
+  },
 });

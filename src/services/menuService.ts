@@ -10,6 +10,15 @@ export type IMenuList = {
   id: number;
 };
 
+export type IMenuListItemDetails = {
+  storeName: string;
+  menuTaste: string;
+  images: {
+    id: number;
+    image: string;
+  }[];
+};
+
 export const getMenuList = async (menuId?: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {
@@ -56,6 +65,24 @@ export const deleteMenu = async (menuId: number) => {
       `https://want-onecake.com/api/v1/seller/store/menu/${menuId}`,
       {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response;
+  } else {
+    throw new Error('401');
+  }
+};
+//특정 메뉴의 이미지들 불러오기
+export const getSellerMenuListItemDetails = async (menuId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `https://want-onecake.com/api/v1/seller/store/menu/${menuId}/image`,
+      {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -14,6 +14,8 @@ import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 import {ReSign} from '../../components/seller/SettingSeller';
 import {MenuImage} from '../menuImage';
+import {useRecoilValue} from 'recoil';
+import {menuRenderListItemState} from '../../recoil/atom';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -24,7 +26,9 @@ const BackBtn = () => {
     />
   );
 };
+
 export const StackNavigator = () => {
+  const menuRenderListItem = useRecoilValue(menuRenderListItemState);
   return (
     <Stack.Navigator
       initialRouteName="SignIn"
@@ -60,6 +64,7 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       <Stack.Screen
@@ -71,6 +76,7 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       {/* 사장님 주문서 */}
@@ -98,6 +104,7 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       {/* 메뉴 이미지 */}
@@ -106,10 +113,11 @@ export const StackNavigator = () => {
         component={MenuImage}
         options={{
           headerShown: true,
-          headerTitle: '메뉴 이미지',
+          headerTitle: `${menuRenderListItem.menuName}`,
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
     </Stack.Navigator>

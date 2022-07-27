@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 //prettier-ignore
 import {RecoilRoot, atom, selector, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 //prettier-ignore
@@ -6,15 +6,13 @@ import {useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider,
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
-
 import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
 import {MainNavigator, StackNavigator} from './src/screens/navigator';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appKeys, queryKeys} from './src/enum';
-import {IRefreshTokenData, refetchToken} from './src/services';
-import {useAsync} from './src/hooks';
+import {appKeys} from './src/enum';
+import {refetchToken} from './src/services';
 import {StatusBar} from 'react-native';
+import codePush from 'react-native-code-push';
 
 interface IError {
   message: string;
@@ -30,6 +28,7 @@ export const getMultipleData = async () => {
     console.log(error);
   }
 };
+
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: async (err, query) => {
@@ -44,7 +43,7 @@ const queryClient = new QueryClient({
   }),
 });
 
-export default function App() {
+const App: () => ReactNode = () => {
   const RootStack = createStackNavigator<RootStackParamList>();
   return (
     <QueryClientProvider client={queryClient}>
@@ -72,4 +71,6 @@ export default function App() {
       </RecoilRoot>
     </QueryClientProvider>
   );
-}
+};
+
+export default codePush(App);

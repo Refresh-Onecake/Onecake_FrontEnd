@@ -1,11 +1,24 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {FC} from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AppStyles} from '../../../styles/AppStyles';
 
-export const MenuImageUploadItem = () => {
+type MenuImageUploadItemProps = {
+  width: number;
+};
+
+export const MenuImageUploadItem: FC<MenuImageUploadItemProps> = ({width}) => {
   return (
-    <View>
-      <Text>MenuImageUploadItem</Text>
-    </View>
+    <TouchableOpacity
+      style={{
+        width: width,
+        height: width,
+        backgroundColor: AppStyles.color.border,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Icon name="plus" color="#797979" size={32} />
+    </TouchableOpacity>
   );
 };
 

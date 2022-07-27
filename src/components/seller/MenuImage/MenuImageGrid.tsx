@@ -1,9 +1,9 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {FC, useMemo, useState} from 'react';
-import {MenuImageUploadItem} from './MenuImageUploadItem';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {FC, useCallback, useMemo, useState} from 'react';
+import {Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {MenuImageItem} from './MenuImageItem';
-
+import {MenuImageUploadItem} from './MenuImageUploadItem';
 type MenuImageGridProps = {
   images?: {
     id: number;
@@ -20,27 +20,48 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
     return containerWidth / NUM_COLUMNS;
   }, [containerWidth]);
 
+  const currentWidthUsingDimensions = useMemo(() => {
+    return Dimensions.get('window').width / 3;
+  }, []);
+
   return (
     <View>
-      <FlatList
-        columnWrapperStyle={styles.list}
-        data={images}
-        numColumns={NUM_COLUMNS}
-        onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
-        renderItem={item => (
-          <MenuImageItem
-            item={item.item}
-            index={item.index}
-            width={currentWidth - 2}
-          />
-        )}
-      />
+      {images && images.length > 2 ? (
+        <FlatList
+          data={images}
+          numColumns={NUM_COLUMNS}
+          onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
+          renderItem={item => (
+            <MenuImageItem
+              item={item.item}
+              index={item.index}
+              width={currentWidth}
+            />
+          )}
+        />
+      ) : (
+        <View style={styles.flex}>
+          <MenuImageUploadItem width={currentWidthUsingDimensions} />
+          {images && (
+            <View style={{marginLeft: 3}}>
+              <Image
+                style={{
+                  width: currentWidthUsingDimensions,
+                  height: currentWidthUsingDimensions,
+                }}
+                source={{uri: images[1].image}}
+              />
+            </View>
+          )}
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  list: {
-    justifyContent: 'space-between',
+  flex: {
+    flexDirection: 'row',
   },
+  list: {},
 });

@@ -20,6 +20,10 @@ export const useGetMenuListItemDetailsQuery = (
     {
       onSuccess(data) {
         console.log(data);
+        data.images.unshift({
+          id: -1,
+          image: 'UPLOAD',
+        });
       },
       onError(err) {
         console.log('셀러 URL 가져오기 오류');

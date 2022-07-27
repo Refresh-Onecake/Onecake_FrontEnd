@@ -1,5 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
+import {AppStyles} from '../../../styles/AppStyles';
+import {MenuImageUploadItem} from './MenuImageUploadItem';
 
 type MenuImageItemProps = {
   item: {
@@ -11,14 +13,20 @@ type MenuImageItemProps = {
 };
 
 export const MenuImageItem: FC<MenuImageItemProps> = ({item, index, width}) => {
-  console.log(item, index);
   return (
     <View style={styles.view}>
-      <Image source={{uri: item.image}} style={{width: width, height: width}} />
+      {item.id < 0 ? (
+        <MenuImageUploadItem width={width} />
+      ) : (
+        <Image
+          source={{uri: item.image}}
+          style={{width: width, height: width}}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {paddingBottom: 2},
+  view: {paddingBottom: 2, paddingRight: 2},
 });

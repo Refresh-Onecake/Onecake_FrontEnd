@@ -30,7 +30,10 @@ export const MenuImage = () => {
 
       {/* 그리드 컴포넌트로 추상화할 곳 */}
       <View style={styles.gridWrap}>
-        <MenuImageGrid images={data && data.images} />
+        <MenuImageGrid
+          images={data && data.images}
+          menuId={menuRenderItemData.id}
+        />
       </View>
     </SafeAreaView>
   );

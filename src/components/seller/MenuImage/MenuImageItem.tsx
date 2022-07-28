@@ -11,6 +11,7 @@ type MenuImageItemProps = {
   };
   index: number;
   width: number;
+  menuId: number;
 };
 
 export type IPickerImg = {
@@ -19,12 +20,18 @@ export type IPickerImg = {
   uri: string | undefined;
 };
 
-export const MenuImageItem: FC<MenuImageItemProps> = ({item, index, width}) => {
+export const MenuImageItem: FC<MenuImageItemProps> = ({
+  item,
+  index,
+  width,
+  menuId,
+}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [pickImage, SetPickImage] = useState<IPickerImg>();
 
   const ModalToggle = () => {
     setModalVisible(!modalVisible);
+    console.log(menuId);
   };
   const uploadImg = async () => {
     await launchImageLibrary({mediaType: 'photo'})
@@ -67,6 +74,7 @@ export const MenuImageItem: FC<MenuImageItemProps> = ({item, index, width}) => {
         visible={modalVisible}
         setVisible={setModalVisible}
         img={pickImage}
+        menuId={menuId}
       />
     </View>
   );

@@ -94,4 +94,37 @@ export const getSellerMenuListItemDetails = async (menuId: number) => {
   }
 };
 
-
+//기념일 이미지 업로드하기
+export const setMenuDetailImageKeyword = async (
+  menuId: number,
+  imageUri: string | undefined,
+  anniversary: string,
+) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const anniv_key = {
+      ['생일'.toString()]: 'BIRTHDAY',
+      ['월별행사'.toString()]: 'MONTHLY_EVENT',
+      ['기념일'.toString()]: 'ANNIVERSARY',
+      ['취업'.toString()]: 'EMPLOYMENT',
+      ['결혼'.toString()]: 'MARRIAGE',
+      ['전역'.toString()]: 'DISCHARGE',
+      ['기타'.toString()]: 'ETC',
+    };
+    const response = await fetch(
+      `https://want-onecake.com/api/v1/seller/store/menu/${menuId}/image`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          image: imageUri,
+          keyword: anniv_key[anniversary],
+        }),
+      },
+    );
+    return response;
+  }
+};

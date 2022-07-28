@@ -9,17 +9,18 @@ type MenuImageGridProps = {
     id: number;
     image: string;
   }[];
+  menuId: number;
 };
 
 const NUM_COLUMNS = 3;
 
-export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
+export const MenuImageGrid: FC<MenuImageGridProps> = ({images, menuId}) => {
   const [containerWidth, setContainerWidth] = useState(0);
 
   const currentWidth = useMemo(() => {
     return containerWidth / NUM_COLUMNS;
   }, [containerWidth]);
-
+  console.log(menuId);
   return (
     <View>
       {images && images.length > 0 && (
@@ -32,6 +33,7 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
               item={item.item}
               index={item.index}
               width={currentWidth}
+              menuId={menuId}
             />
           )}
         />

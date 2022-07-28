@@ -10,6 +10,8 @@ import React, {FC, useState} from 'react';
 import Modal, {ModalProps} from 'react-native-modal';
 import {Button, ModalHeader, RadioList} from '../../common';
 import {AppStyles} from '../../../styles/AppStyles';
+import {useMenuDetailsImageUpload} from '../../../hooks';
+import {useQueryClient} from 'react-query';
 
 type MenuImageAnniversaryModalProps = {
   visible: boolean;
@@ -19,11 +21,12 @@ type MenuImageAnniversaryModalProps = {
     type: string | undefined;
     uri: string | undefined;
   };
+  menuId: number;
 };
 
 const AnniversaryList = [
   '생일',
-  '월별 행사',
+  '월별행사',
   '기념일',
   '취업',
   '결혼',
@@ -35,10 +38,20 @@ const MenuImageAnniversaryModal: FC<MenuImageAnniversaryModalProps> = ({
   visible,
   setVisible,
   img,
+  menuId,
 }) => {
   const [selectAnniversary, setSelectAnniversary] = useState<string>('생일');
+  const queryClient = useQueryClient();
+  const UploadAnniversaryImageMutation = useMenuDetailsImageUpload(
+    menuId,
+    img?.uri,
+    selectAnniversary,
+    queryClient,
+  );
   const onClickUploadAnniversaryButton = () => {
     console.log('클릭함');
+    console.log(menuId);
+    UploadAnniversaryImageMutation.mutate();
     setVisible(() => false);
   };
   return (
@@ -56,7 +69,11 @@ const MenuImageAnniversaryModal: FC<MenuImageAnniversaryModalProps> = ({
           />
         </View>
         <View style={styles.btnWrap}>
-          <Button onPress={onClickUploadAnniversaryButton} text={'선택하기'} />
+          <Button
+            onPress={onClickUploadAnniversaryButton}
+            text={'선택하기'}
+            textSize={15}
+          />
         </View>
       </SafeAreaView>
     </Modal>
@@ -85,6 +102,6 @@ const styles = StyleSheet.create({
   btnWrap: {
     paddingHorizontal: 20,
     paddingBottom: 20,
-    flex: 1,
+    height: 72,
   },
 });

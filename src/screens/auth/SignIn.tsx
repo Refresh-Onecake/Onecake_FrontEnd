@@ -85,8 +85,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         [appKeys.roleTokenKey, data.role],
         [appKeys.storeIdKey, String(data.storeId)],
       ]);
-      navigation.navigate('MainNavigator', {
-        screen: 'Home',
+      navigation.reset({
+        routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
       });
     },
     onError: errors => {

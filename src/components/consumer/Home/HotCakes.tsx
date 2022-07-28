@@ -6,16 +6,22 @@ import {
   View,
   FlatList,
   ListRenderItemInfo,
-  ImageBackground,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useQuery, useQueryClient} from 'react-query';
 import {getHotCakeList, IHotCakeList} from '../../../services';
 import {queryKeys} from '../../../enum';
+import InfoModal from '../../common/InfoModal';
+
+const phoneWidth = Dimensions.get('window').width;
 
 export const HotCakes = () => {
   const queryClient = useQueryClient();
+  const [locationVisible, setLocationVisible] = useState<boolean>(false);
 
   const {data} = useQuery<IHotCakeList[]>(
     queryKeys.hotCakeList,
@@ -47,17 +53,24 @@ export const HotCakes = () => {
   const renderItem = (item: ListRenderItemInfo<IHotCakeList>) => {
     return (
       <>
-        <ImageBackground
-          style={styles.image}
-          source={{uri: item.item.image}}></ImageBackground>
+        <View style={styles.cover}></View>
+        <Image style={styles.image} source={{uri: item.item.image}} />
       </>
     );
   };
 
   return (
     <>
-      <TouchableOpacity style={{zIndex: 10}}>
-        <Text style={styles.location}>마포구</Text>
+      <TouchableOpacity style={{zIndex: 30}}>
+        <Text style={styles.location} onPress={() => setLocationVisible(true)}>
+          마포구
+          <Icon
+            name="chevron-down"
+            size={25}
+            color="#D9D9D9"
+            onPress={() => setLocationVisible(true)}
+          />
+        </Text>
       </TouchableOpacity>
       <View style={styles.text}>
         <Text style={styles.mainMent}>이번주 HOT한 케이크</Text>
@@ -65,11 +78,16 @@ export const HotCakes = () => {
           오늘의 가장 인기있는 케이크를 찾아보세요!
         </Text>
       </View>
-      <View style={styles.cover}></View>
-      <View style={styles.index}>
-        <Text>1</Text>
-      </View>
-      <FlatList data={data} renderItem={renderItem} horizontal={true} />
+      <InfoModal
+        modalVisible={locationVisible}
+        setModalVisible={setLocationVisible}
+        title={'입점 준비중'}
+        subTitle={'현재 마포구 가게만 입점되어 있어요!'}
+      />
+      {/* <View style={styles.index}>
+        <Text>index</Text>
+      </View> */}
+      <FlatList data={data} renderItem={renderItem} horizontal />
     </>
   );
 };
@@ -84,8 +102,8 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
   },
   image: {
-    height: 447,
-    width: 375,
+    height: 446,
+    width: phoneWidth,
   },
   cover: {
     height: 447,
@@ -100,7 +118,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     borderRadius: 10,
     right: 1,
-    bottom: 1,
+    top: 400,
     marginBottom: 17,
     marginRight: 15,
     height: 22,

@@ -1,5 +1,5 @@
 {
-  "name": "Onecake",
+  "name": "Onecake_FrontEnd",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "react-hook-form": "^7.32.1",
     "react-native": "0.68.2",
     "react-native-calendars": "^1.1284.0",
+    "react-native-code-push": "^7.0.4",
     "react-native-date-picker": "^4.2.2",
     "react-native-daum-postcode": "^1.0.11",
     "react-native-gesture-handler": "^2.5.0",

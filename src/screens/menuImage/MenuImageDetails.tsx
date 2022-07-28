@@ -1,4 +1,4 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useRecoilValue} from 'recoil';
 import {menuImageDetailState} from '../../recoil/atom';
@@ -6,6 +6,7 @@ import {AppStyles} from '../../styles/AppStyles';
 import {MenuImageInfo} from '../../components/seller/MenuImage';
 import {useGetMenuImageDetailQuery} from '../../hooks';
 import {useQueryClient} from 'react-query';
+import {anniversaryKeywordTranslate} from '../../utils';
 
 export type IMenuImageDetailsItem = {
   imageId: number;
@@ -36,7 +37,16 @@ export const MenuImageDetails = () => {
         borderTopColor: '#F4F4F4',
       }}>
       <View style={styles.menuImageInfoWrap}>
-        <MenuImageInfo subTitle={'안녕'} title={'전체사진'} />
+        <MenuImageInfo
+          subTitle={data?.imageDescription}
+          title={data?.keyWord}
+        />
+      </View>
+      <View>
+        <Image
+          style={styles.img}
+          source={{uri: useMenuImageDetailItem.image}}
+        />
       </View>
     </SafeAreaView>
   );
@@ -45,5 +55,9 @@ const styles = StyleSheet.create({
   menuImageInfoWrap: {
     paddingHorizontal: 15.74,
     paddingVertical: 22.26,
+  },
+  img: {
+    width: '100%',
+    height: 375,
   },
 });

@@ -16,6 +16,7 @@ import {ReSign} from '../../components/seller/SettingSeller';
 import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
+import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -130,6 +131,8 @@ export const StackNavigator = () => {
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
           headerBackImage: BackBtn,
+          headerRight: () => <MenuImageDetailHeaderDelete />,
+          headerRightContainerStyle: styles.headerRightContainer,
         }}
       />
     </Stack.Navigator>
@@ -145,5 +148,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerRightContainer: {
+    padding: 10,
   },
 });

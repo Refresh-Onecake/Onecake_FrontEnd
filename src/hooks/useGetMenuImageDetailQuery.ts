@@ -1,11 +1,12 @@
 import {QueryClient, useQuery, UseQueryResult} from 'react-query';
 import {queryKeys} from '../enum';
 import {getMenuImageDetail, IMenuListItemDetails} from '../services';
+import {anniversaryKeywordTranslate} from '../utils';
 
 export type IMenuImageDetail = {
   storeName: string;
-  keyWord: string;
-  imageDescription: string;
+  keyWord?: string;
+  imageDescription?: string;
   image: string;
   isLiked: boolean;
 };
@@ -14,7 +15,7 @@ export const useGetMenuImageDetailQuery = (
   queryClient: QueryClient,
   menuId: number,
   imageId: number,
-): UseQueryResult<IMenuListItemDetails, Error> => {
+): UseQueryResult<IMenuImageDetail, Error> => {
   return useQuery(
     queryKeys.sellerMenuImageItemDetail, //고쳐야할 부분
     async () =>
@@ -29,7 +30,14 @@ export const useGetMenuImageDetailQuery = (
     {
       onSuccess(data) {
         console.log('이미지 선택 후 메뉴이미지디테일 내용 가져오기 성공');
-        console.log(data);
+        const translateKeyword = anniversaryKeywordTranslate(data.keyWord);
+        if (data.keyWord && translateKeyword) {
+          data.imageDescription = data.imageDescription?.replace(
+            data.keyWord,
+            translateKeyword,
+          );
+        }
+        data.keyWord = translateKeyword;
       },
       onError(err) {
         const response = err;

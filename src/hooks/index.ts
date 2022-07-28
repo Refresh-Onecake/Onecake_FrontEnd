@@ -6,3 +6,4 @@ export * from './useLogoutAndReSignQuery';
 export * from './useGetMemberInfoQuery';
 export * from './useMenuDetailsImageUpload';
 export * from './useGetMenuImageDetailQuery';
+export * from './useDeleteMenuImageDetailQuery';

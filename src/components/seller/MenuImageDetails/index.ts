@@ -1,1 +1,1 @@
-//
+export * from './MenuImageDetailHeaderDelete';

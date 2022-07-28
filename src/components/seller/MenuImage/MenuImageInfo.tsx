@@ -5,7 +5,7 @@ import {menuRenderListItemState} from '../../../recoil/atom';
 import {AppStyles} from '../../../styles/AppStyles';
 
 type MenuImageInfoProps = {
-  title: string;
+  title?: string;
   subTitle?: string;
 };
 

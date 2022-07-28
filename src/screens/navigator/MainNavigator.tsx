@@ -48,7 +48,7 @@ export const MainNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="메뉴"
+        name={role === 'CONSUMER' ? '가게' : '메뉴'}
         component={Stores}
         options={{
           tabBarIcon: ({focused}) => {

@@ -77,7 +77,7 @@ export const MainNavigator = () => {
             );
           },
           headerShown: true,
-          headerTitle: '메뉴 관리',
+          headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
         }}
       />
       <Tab.Screen

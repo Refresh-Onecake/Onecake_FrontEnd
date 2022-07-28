@@ -23,8 +23,9 @@ import {focusManager, useQueryClient} from 'react-query';
 import {Button, KeywordCakes, CityCakes, HotCakes} from '../components';
 
 const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
-  const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
+
+  const queryClient = useQueryClient();
   const [storeId, setStoreId] = useRecoilState(storeIdState);
   const [error, resetError] = useAsync(async () => {
     resetError();
@@ -54,7 +55,7 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
 
   return (
     <SafeAreaView style={styles.view}>
-      {role === 'CONSUMER' ? (
+      {role === 'SELLER' ? (
         storeId === 0 ? (
           <View style={styles.flex}>
             <View>

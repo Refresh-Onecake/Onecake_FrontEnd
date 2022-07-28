@@ -4,6 +4,7 @@ import {
   ListRenderItemInfo,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -11,9 +12,16 @@ import {AppStyles} from '../../../styles/AppStyles';
 import {queryKeys} from '../../../enum';
 import {useQuery, useQueryClient} from 'react-query';
 import {getCityCakeList, ICityCakeList} from '../../../services';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../screens/navigator';
+import {useSetRecoilState} from 'recoil';
+import {storeIdState} from '../../../recoil/atom';
+import {useNavigation} from '@react-navigation/native';
 
 export const CityCakes = () => {
   const queryClient = useQueryClient();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const setStoreId = useSetRecoilState(storeIdState);
 
   const {data} = useQuery<ICityCakeList[]>(
     queryKeys.cityCakeList,
@@ -48,9 +56,15 @@ export const CityCakes = () => {
   const renderItem = (item: ListRenderItemInfo<ICityCakeList>) => {
     return (
       <>
-        <Image
-          style={styles.image}
-          source={{uri: item.item.storeImage}}></Image>
+        <TouchableOpacity
+          onPress={() => {
+            setStoreId(item.item.id);
+            navigation.navigate('StoreDetail');
+          }}>
+          <Image
+            style={styles.image}
+            source={{uri: item.item.storeImage}}></Image>
+        </TouchableOpacity>
       </>
     );
   };
@@ -75,7 +89,8 @@ const styles = StyleSheet.create({
     width: 320,
     height: 223,
     borderRadius: 10,
-    margin: 15,
+    marginLeft: 15,
+    marginTop: 10,
     alignSelf: 'center',
   },
 });

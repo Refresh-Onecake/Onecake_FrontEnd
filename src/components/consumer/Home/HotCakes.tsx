@@ -65,6 +65,7 @@ export const HotCakes = () => {
           오늘의 가장 인기있는 케이크를 찾아보세요!
         </Text>
       </View>
+      <View style={styles.cover}></View>
       <View style={styles.index}>
         <Text>1</Text>
       </View>
@@ -85,6 +86,14 @@ const styles = StyleSheet.create({
   image: {
     height: 447,
     width: 375,
+  },
+  cover: {
+    height: 447,
+    width: '100%',
+    backgroundColor: AppStyles.color.black,
+    position: 'absolute',
+    opacity: 0.3,
+    zIndex: 7,
   },
   index: {
     position: 'absolute',

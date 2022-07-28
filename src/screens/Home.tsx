@@ -20,10 +20,7 @@ import {useRecoilState} from 'recoil';
 import {storeIdState} from '../recoil/atom';
 import {useIsFocused} from '@react-navigation/native';
 import {focusManager, useQueryClient} from 'react-query';
-import {Button} from '../components';
-import {HotCakes} from '../components/consumer/Home/HotCakes';
-import {AnniversaryCakes} from '../components/consumer/Home/AnniversaryCakes';
-import {CityCakes} from '../components/consumer/Home/CityCakes';
+import {Button, KeywordCakes, CityCakes, HotCakes} from '../components';
 
 const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const queryClient = useQueryClient();
@@ -87,7 +84,7 @@ const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
       ) : (
         <ScrollView>
           <HotCakes />
-          <AnniversaryCakes />
+          <KeywordCakes />
           <CityCakes />
         </ScrollView>
       )}

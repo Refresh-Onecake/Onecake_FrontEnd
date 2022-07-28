@@ -5,18 +5,20 @@ import {menuRenderListItemState} from '../../../recoil/atom';
 import {AppStyles} from '../../../styles/AppStyles';
 
 type MenuImageInfoProps = {
-  menuTaste?: string;
+  title: string;
+  subTitle?: string;
 };
 
 export const MenuImageInfo: FC<MenuImageInfoProps> = ({
-  menuTaste = '케이크 맛',
+  subTitle = '케이크 맛',
+  title = '케이크',
 }) => {
   return (
     <View>
       <View style={styles.titleWrap}>
-        <Text style={styles.title}>전체 사진</Text>
+        <Text style={styles.title}>{title}</Text>
       </View>
-      <Text style={styles.subTitle}>{menuTaste}</Text>
+      <Text style={styles.subTitle}>{subTitle}</Text>
     </View>
   );
 };

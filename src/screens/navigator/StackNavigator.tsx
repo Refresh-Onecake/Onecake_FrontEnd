@@ -13,7 +13,7 @@ import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 import {ReSign} from '../../components/seller/SettingSeller';
-import {MenuImage} from '../menuImage';
+import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
 
@@ -109,8 +109,20 @@ export const StackNavigator = () => {
       />
       {/* 메뉴 이미지 */}
       <Stack.Screen
-        name="menuImage"
+        name="MenuImage"
         component={MenuImage}
+        options={{
+          headerShown: true,
+          headerTitle: `${menuRenderListItem.menuName}`,
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="MenuImageDetails"
+        component={MenuImageDetails}
         options={{
           headerShown: true,
           headerTitle: `${menuRenderListItem.menuName}`,

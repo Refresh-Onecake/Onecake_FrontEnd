@@ -128,3 +128,22 @@ export const setMenuDetailImageKeyword = async (
     return response;
   }
 };
+
+//특정 이미지의 관련 정보 가져오기
+export const getMenuImageDetail = async (menuId: number, imageId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `https://want-onecake.com/api/v1/seller/store/menu/${menuId}/image/${imageId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response;
+  } else {
+    throw new Error('401');
+  }
+};

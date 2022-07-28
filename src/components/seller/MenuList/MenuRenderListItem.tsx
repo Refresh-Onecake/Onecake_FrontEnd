@@ -63,7 +63,7 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
       price,
       image,
     });
-    navigation.navigate('menuImage');
+    navigation.navigate('MenuImage');
   };
 
   return (

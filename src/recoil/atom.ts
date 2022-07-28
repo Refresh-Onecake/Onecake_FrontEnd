@@ -3,6 +3,7 @@ import {IEditFetchMenu, IFetchMenu} from '../screens/enterMenu';
 import {IMenuList, IRefreshToken} from '../services';
 import moment from 'moment';
 import {appKeys, storeTabKeys} from '../enum';
+import {IMenuImageDetailsItem} from '../screens/menuImage';
 export const storeMenuState = atom<IFetchMenu>({
   key: 'storeMenuState',
 });
@@ -82,4 +83,9 @@ export const menuRenderListItemState = atom<IMenuList>({
     price: 0,
     id: 0,
   },
+});
+
+//메뉴리스트를 선택한 후 그리드에서 사진을 선택했을때 디테일 페이지로 보내주는 atom
+export const menuImageDetailState = atom<IMenuImageDetailsItem>({
+  key: 'menuImageDetailState',
 });

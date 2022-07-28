@@ -31,8 +31,8 @@ export const useGetMemberInfoQuery = (
         const response = err;
         if (response.message === '401') {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          queryClient.invalidateQueries(queryKeys.sellerChatAddress);
-          console.log(`${queryKeys.sellerChatAddress.toString()} 쿼리 성공`);
+          queryClient.invalidateQueries(queryKeys.memberInfo);
+          console.log(`${queryKeys.memberInfo.toString()} 쿼리 성공`);
         }
       },
     },

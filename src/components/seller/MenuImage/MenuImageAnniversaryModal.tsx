@@ -22,6 +22,7 @@ type MenuImageAnniversaryModalProps = {
     uri: string | undefined;
   };
   menuId: number;
+  imageUri?: string;
 };
 
 const AnniversaryList = [
@@ -39,12 +40,13 @@ const MenuImageAnniversaryModal: FC<MenuImageAnniversaryModalProps> = ({
   setVisible,
   img,
   menuId,
+  imageUri,
 }) => {
   const [selectAnniversary, setSelectAnniversary] = useState<string>('생일');
   const queryClient = useQueryClient();
   const UploadAnniversaryImageMutation = useMenuDetailsImageUpload(
     menuId,
-    img?.uri,
+    imageUri,
     selectAnniversary,
     queryClient,
   );
@@ -59,7 +61,7 @@ const MenuImageAnniversaryModal: FC<MenuImageAnniversaryModalProps> = ({
       <SafeAreaView style={styles.view}>
         <ModalHeader title={'기념일 선택'} setVisible={setVisible} />
         <View style={styles.imageWrap}>
-          <Image source={{uri: img?.uri}} style={styles.image} />
+          <Image source={{uri: imageUri}} style={styles.image} />
         </View>
         <View>
           <RadioList

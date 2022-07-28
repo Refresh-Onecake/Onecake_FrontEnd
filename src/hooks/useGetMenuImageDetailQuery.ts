@@ -1,16 +1,25 @@
 import {QueryClient, useQuery, UseQueryResult} from 'react-query';
 import {queryKeys} from '../enum';
-import {getSellerMenuListItemDetails, IMenuListItemDetails} from '../services';
+import {getMenuImageDetail, IMenuListItemDetails} from '../services';
 
-export const useGetMenuListItemDetailsQuery = (
+export type IMenuImageDetail = {
+  storeName: string;
+  keyWord: string;
+  imageDescription: string;
+  image: string;
+  isLiked: boolean;
+};
+
+export const useGetMenuImageDetailQuery = (
   queryClient: QueryClient,
   menuId: number,
+  imageId: number,
 ): UseQueryResult<IMenuListItemDetails, Error> => {
   return useQuery(
-    queryKeys.sellerMenuListItemDetails,
+    queryKeys.sellerMenuImageItemDetail, //고쳐야할 부분
     async () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      await getSellerMenuListItemDetails(menuId).then(res => {
+      await getMenuImageDetail(menuId, imageId).then(res => {
         if (!res?.ok) {
           throw new Error(res?.status.toString());
         } else {
@@ -19,20 +28,16 @@ export const useGetMenuListItemDetailsQuery = (
       }),
     {
       onSuccess(data) {
+        console.log('이미지 선택 후 메뉴이미지디테일 내용 가져오기 성공');
         console.log(data);
-        data.images.unshift({
-          id: -1,
-          image: 'UPLOAD',
-        });
       },
       onError(err) {
-        console.log('셀러 URL 가져오기 오류');
         const response = err;
         if (response.message === '401') {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          queryClient.invalidateQueries(queryKeys.sellerMenuListItemDetails);
+          queryClient.invalidateQueries(queryKeys.sellerMenuImageItemDetail);
           console.log(
-            `${queryKeys.sellerMenuListItemDetails.toString()} 쿼리 성공`,
+            `${queryKeys.sellerMenuImageItemDetail.toString()} 쿼리 성공`,
           );
         }
       },

@@ -1,8 +1,25 @@
-import {Alert, Image, Platform, StyleSheet, Text, View} from 'react-native';
-import React, {FC, useState} from 'react';
+import {
+  Alert,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {FC, useCallback, useState} from 'react';
 import {MenuImageUploadItem} from './MenuImageUploadItem';
 import {launchImageLibrary} from 'react-native-image-picker';
 import MenuImageAnniversaryModal from './MenuImageAnniversaryModal';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../screens/navigator';
+import {useSetRecoilState} from 'recoil';
+import {menuImageDetailState} from '../../../recoil/atom';
+import {useMutation} from 'react-query';
+import {IStoreImg} from '../../../screens/enterStore';
+import {fetchEnterPicture, refetchToken} from '../../../services';
+import {getMultipleData} from '../../../../App';
 
 type MenuImageItemProps = {
   item: {
@@ -26,13 +43,41 @@ export const MenuImageItem: FC<MenuImageItemProps> = ({
   width,
   menuId,
 }) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [pickImage, SetPickImage] = useState<IPickerImg>();
+  const [imageUri, setImageUri] = useState<string>();
+  const setMenuDetailItem = useSetRecoilState(menuImageDetailState);
 
-  const ModalToggle = () => {
+  const ModalToggle = useCallback(() => {
     setModalVisible(!modalVisible);
-    console.log(menuId);
-  };
+  }, [modalVisible]);
+
+  const pictureMutation = useMutation(
+    async (pictureObj: IStoreImg) =>
+      await fetchEnterPicture(pictureObj).then(async res => {
+        if (!res?.ok) {
+          if (res?.status === 401) {
+            const tokens = await getMultipleData();
+            refetchToken(tokens);
+          }
+        } else {
+          if (res) return res.text();
+        }
+      }),
+    {
+      retry: 3,
+      onSuccess: data => {
+        console.log('사진등록 성공');
+        console.log(data);
+        setImageUri(data);
+      },
+      onError: e => {
+        console.log(e);
+      },
+    },
+  );
+
   const uploadImg = async () => {
     await launchImageLibrary({mediaType: 'photo'})
       .then(resp => {
@@ -42,7 +87,7 @@ export const MenuImageItem: FC<MenuImageItemProps> = ({
             type: type,
             uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
           };
-          SetPickImage(img);
+          pictureMutation.mutate(img);
           ModalToggle();
         });
       })
@@ -60,20 +105,32 @@ export const MenuImageItem: FC<MenuImageItemProps> = ({
       });
   };
 
+  const onClickImage = () => {
+    setMenuDetailItem({
+      menuId: menuId,
+      imageId: item.id,
+      image: item.image,
+    });
+    navigation.navigate('MenuImageDetails');
+  };
+
   return (
     <View style={styles.view}>
       {item.id < 0 ? (
         <MenuImageUploadItem width={width} onPress={uploadImg} />
       ) : (
-        <Image
-          source={{uri: item.image}}
-          style={{width: width, height: width}}
-        />
+        <TouchableOpacity onPress={onClickImage}>
+          <Image
+            source={{uri: item.image}}
+            style={{width: width, height: width}}
+          />
+        </TouchableOpacity>
       )}
       <MenuImageAnniversaryModal
         visible={modalVisible}
         setVisible={setModalVisible}
         img={pickImage}
+        imageUri={imageUri}
         menuId={menuId}
       />
     </View>

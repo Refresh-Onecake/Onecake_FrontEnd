@@ -25,7 +25,7 @@ export const MenuImage = () => {
         borderTopColor: '#F4F4F4',
       }}>
       <View style={styles.menuImageInfoWrap}>
-        <MenuImageInfo menuTaste={data && data.menuTaste} />
+        <MenuImageInfo subTitle={data && data.menuTaste} title={'전체사진'} />
       </View>
 
       {/* 그리드 컴포넌트로 추상화할 곳 */}

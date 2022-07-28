@@ -93,3 +93,5 @@ export const getSellerMenuListItemDetails = async (menuId: number) => {
     throw new Error('401');
   }
 };
+
+

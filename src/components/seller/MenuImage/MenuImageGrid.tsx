@@ -20,10 +20,6 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
     return containerWidth / NUM_COLUMNS;
   }, [containerWidth]);
 
-  const currentWidthUsingDimensions = useMemo(() => {
-    return Dimensions.get('window').width / 3;
-  }, []);
-
   return (
     <View>
       {images && images.length > 0 && (
@@ -44,9 +40,4 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  flex: {
-    flexDirection: 'row',
-  },
-  list: {},
-});
+const styles = StyleSheet.create({});

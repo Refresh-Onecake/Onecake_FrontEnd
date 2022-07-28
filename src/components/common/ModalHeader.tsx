@@ -6,6 +6,12 @@ export type ModalHeaderProps = {
   title: string;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+/**
+ *
+ * @param title : Modal 제목
+ * @param setVisible : Modal의 활성화를 관리하는 state
+ */
 export const ModalHeader: FC<ModalHeaderProps> = ({title, setVisible}) => {
   return (
     <View style={styles.view}>

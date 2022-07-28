@@ -15,4 +15,5 @@ export const queryKeys = {
   memberInfo: ['memberInfo'] as const,
   hotCakeList: ['hotCakeList'] as const,
   cityCakeList: ['cityCakeList'] as const,
+  keywordCakeList: ['keywordCakeList'] as const,
 };

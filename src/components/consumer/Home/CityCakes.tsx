@@ -39,9 +39,6 @@ export const CityCakes = () => {
       refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
-      onSuccess: data => {
-        console.log('cakeList', data);
-      },
       onError: err => {
         console.log('err');
         const response = err as Error;

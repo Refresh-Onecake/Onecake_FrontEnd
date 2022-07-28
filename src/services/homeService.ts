@@ -15,6 +15,14 @@ export type ICityCakeList = {
   id: number;
 };
 
+export type IKeywordCakeList = {
+  image: string;
+  storeId: number;
+  menuId: number;
+  imageId: number;
+  keyword: string;
+};
+
 export const getHotCakeList = async () => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
 
@@ -35,6 +43,21 @@ export const getCityCakeList = async () => {
 
   if (token) {
     const response = await fetch(`${baseURL}neighborhood`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  }
+};
+
+export const getKeyWordCakeList = async () => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+
+  if (token) {
+    const response = await fetch(`${baseURL}keyword`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

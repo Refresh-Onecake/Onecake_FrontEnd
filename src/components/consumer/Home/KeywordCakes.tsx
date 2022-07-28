@@ -46,8 +46,14 @@ export const KeywordCakes = () => {
     return (
       <>
         <Image style={styles.image} source={{uri: item.item.image}}></Image>
-        <View>
-          <Text>#{cakeKeywords[item.item.keyword]}</Text>
+        <View style={styles.tag}>
+          <Text
+            style={{
+              color: AppStyles.color.lightGray,
+              textAlign: 'center',
+            }}>
+            # {cakeKeywords[item.item.keyword]}
+          </Text>
         </View>
       </>
     );
@@ -77,5 +83,16 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
     alignSelf: 'center',
+  },
+  tag: {
+    position: 'absolute',
+    backgroundColor: AppStyles.color.black,
+    borderRadius: 18,
+    opacity: 0.6,
+    height: 22,
+    width: 70,
+    bottom: 1,
+    marginBottom: 14,
+    marginLeft: 29,
   },
 });

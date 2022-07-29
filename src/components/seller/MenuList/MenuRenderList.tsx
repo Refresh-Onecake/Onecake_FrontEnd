@@ -7,11 +7,11 @@ import {
   View,
 } from 'react-native';
 import React, {FC} from 'react';
-import {IMenuList} from '../../services';
-import {AppStyles} from '../../styles/AppStyles';
+import {IMenuList} from '../../../services';
+import {AppStyles} from '../../../styles/AppStyles';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../screens/navigator';
+import {RootStackParamList} from '../../../screens/navigator';
 import {MenuRenderListItem} from './MenuRenderListItem';
 
 export type MenuRenderListProps = {
@@ -45,7 +45,7 @@ export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
           })
         }>
         <Image
-          source={require('../../asset/plus_btn_gray.png')}
+          source={require('../../../asset/plus_btn_gray.png')}
           style={{width: 25, height: 25}}
         />
       </TouchableOpacity>

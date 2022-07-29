@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
-import {Button} from '../components';
+
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys, queryKeys} from '../enum';
@@ -16,6 +16,7 @@ import {useQuery, useQueryClient} from 'react-query';
 import {getSellerChatAddress} from '../services';
 import {useGetSellerChatUrlQuery} from '../hooks/useGetSellerChatUrlQuery';
 import InfoModal from '../components/common/InfoModal';
+import {Button} from '../components/common';
 
 const Contact = () => {
   const queryClient = useQueryClient();
@@ -64,7 +65,17 @@ const Contact = () => {
           </SafeAreaView>
         </>
       ) : (
-        <></>
+        <>
+          <SafeAreaView style={styles.flex}>
+            <View>
+              <Image
+                style={{width: 318, height: 318}}
+                source={require('../asset/menuListNone.png')}
+              />
+            </View>
+            <Text style={styles.title}>원하는 가게 사장님과 상담해보세요!</Text>
+          </SafeAreaView>
+        </>
       )}
     </SafeAreaView>
   );

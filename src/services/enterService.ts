@@ -50,6 +50,7 @@ export const fetchEnterStoreJson = async ({
   }
 };
 
+// 이미지 업로드
 export const fetchEnterPicture = async (storeImg: IStoreImg | string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
   if (token) {

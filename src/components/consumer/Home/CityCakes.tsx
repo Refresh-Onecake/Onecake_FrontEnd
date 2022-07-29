@@ -43,7 +43,7 @@ export const CityCakes = () => {
         console.log('err');
         const response = err as Error;
         if (response.message === '401') {
-          queryClient.invalidateQueries(queryKeys.sellerMenuList);
+          queryClient.invalidateQueries(queryKeys.cityCakeList);
           console.log('쿼리 성공');
         }
       },

@@ -1,0 +1,139 @@
+import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {useRecoilValue} from 'recoil';
+import {useQuery, useQueryClient} from 'react-query';
+import {queryKeys} from '../../enum';
+import {getOrderDetail, IOrderHistory} from '../../services/orderService';
+import {AppStyles} from '../../styles/AppStyles';
+
+export default function OrderDetail() {
+  const queryClient = useQueryClient();
+  const [imgUri, setImgUri] = useState<string | undefined>();
+  {
+    /*FIXME: 주문 내역에서 사용하는 orderId를 가져와야 함*/
+  }
+  // const orderId = useRecoilValue(orderIdState);
+
+  {
+    /*FIXME: 주문 내역에서 사용하는 orderId를 가져와야 함*/
+  }
+  const {data} = useQuery<IOrderHistory>(
+    queryKeys.orderDetail,
+    async () =>
+      // await getOrderDetail(orderId).then(res => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      await getOrderDetail(4).then(res => {
+        if (!res?.ok) {
+          throw new Error(res?.status.toString());
+        } else {
+          if (res) return res.json();
+        }
+      }),
+    {
+      refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
+      staleTime: 5000,
+      cacheTime: Infinity,
+      onSuccess: data => {
+        data.form.map(val => {
+          if (val.includes('사진')) {
+            const parseImgUrl = val.substring(7, val.length);
+            setImgUri(parseImgUrl);
+          }
+        });
+      },
+      onError: err => {
+        console.log('err');
+        const response = err as Error;
+        if (response.message === '401') {
+          queryClient.invalidateQueries(queryKeys.orderDetail);
+          console.log('쿼리 성공');
+        }
+      },
+    },
+  );
+
+  return (
+    <View>
+      <View style={styles.orderTitie}>
+        <Text style={styles.orderState}>{data?.orderState}</Text>
+        <Text style={styles.storeName}>{data?.storeName}</Text>
+        <View style={styles.orderDate}>
+          <Text>주문 일시 : </Text>
+          <Text>{data?.orderTime}</Text>
+        </View>
+        <View style={styles.pickupDate}>
+          <Text>픽업 날짜 : </Text>
+          <Text>{data?.pickUpTime}</Text>
+        </View>
+      </View>
+
+      <View style={styles.cakeInfo}>
+        <View style={styles.cakeTitleWrapper}>
+          <Text style={styles.cakeTitle}>{data?.menuName}</Text>
+          <Text style={styles.cakeTitle}>{data?.menuPrice}원</Text>
+        </View>
+        {data?.form.map((val, idx) => (
+          <View key={idx}>
+            {idx !== data.form.length - 1 && (
+              <Text style={styles.orderOption}>{val}</Text>
+            )}
+          </View>
+        ))}
+
+        <Text style={styles.orderOption}>레퍼런스 이미지 : 첨부</Text>
+        <Image resizeMode="cover" style={styles.img} source={{uri: imgUri}} />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  orderTitie: {
+    backgroundColor: AppStyles.color.white,
+    marginTop: 10,
+    padding: 15,
+  },
+  cakeInfo: {
+    backgroundColor: AppStyles.color.white,
+    marginTop: 10,
+    padding: 15,
+  },
+  cakeTitleWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  cakeTitle: {color: AppStyles.color.black, fontSize: 15},
+  storeName: {
+    color: AppStyles.color.black,
+    fontSize: 20,
+    marginTop: 18,
+    marginBottom: 10,
+  },
+  orderState: {
+    color: AppStyles.color.hotPink,
+    fontSize: 15,
+    marginTop: 30,
+  },
+  orderDate: {
+    flexDirection: 'row',
+    fontSize: 13,
+    color: '#989898',
+  },
+  pickupDate: {
+    flexDirection: 'row',
+    fontSize: 13,
+    color: '#989898',
+  },
+  orderOption: {
+    fontSize: 13,
+    marginTop: 5,
+  },
+  img: {
+    width: 343,
+    height: 333,
+    borderRadius: 8,
+    marginTop: 19,
+    alignSelf: 'center',
+  },
+});

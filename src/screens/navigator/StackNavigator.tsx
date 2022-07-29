@@ -13,6 +13,7 @@ import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 import {ReSign} from '../../components/seller/SettingSeller';
+import OrderDetail from '../../components/consumer/OrderDetail';
 import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
@@ -80,6 +81,17 @@ export const StackNavigator = () => {
           headerBackImage: BackBtn,
         }}
       />
+      {/* 주문서 상세보기*/}
+      <Stack.Screen
+        name="OrderDetail"
+        component={OrderDetail}
+        options={{
+          headerShown: true,
+          headerTitle: '주문상세',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+        }}></Stack.Screen>
       {/* 사장님 주문서 */}
       <Stack.Screen
         name="OrderManageList"

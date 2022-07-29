@@ -61,9 +61,7 @@ const MyPage = () => {
         </View>
       ) : (
         <View>
-          <TouchableOpacity onPress={logout}>
-            <Text>로그아웃하기</Text>
-          </TouchableOpacity>
+          <SettingSeller />
         </View>
       )}
     </SafeAreaView>

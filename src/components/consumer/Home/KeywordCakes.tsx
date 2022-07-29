@@ -45,7 +45,7 @@ export const KeywordCakes = () => {
   const renderItem = (item: ListRenderItemInfo<IKeywordCakeList>) => {
     return (
       <>
-        <Image style={styles.image} source={{uri: item.item.image}}></Image>
+        <Image style={styles.image} source={{uri: item.item.image}} />
         <View style={styles.tag}>
           <Text
             style={{

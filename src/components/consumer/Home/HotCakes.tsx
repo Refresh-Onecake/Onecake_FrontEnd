@@ -53,7 +53,7 @@ export const HotCakes = () => {
   const renderItem = (item: ListRenderItemInfo<IHotCakeList>) => {
     return (
       <>
-        <View style={styles.cover}></View>
+        <View style={styles.cover} />
         <Image style={styles.image} source={{uri: item.item.image}} />
       </>
     );

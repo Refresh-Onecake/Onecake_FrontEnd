@@ -1,12 +1,12 @@
 import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {AppStyles} from '../../styles/AppStyles';
+import {AppStyles} from '../../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
-import {storeIdState} from '../../recoil/atom';
+import {queryKeys} from '../../../enum';
+import {getStoreInfo, IStoreInfo} from '../../../services/storeService';
+import {styles} from '../../../screens/enterStore';
 import {useRecoilValue} from 'recoil';
-import {queryKeys} from '../../enum';
-import {getStoreInfo, IStoreInfo} from '../../services/storeService';
-import {styles} from '../../screens/enterStore';
+import {storeIdState} from '../../../recoil/atom';
 
 export const StoreInfo = () => {
   const queryClient = useQueryClient();

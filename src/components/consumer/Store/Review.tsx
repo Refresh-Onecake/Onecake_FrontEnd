@@ -1,19 +1,12 @@
-import {
-  Image,
-  ListRenderItem,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Image, ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import {getReviews, IReviews} from '../../services/storeService';
-import {AppStyles} from '../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
 import {useRecoilValue} from 'recoil';
-import {storeIdState} from '../../recoil/atom';
-import {queryKeys} from '../../enum';
+import {storeIdState} from '../../../recoil/atom';
+import {queryKeys} from '../../../enum';
+import {getReviews, IReviews} from '../../../services/storeService';
+import {AppStyles} from '../../../styles/AppStyles';
 
 export const Review: FC = () => {
   const queryClient = useQueryClient();

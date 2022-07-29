@@ -6,7 +6,6 @@ import {
   Text,
   Platform,
   Image,
-  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
@@ -86,8 +85,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         [appKeys.roleTokenKey, data.role],
         [appKeys.storeIdKey, String(data.storeId)],
       ]);
-      navigation.navigate('MainNavigator', {
-        screen: 'Home',
+      navigation.reset({
+        routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
       });
     },
     onError: errors => {
@@ -180,29 +179,15 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         </View>
         <View style={styles.texts}>
           <Text
-            style={[
-              styles.authText,
-              {
-                borderRightColor: AppStyles.color.IconColor,
-                borderRightWidth: 1,
-                width: 60,
-              },
-            ]}
+            style={styles.authText}
             onPress={() => navigation.navigate('SelectUserType')}>
             회원가입
           </Text>
-          <Text
-            style={[
-              styles.authText,
-              {
-                borderRightColor: AppStyles.color.IconColor,
-                borderRightWidth: 1,
-                width: 70,
-              },
-            ]}
-            onPress={() => setFindIdVisible(true)}>
+          <View style={styles.bar}></View>
+          <Text style={styles.authText} onPress={() => setFindIdVisible(true)}>
             아이디 찾기
           </Text>
+          <View style={styles.bar}></View>
           <Text style={styles.authText} onPress={() => setFindPwdVisible(true)}>
             비밀번호 찾기
           </Text>
@@ -277,10 +262,9 @@ const styles = StyleSheet.create({
   },
   texts: {
     width: 240,
-    marginTop: 31,
+    marginTop: 30,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   modal: {
     padding: AppStyles.padding.screen,
@@ -289,7 +273,7 @@ const styles = StyleSheet.create({
     height: 170,
     backgroundColor: AppStyles.color.white,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
   modalBtn: {
     width: 72,
@@ -312,5 +296,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
+  },
+  bar: {
+    height: '100%',
+    borderColor: 'grey',
+    width: 1,
+    backgroundColor: AppStyles.color.IconColor,
   },
 });

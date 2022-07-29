@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {appKeys} from '../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

@@ -18,4 +18,6 @@ export const queryKeys = {
   hotCakeList: ['hotCakeList'] as const,
   cityCakeList: ['cityCakeList'] as const,
   keywordCakeList: ['keywordCakeList'] as const,
+  // consumer
+  ConsumerOrderHistory: '@ConsumerOrderHistory' as const,
 };

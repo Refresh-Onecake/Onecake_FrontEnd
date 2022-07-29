@@ -20,7 +20,8 @@ import {useRecoilState} from 'recoil';
 import {storeIdState} from '../recoil/atom';
 import {useIsFocused} from '@react-navigation/native';
 import {focusManager, useQueryClient} from 'react-query';
-import {Button, KeywordCakes, CityCakes, HotCakes} from '../components';
+import {KeywordCakes, CityCakes, HotCakes} from '../components';
+import {Button} from '../components/common';
 
 const Home = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [role, setRole] = useState<string>();

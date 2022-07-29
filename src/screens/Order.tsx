@@ -6,6 +6,7 @@ import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys} from '../enum';
 import {SellerOrder} from './sellerOrder/SellerOrder';
 import InfoModal from '../components/common/InfoModal';
+import {ConsumerOrderList} from '../components/consumer/Order';
 
 const Order = () => {
   const [role, setRole] = useState<string>();
@@ -27,7 +28,9 @@ const Order = () => {
           <SellerOrder />
         </>
       ) : (
-        <></>
+        <>
+          <ConsumerOrderList />
+        </>
       )}
     </SafeAreaView>
   );

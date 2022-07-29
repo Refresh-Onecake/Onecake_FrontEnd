@@ -26,6 +26,7 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images, menuId}) => {
         <FlatList
           data={images}
           numColumns={NUM_COLUMNS}
+          keyExtractor={(_, index) => index.toString()}
           onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
           renderItem={item => (
             <MenuImageItem

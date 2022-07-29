@@ -14,6 +14,19 @@ export const commonStyles = StyleSheet.create({
       },
     }),
   },
+  lightShadow: {
+    ...Platform.select({
+      android: {
+        elevation: 3,
+      },
+      ios: {
+        shadowColor: '#000000',
+        shadowRadius: 7,
+        shadowOffset: {height: 1, width: 1},
+        shadowOpacity: 0.11,
+      },
+    }),
+  },
   shadowTop: {
     ...Platform.select({
       ios: {

@@ -43,7 +43,7 @@ const MyPage = () => {
         </View>
       ) : (
         <View>
-          <Text>소비자</Text>
+          <SettingSeller />
         </View>
       )}
     </SafeAreaView>

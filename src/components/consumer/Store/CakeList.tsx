@@ -70,9 +70,7 @@ export const CakeList: FC = () => {
           <Image
             style={styles.cake}
             source={require('../../../asset/cake.png')}></Image>
-          <Text style={styles.noti}>
-            등록된 메뉴가 없어요. 가게 탭에서 메뉴를 추가해주세요.
-          </Text>
+          <Text style={styles.noti}>아직 등록된 케이크가 없어요.</Text>
         </View>
       ) : (
         <FlatList data={data} renderItem={renderItem} />

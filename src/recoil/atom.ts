@@ -85,8 +85,8 @@ export const menuRenderListItemState = atom<IMenuList>({
   },
 });
 
-export const orderIdState = atom<number>({
-  key: 'orderIdState',
+export const orderHistoryIdState = atom<number>({
+  key: 'orderHistoryIdState',
 });
 
 //메뉴리스트를 선택한 후 그리드에서 사진을 선택했을때 디테일 페이지로 보내주는 atom

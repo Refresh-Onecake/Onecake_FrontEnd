@@ -151,5 +151,3 @@ export const getMenuImageDetail = async (
     throw new Error('401');
   }
 };
-
-//특정 이미지의

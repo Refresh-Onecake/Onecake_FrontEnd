@@ -20,7 +20,6 @@ export const MenuImageGrid: FC<MenuImageGridProps> = ({images, menuId}) => {
   const currentWidth = useMemo(() => {
     return containerWidth / NUM_COLUMNS;
   }, [containerWidth]);
-  console.log(menuId);
   return (
     <View>
       {images && images.length > 0 && (

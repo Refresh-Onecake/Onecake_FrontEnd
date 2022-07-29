@@ -65,7 +65,17 @@ const Contact = () => {
           </SafeAreaView>
         </>
       ) : (
-        <></>
+        <>
+          <SafeAreaView style={styles.flex}>
+            <View>
+              <Image
+                style={{width: 318, height: 318}}
+                source={require('../asset/menuListNone.png')}
+              />
+            </View>
+            <Text style={styles.title}>원하는 가게 사장님과 상담해보세요!</Text>
+          </SafeAreaView>
+        </>
       )}
     </SafeAreaView>
   );

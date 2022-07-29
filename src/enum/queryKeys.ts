@@ -15,4 +15,7 @@ export const queryKeys = {
   memberInfo: ['memberInfo'] as const,
   sellerMenuListItemDetails: ['sellerMenuListItemDetails'] as const,
   sellerMenuImageItemDetail: ['sellerMenuImageItemDetail'] as const, //사장님 메뉴리스트에서 메뉴 선택 후 그리드에서 이미지를 선택했을 때 메뉴 상세
+  hotCakeList: ['hotCakeList'] as const,
+  cityCakeList: ['cityCakeList'] as const,
+  keywordCakeList: ['keywordCakeList'] as const,
 };

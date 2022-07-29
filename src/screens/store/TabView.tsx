@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 import {AppStyles} from '../../styles/AppStyles';
 import {currentTabState} from '../../recoil/atom';
 import {storeTabKeys} from '../../enum/storeTabKeys';

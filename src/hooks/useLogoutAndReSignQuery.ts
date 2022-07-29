@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useMutation} from 'react-query';
 import {getMultipleData} from '../../App';
 import {RootStackParamList} from '../screens/navigator';
-import {fetchLogout, refetchToken} from '../services';
+import { refetchToken} from '../services';
 
 export const useLogoutAndReSignQuery = (
   fetch: () => Promise<Response | undefined>,

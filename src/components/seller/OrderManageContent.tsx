@@ -40,7 +40,8 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
   }) => {
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
-    const [orderSheetId, setOrderSheetId] = useRecoilState(orderSheetIdState);
+    const [orderSheetId, setOrderSheetId] =
+      useRecoilState<number>(orderSheetIdState);
 
     console.log(status);
     const onPressItem = () => {

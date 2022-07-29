@@ -10,7 +10,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import React, {FC, useRef, useEffect, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-import {BottomSheet, Button} from '../../components';
+
 import {TabView} from './TabView';
 import {getCakeSize} from '../../services/storeService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ import {appKeys} from '../../enum';
 import {StoreTitleInfo} from './StoreTitleInfo';
 import {storeIdState} from '../../recoil/atom';
 import {useRecoilValue} from 'recoil';
+import {BottomSheet, Button} from '../../components/common';
 
 type Props = StackScreenProps<RootStackParamList, 'StoreDetail'>;
 

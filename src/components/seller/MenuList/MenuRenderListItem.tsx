@@ -1,8 +1,21 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import React, {FC, useCallback, useRef, useState} from 'react';
-import {AppStyles} from '../../styles/AppStyles';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MenuRenderListDropdown} from './MenuRenderListDropdown';
+import {AppStyles} from '../../../styles/AppStyles';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../screens/navigator';
+import {useSetRecoilState} from 'recoil';
+import {menuRenderListItemState} from '../../../recoil/atom';
 type MenuRenderListItemProps = {
   menuId: number;
   idx: number;
@@ -26,6 +39,8 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
   const [dropdownWidth, setDropdownWidth] = useState(0);
   const DropdownButton = useRef<TouchableOpacity | null>(null);
 
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const setMenuRenderListItemState = useSetRecoilState(menuRenderListItemState);
   const openDropdown = useCallback(() => {
     DropdownButton.current?.measure((_fx, _fy, _w, h, _px, py) => {
       console.log(py, _px, _w);
@@ -40,8 +55,20 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
     visible ? setVisible(false) : openDropdown();
   }, [openDropdown, visible]);
 
+  const onClickMenuRenderListItem = () => {
+    setMenuRenderListItemState({
+      id: menuId,
+      menuName,
+      menuDescription,
+      price,
+      image,
+    });
+    navigation.navigate('MenuImage');
+  };
+
   return (
-    <View
+    <TouchableOpacity
+      onPress={onClickMenuRenderListItem}
       style={[
         styles.listItem,
         idx !== 0 && {
@@ -72,7 +99,7 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
         dropdownTop={dropdownTop}
         dropdownWidth={dropdownWidth}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

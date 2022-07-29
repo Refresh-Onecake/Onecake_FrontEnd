@@ -7,6 +7,12 @@ export type RadioListProps = {
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
   selectedItem: string;
 };
+/**
+ *
+ * @param renderList 전체 리스트 목록 string[]
+ * @param setSelectedItem 선택되었을 때 값을 저장할 수 있는 state stringSetState
+ * @param selectedItem 선택된 값 string
+ */
 export const RadioList: FC<RadioListProps> = ({
   renderList,
   setSelectedItem,

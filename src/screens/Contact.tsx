@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 
 import {useAsync} from '../hooks';
@@ -33,11 +33,10 @@ const Contact = () => {
     }
   });
 
-  const {data} = useGetSellerChatUrlQuery(queryClient);
-
+  const {data, refetch} = useGetSellerChatUrlQuery(queryClient);
   const onClickOpenChat = useCallback(() => {
-    data === undefined ? setModalVisible(true) : Linking.openURL(data);
-  }, [data]);
+    refetch();
+  }, [refetch]);
 
   return (
     <SafeAreaView style={styles.view}>

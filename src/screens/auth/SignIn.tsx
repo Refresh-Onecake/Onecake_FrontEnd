@@ -222,7 +222,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           modalVisible={findIdVisible}
           setModalVisible={setFindIdVisible}
           title={'아이디 찾기'}
-          subTitle={'아이디 찾기는 관리자에게 문의 부탁드립니다.'}
+          subTitle={'아이디 찾기는 관리자에게 문의 부탁드립니다.!'}
         />
         <InfoModal
           modalVisible={findPwdVisible}

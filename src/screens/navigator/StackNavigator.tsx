@@ -91,7 +91,9 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
-        }}></Stack.Screen>
+          headerBackImage: BackBtn,
+        }}
+      />
       {/* 사장님 주문서 */}
       <Stack.Screen
         name="OrderManageList"

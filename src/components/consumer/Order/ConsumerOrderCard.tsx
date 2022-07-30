@@ -18,6 +18,7 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
   index,
   dataLength,
 }) => {
+  console.log(item.orderHistoryId);
   return (
     <View
       style={[
@@ -56,7 +57,10 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
       </View>
       {/* 주문 상태에 따른 버튼 */}
       <View style={styles.ConsumerOrderCardBtnWrap}>
-        <ConsumerOrderCardBtn currentOrderState={item.orderState} />
+        <ConsumerOrderCardBtn
+          currentOrderState={item.orderState}
+          orderHistoryId={item.orderHistoryId}
+        />
       </View>
     </View>
   );

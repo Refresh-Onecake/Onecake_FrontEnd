@@ -10,15 +10,24 @@ import React, {FC, useCallback, useState} from 'react';
 import {orderStatusKeys} from '../../../enum';
 import {AppStyles} from '../../../styles/AppStyles';
 import InfoModal from '../../common/InfoModal';
+import {useSetRecoilState} from 'recoil';
+import {orderHistoryIdState} from '../../../recoil/atom';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../screens/navigator';
 
 type ConsumerOrderCardBtnProps = {
   currentOrderState: string;
+  orderHistoryId: number;
 };
 export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
   currentOrderState,
+  orderHistoryId,
 }) => {
+  console.log(orderHistoryId);
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const setOrderHistoryId = useSetRecoilState(orderHistoryIdState);
   const ModalToggle = useCallback(() => {
     setModalVisible(!modalVisible);
   }, [modalVisible]);
@@ -35,6 +44,11 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
     );
   }, []);
 
+  const onClickOrderHistoryDetail = () => {
+    setOrderHistoryId(orderHistoryId);
+    navigation.navigate('OrderDetail');
+  };
+
   const ConsumerOrderCardReviewBtn = useCallback(() => {
     return (
       <View style={styles.btnTextWrap}>
@@ -50,12 +64,14 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
   return (
     <View style={styles.btnWrap}>
       {currentOrderState.toLowerCase() !== orderStatusKeys.픽업완료 ? (
-        <TouchableOpacity style={styles.singleBtnWrap}>
+        <TouchableOpacity
+          style={styles.singleBtnWrap}
+          onPress={onClickOrderHistoryDetail}>
           <ConsumerOrderCardOrderDetailBtn />
         </TouchableOpacity>
       ) : (
         <View style={styles.CompletedBtnWrap}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onClickOrderHistoryDetail}>
             <ConsumerOrderCardOrderDetailBtn />
           </TouchableOpacity>
           <View

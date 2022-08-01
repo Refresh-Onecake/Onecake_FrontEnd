@@ -13,6 +13,11 @@ import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
 import {ReSign} from '../../components/seller/SettingSeller';
+import OrderDetail from '../../components/consumer/OrderDetail';
+import {MenuImage, MenuImageDetails} from '../menuImage';
+import {useRecoilValue} from 'recoil';
+import {menuRenderListItemState} from '../../recoil/atom';
+import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -23,7 +28,9 @@ const BackBtn = () => {
     />
   );
 };
+
 export const StackNavigator = () => {
+  const menuRenderListItem = useRecoilValue(menuRenderListItemState);
   return (
     <Stack.Navigator
       initialRouteName="SignIn"
@@ -59,6 +66,7 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       <Stack.Screen
@@ -70,6 +78,20 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      {/* 주문서 상세보기*/}
+      <Stack.Screen
+        name="OrderDetail"
+        component={OrderDetail}
+        options={{
+          headerShown: true,
+          headerTitle: '주문상세',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
       {/* 사장님 주문서 */}
@@ -97,6 +119,34 @@ export const StackNavigator = () => {
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      {/* 메뉴 이미지 */}
+      <Stack.Screen
+        name="MenuImage"
+        component={MenuImage}
+        options={{
+          headerShown: true,
+          headerTitle: `${menuRenderListItem.menuName}`,
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="MenuImageDetails"
+        component={MenuImageDetails}
+        options={{
+          headerShown: true,
+          headerTitle: `${menuRenderListItem.menuName}`,
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+          headerRight: () => <MenuImageDetailHeaderDelete />,
+          headerRightContainerStyle: styles.headerRightContainer,
         }}
       />
     </Stack.Navigator>
@@ -112,5 +162,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerRightContainer: {
+    padding: 10,
   },
 });

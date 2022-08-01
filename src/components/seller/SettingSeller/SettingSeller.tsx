@@ -17,7 +17,6 @@ export const SettingSeller = () => {
     setModalVisible(() => true);
   }, []);
   const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
-  const resignMutation = useLogoutAndReSignQuery(fetchResign, navigation);
 
   const logout = useCallback(() => {
     Alert.alert(

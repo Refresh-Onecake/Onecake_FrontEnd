@@ -27,17 +27,19 @@ export const SelectUserType = ({
   const goToSignUp = (userType: string) => {
     console.log(userType);
     userType === appKeys.consumer
-      ? setModalVisible(true)
+      ? navigation.navigate('SignUp', {
+          userType: appKeys.consumer,
+        })
       : navigation.navigate('SignUp', {
           userType: appKeys.seller,
         });
   };
 
-  useEffect(() => {
-    if (selectedUser === appKeys.consumer) {
-      setModalVisible(true);
-    }
-  }, [selectedUser]);
+  // useEffect(() => {
+  //   if (selectedUser === appKeys.consumer) {
+  //     setModalVisible(true);
+  //   }
+  // }, [selectedUser]);
 
   return (
     <Fragment>
@@ -162,7 +164,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     height: 40,
-    paddingTop: 15,
     alignItems: 'center',
     backgroundColor: AppStyles.color.hotPink,
   },

@@ -17,12 +17,13 @@ import {storeIdState} from '../../recoil/atom';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appKeys, queryKeys} from '../../enum';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Button} from '../../components';
+
 import {useAsync} from '../../hooks';
 import {getStringValueFromAsyncStorage} from '../../utils';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import {useNavigation} from '@react-navigation/native';
+import {Button} from '../../components/common';
 
 export const StoreTitleInfo = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -102,12 +103,12 @@ export const StoreTitleInfo = () => {
     <>
       <Image style={styles.image} source={{uri: data?.storeImage}} />
       <View style={styles.back} />
-      <SafeAreaView style={styles.titleInfo}>
+      <View style={styles.titleInfo}>
         <View>
           <Text
             style={{
               fontSize: AppStyles.font.title,
-              fontWeight: '800',
+              fontWeight: '500',
             }}>
             {data?.storeName}
           </Text>
@@ -123,7 +124,10 @@ export const StoreTitleInfo = () => {
           <View
             style={[
               styles.userOption,
-              {borderRightWidth: 1, borderColor: AppStyles.color.border},
+              {
+                borderRightWidth: 1,
+                borderColor: AppStyles.color.border,
+              },
             ]}>
             <TouchableOpacity onPress={pressHeart}>
               <Icon size={15} name={liked ? 'heart' : 'heart-outline'} />
@@ -153,18 +157,20 @@ export const StoreTitleInfo = () => {
                 onPress={toggleModal}>
                 <Image
                   style={styles.Xicon}
-                  source={require('../../asset/close_X.png')}></Image>
+                  source={require('../../asset/close_X.png')}
+                />
               </TouchableOpacity>
               <Image
                 style={styles.speaker}
-                source={require('../../asset/speaker.png')}></Image>
+                source={require('../../asset/speaker.png')}
+              />
               <View style={styles.btn}>
-                <Button text="카카오톡 채널로 이동"></Button>
+                <Button text="카카오톡 채널로 이동" />
               </View>
             </View>
           </Modal>
         </View>
-      </SafeAreaView>
+      </View>
     </>
   );
 };
@@ -181,7 +187,7 @@ const styles = StyleSheet.create({
         height: '15%',
       },
       ios: {
-        height: '1%',
+        paddingTop: 30,
         marginBottom: 20,
       },
     }),
@@ -225,10 +231,10 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 3,
-          height: 3,
+          width: 2,
+          height: 2,
         },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.4,
         shadowRadius: 10,
       },
       android: {

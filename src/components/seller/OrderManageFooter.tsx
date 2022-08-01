@@ -5,8 +5,7 @@ import Modal from 'react-native-modal';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {Button} from '../common/Button';
 import {AppStyles} from '../../styles/AppStyles';
-import {ModalHeader} from '../common/ModalHeader';
-import {RadioList} from '../common/RadioList';
+
 import {
   orderSheetCancel,
   orderSheetChangeState,
@@ -15,6 +14,7 @@ import {useMutation, useQueryClient} from 'react-query';
 import {getMultipleData} from '../../../App';
 import {refetchToken} from '../../services';
 import {useRecoilValue} from 'recoil';
+import {ModalHeader, RadioList} from '../common';
 import {orderSheetIdState} from '../../recoil/atom';
 
 type OrderManageFooterProps = {
@@ -26,7 +26,7 @@ export const cancelReasonList = ['고객 요청', '가게 사정', '재료 소�
 export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [cancelReason, setCancelReason] = useState<string>('');
-  const orderId = useRecoilValue(orderSheetIdState);
+  const orderId = useRecoilValue<number>(orderSheetIdState);
   const queryClient = useQueryClient();
 
   const ChangeStatusMutation = useMutation(

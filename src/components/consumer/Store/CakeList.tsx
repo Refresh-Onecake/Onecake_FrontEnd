@@ -1,21 +1,19 @@
 import {
   Image,
-  TouchableOpacity,
   ListRenderItemInfo,
   StyleSheet,
   Text,
   View,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import {FC} from 'react';
 import {useRecoilValue} from 'recoil';
-import {storeIdState} from '../../recoil/atom';
 import {useQuery, useQueryClient} from 'react-query';
-import {getCakeList, ICakeList} from '../../services/storeService';
-import {queryKeys} from '../../enum';
-import {FlatList} from 'react-native-gesture-handler';
-import {AppStyles} from '../../styles/AppStyles';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {storeIdState} from '../../../recoil/atom';
+import {queryKeys} from '../../../enum';
+import {getCakeList, ICakeList} from '../../../services/storeService';
+import {AppStyles} from '../../../styles/AppStyles';
 
 export const CakeList: FC = () => {
   const queryClient = useQueryClient();
@@ -71,10 +69,8 @@ export const CakeList: FC = () => {
         <View>
           <Image
             style={styles.cake}
-            source={require('../../asset/cake.png')}></Image>
-          <Text style={styles.noti}>
-            등록된 메뉴가 없어요. 가게 탭에서 메뉴를 추가해주세요.
-          </Text>
+            source={require('../../../asset/cake.png')}></Image>
+          <Text style={styles.noti}>아직 등록된 케이크가 없어요.</Text>
         </View>
       ) : (
         <FlatList data={data} renderItem={renderItem} />

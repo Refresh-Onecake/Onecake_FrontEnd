@@ -46,7 +46,7 @@ export const useGetSellerMenuSheetByMenuId = (
         const response = err as Error;
         if (response.message === '401') {
           queryClient.invalidateQueries(queryKeys.sellerMenuSheet);
-          console.log(`${queryKeys.sellerChatAddress.toString()} 쿼리 성공`);
+          console.log(`${queryKeys.sellerMenuSheet.toString()} 쿼리 성공`);
         }
       },
     },

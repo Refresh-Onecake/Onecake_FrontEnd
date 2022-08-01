@@ -9,14 +9,14 @@ import {
 import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {MenuList} from '../components/seller/MenuList';
+import {MenuList} from '../components/seller/MenuList/MenuList';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from './navigator';
 import {appKeys, queryKeys} from '../enum';
 import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {storeIdState} from '../recoil/atom';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {focusManager, useQuery, useQueryClient} from 'react-query';
 import {getMenuList, IMenuList} from '../services';
 import {useIsFocused} from '@react-navigation/native';
@@ -24,7 +24,7 @@ import {useIsFocused} from '@react-navigation/native';
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const queryClient = useQueryClient();
   const [role, setRole] = useState<string>();
-  const setStoreId = useRecoilValue(storeIdState);
+  const setStoreId = useSetRecoilState(storeIdState);
   const [error, resetError] = useAsync(async () => {
     resetError();
     const fetchData = await getStringValueFromAsyncStorage(
@@ -80,30 +80,44 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <MenuList data={data} />
         </>
       ) : (
-        <>
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => {
-              setStoreId(0);
-              navigation.navigate('StoreDetail');
-            }}>
-            <Icon
-              size={18}
-              style={{position: 'absolute', right: 0}}
-              name="heart-outline"
-            />
+        // <>
+        //   <TouchableOpacity
+        //     style={styles.card}
+        //     onPress={() => {
+        //       setStoreId(0);
+        //       navigation.navigate('StoreDetail');
+        //     }}>
+        //     <Icon
+        //       size={18}
+        //       style={{position: 'absolute', right: 0}}
+        //       name="heart-outline"
+        //     />
+        //     <Image
+        //       style={styles.image}
+        //       source={require('../asset/customer.png')}></Image>
+        //     <Text>[강남구] 링링케이크</Text>
+        //     <View style={styles.liked}>
+        //       <Text style={{marginRight: 3}}>찜</Text>
+        //       {/* TODO: 받아와야함*/}
+        //       <Text>234</Text>
+        //       <Text>개</Text>
+        //     </View>
+        //   </TouchableOpacity>
+        // </>
+        <View style={styles.flex}>
+          <View>
             <Image
-              style={styles.image}
-              source={require('../asset/customer.png')}></Image>
-            <Text>[강남구] 링링케이크</Text>
-            <View style={styles.liked}>
-              <Text style={{marginRight: 3}}>찜</Text>
-              {/* TODO: 받아와야함*/}
-              <Text>234</Text>
-              <Text>개</Text>
-            </View>
-          </TouchableOpacity>
-        </>
+              style={{
+                width: 300,
+                height: 300,
+              }}
+              source={require('../asset/cake.png')}
+            />
+          </View>
+          <Text style={styles.title}>
+            런칭 준비중입니다. 조금만 기다려 주세요.
+          </Text>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -127,5 +141,15 @@ const styles = StyleSheet.create({
   liked: {
     marginTop: 5,
     flexDirection: 'row',
+  },
+  flex: {
+    marginTop: 100,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    color: AppStyles.color.subTitle,
+    fontSize: AppStyles.font.large,
   },
 });

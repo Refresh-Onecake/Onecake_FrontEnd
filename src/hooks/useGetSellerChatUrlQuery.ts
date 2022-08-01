@@ -1,5 +1,6 @@
+import {Linking} from 'react-native';
 import {QueryClient, useQuery} from 'react-query';
-import {queryKeys} from '../enum';
+import {appKeys, queryKeys} from '../enum';
 import {getSellerChatAddress} from '../services';
 
 /**
@@ -19,10 +20,12 @@ export const useGetSellerChatUrlQuery = (queryClient: QueryClient) => {
         }
       }),
     {
+      enabled: false,
       onSuccess: data => {
         data
           ? console.log(`판매자 채팅 URL 가져오기 성공 ${data}`)
           : console.log('판매자 URL 미등록', data);
+        if (data !== undefined) Linking.openURL(data);
       },
       onError: err => {
         console.log('셀러 URL 가져오기 오류');

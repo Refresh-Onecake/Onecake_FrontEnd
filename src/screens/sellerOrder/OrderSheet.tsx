@@ -23,7 +23,7 @@ export const OrderSheet = () => {
   const queryClient = useQueryClient();
 
   const [memo, setMemo] = useState<string>('');
-  const orderId = useRecoilValue(orderSheetIdState);
+  const orderId = useRecoilValue<number>(orderSheetIdState);
   const [imgUri, setImgUri] = useState<string | undefined>();
 
   const {data, status} = useQuery<IOrderSheet>(

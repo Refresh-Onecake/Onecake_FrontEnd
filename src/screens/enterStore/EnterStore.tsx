@@ -128,7 +128,8 @@ export const EnterStore = () => {
       onSuccess: data => {
         console.log(data);
         console.log('입점신청 성공');
-        logoutMutation.mutate();
+        navigation.navigate('EnterComplete');
+        // logoutMutation.mutate();
       },
       onError: e => {
         console.log(e);
@@ -417,7 +418,7 @@ export const EnterStore = () => {
                         onFocus={autoFocus}
                         placeholderTextColor={AppStyles.color.darkGray}
                         selectionColor={AppStyles.color.hotPink}
-                        placeholder="카카오톡 체널 url을 복사하여 입력해주세요"
+                        placeholder="카카오톡 채널 url을 복사하여 입력해주세요"
                       />
                     </View>
                   </View>
@@ -426,7 +427,7 @@ export const EnterStore = () => {
               />
               {errors.kakao_channel_url && (
                 <Text style={styles.errorText}>
-                  카카오톡 체널을 입력해주세요.
+                  카카오톡 채널을 입력해주세요.
                 </Text>
               )}
             </AutoFocusProvider>

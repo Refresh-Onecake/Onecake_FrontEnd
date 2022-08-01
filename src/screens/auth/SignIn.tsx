@@ -33,6 +33,7 @@ type IUserInfo = {
 const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [findIdVisible, setFindIdVisible] = useState<boolean>(false);
+  const [findPwdVisible, setFindPwdVisible] = useState<boolean>(false);
   const setStoreId = useSetRecoilState(storeIdState);
 
   const {
@@ -84,8 +85,8 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         [appKeys.roleTokenKey, data.role],
         [appKeys.storeIdKey, String(data.storeId)],
       ]);
-      navigation.navigate('MainNavigator', {
-        screen: 'Home',
+      navigation.reset({
+        routes: [{name: 'MainNavigator', params: {screen: 'Home'}}],
       });
     },
     onError: errors => {
@@ -182,8 +183,13 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             onPress={() => navigation.navigate('SelectUserType')}>
             회원가입
           </Text>
+          <View style={styles.bar}></View>
           <Text style={styles.authText} onPress={() => setFindIdVisible(true)}>
-            아이디/비밀번호 찾기
+            아이디 찾기
+          </Text>
+          <View style={styles.bar}></View>
+          <Text style={styles.authText} onPress={() => setFindPwdVisible(true)}>
+            비밀번호 찾기
           </Text>
         </View>
         <Modal isVisible={modalVisible}>
@@ -200,8 +206,14 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
         <InfoModal
           modalVisible={findIdVisible}
           setModalVisible={setFindIdVisible}
-          title={'아이디/비밀번호 찾기'}
-          subTitle={'관리자에게 문의 부탁드립니다.'}
+          title={'아이디 찾기'}
+          subTitle={'아이디 찾기는 관리자에게 문의 부탁드립니다.'}
+        />
+        <InfoModal
+          modalVisible={findPwdVisible}
+          setModalVisible={setFindPwdVisible}
+          title={'비밀번호 찾기'}
+          subTitle={'비밀번호 찾기는 관리자에게 문의 부탁드립니다.'}
         />
       </AutoFocusProvider>
     </SafeAreaView>
@@ -249,11 +261,10 @@ const styles = StyleSheet.create({
     height: 42,
   },
   texts: {
-    width: 194,
-    marginTop: 31,
+    width: 240,
+    marginTop: 30,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   modal: {
     padding: AppStyles.padding.screen,
@@ -262,7 +273,7 @@ const styles = StyleSheet.create({
     height: 170,
     backgroundColor: AppStyles.color.white,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
   modalBtn: {
     width: 72,
@@ -285,5 +296,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
+  },
+  bar: {
+    height: '100%',
+    borderColor: 'grey',
+    width: 1,
+    backgroundColor: AppStyles.color.IconColor,
   },
 });

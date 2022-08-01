@@ -8,11 +8,24 @@ import Order from '../Order';
 import Contact from '../Contact';
 import MyPage from '../MyPage';
 import {AppStyles} from '../../styles/AppStyles';
+import {useAsync} from '../../hooks';
+import {appKeys} from '../../enum';
+import {getStringValueFromAsyncStorage} from '../../utils';
 
 const Tab = createBottomTabNavigator();
 
 export const MainNavigator = () => {
-  const [role, setRole] = useState<string | null>();
+  const [role, setRole] = useState<string>();
+  const [error, resetError] = useAsync(async () => {
+    resetError();
+    const fetchData = await getStringValueFromAsyncStorage(
+      appKeys.roleTokenKey,
+    );
+    if (fetchData) {
+      console.log('role', fetchData);
+      setRole(fetchData);
+    }
+  });
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,7 +61,7 @@ export const MainNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="가게"
+        name={role === 'CONSUMER' ? '가게' : '메뉴'}
         component={Stores}
         options={{
           tabBarIcon: ({focused}) => {
@@ -64,7 +77,7 @@ export const MainNavigator = () => {
             );
           },
           headerShown: true,
-          headerTitle: '메뉴 관리',
+          headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
         }}
       />
       <Tab.Screen

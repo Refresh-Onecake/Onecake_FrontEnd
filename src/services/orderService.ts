@@ -26,6 +26,16 @@ export type IOrderSheet = {
   memo: string;
 };
 
+export type IOrderHistory = {
+  storeName: string;
+  orderState: string;
+  orderTime: string;
+  pickUpTime: string;
+  menuName: string;
+  menuPrice: number;
+  form: string[];
+};
+
 // 특정 날짜의 주문들 가져오기
 export const getSellerOrderList = async (date: string) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
@@ -110,6 +120,24 @@ export const orderSheetCancel = async (orderId: number, reason: string) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({reason}),
+      },
+    );
+    return response;
+  }
+};
+
+//주문 상세보기
+export const getOrderDetail = async (orderId: number) => {
+  const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
+  if (token) {
+    const response = await fetch(
+      `https://want-onecake.com/api/v1/consumer/orderHistory/${orderId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       },
     );
     return response;

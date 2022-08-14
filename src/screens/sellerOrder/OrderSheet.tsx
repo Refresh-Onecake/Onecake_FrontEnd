@@ -20,8 +20,8 @@ import {refetchToken} from '../../services';
 export const OrderSheet = () => {
   const queryClient = useQueryClient();
 
-  const [memo, setMemo] = useState<string>('');
-  const orderId = useRecoilValue<number>(orderSheetIdState);
+  const [memo, setMemo] = useState('');
+  const orderId = useRecoilValue(orderSheetIdState);
   const [imgUri, setImgUri] = useState<string | undefined>();
 
   const {data, status} = useQuery<IOrderSheet>(

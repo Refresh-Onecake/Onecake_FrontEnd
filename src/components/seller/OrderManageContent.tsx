@@ -18,7 +18,7 @@ import {priceFormatParser} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../screens/navigator';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {orderListModalState, orderSheetIdState} from '../../recoil/atom';
 import {appKeys} from '../../enum';
 export type OrderManageContentProps = {
@@ -38,12 +38,13 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
     idx: number;
     id: number;
   }) => {
+    const setOrderSheetId = useSetRecoilState(orderSheetIdState);
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
 
     const onPressItem = () => {
-      // setOrderModalState('orderListMore');
-      // setOrderSheetId(id);
+      setOrderModalState(appKeys.orderListMore);
+      setOrderSheetId(id);
     };
     return (
       <TouchableOpacity

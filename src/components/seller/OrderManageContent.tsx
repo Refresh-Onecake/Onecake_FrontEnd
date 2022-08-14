@@ -4,21 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import React, {FC} from 'react';
-import {
-  ISellerOrder,
-  ISellerOrderList,
-  IStoreMenuListDto,
-} from '../../services/orderService';
+import {ISellerOrder, IStoreMenuListDto} from '../../services/orderService';
 import {AppStyles} from '../../styles/AppStyles';
 import {priceFormatParser} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../screens/navigator';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {orderListModalState, orderSheetIdState} from '../../recoil/atom';
 import {appKeys} from '../../enum';
 export type OrderManageContentProps = {
@@ -46,6 +38,7 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
       setOrderModalState(appKeys.orderListMore);
       setOrderSheetId(id);
     };
+
     return (
       <TouchableOpacity
         style={[

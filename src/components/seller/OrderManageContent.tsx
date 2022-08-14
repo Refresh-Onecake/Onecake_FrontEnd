@@ -40,13 +40,10 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
   }) => {
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
-    const [orderSheetId, setOrderSheetId] =
-      useRecoilState<number>(orderSheetIdState);
 
-    console.log(status);
     const onPressItem = () => {
-      setOrderModalState(appKeys.orderListMore);
-      setOrderSheetId(id);
+      // setOrderModalState('orderListMore');
+      // setOrderSheetId(id);
     };
     return (
       <TouchableOpacity
@@ -63,7 +60,7 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
           <Image
             style={styles.image}
             source={{
-              uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+              uri: item.image,
             }}
           />
         </View>

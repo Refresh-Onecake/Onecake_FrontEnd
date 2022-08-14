@@ -12,7 +12,7 @@ import {AppStyles} from '../../../styles/AppStyles';
 import {queryKeys} from '../../../enum';
 import {useQuery, useQueryClient} from 'react-query';
 import {getCityCakeList, ICityCakeList} from '../../../services';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import {useSetRecoilState} from 'recoil';
 import {storeIdState} from '../../../recoil/atom';
@@ -67,10 +67,10 @@ export const CityCakes = () => {
   };
 
   return (
-    <>
+    <View style={{paddingBottom: 40}}>
       <Text style={styles.title}>우리 동네 케이크</Text>
       <FlatList data={data} renderItem={renderItem} horizontal={true} />
-    </>
+    </View>
   );
 };
 

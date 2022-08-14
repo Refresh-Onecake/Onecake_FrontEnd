@@ -126,7 +126,7 @@ export const OrderManageList: FC<OrderManageListProps> = ({
                 <View style={styles.contentView}>
                   <OrderManageContent
                     renderData={data.completed}
-                    status={'픽업 완로'}
+                    status={'픽업 완료'}
                   />
                 </View>
               )}

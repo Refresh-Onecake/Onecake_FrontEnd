@@ -9,13 +9,11 @@ import {
 } from '../../services/orderService';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
-import {dateFormatParser, timeFormatToKorea} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {OrderManageFooter} from '../../components';
 import {useRecoilValue} from 'recoil';
 import {orderSheetIdState} from '../../recoil/atom';
-import {useQueryRefetchingOnError} from '../../hooks';
 import {getMultipleData} from '../../../App';
 import {refetchToken} from '../../services';
 

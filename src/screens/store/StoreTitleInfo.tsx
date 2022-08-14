@@ -102,7 +102,22 @@ export const StoreTitleInfo = () => {
   return (
     <>
       <Image style={styles.image} source={{uri: data?.storeImage}} />
-      <View style={styles.back} />
+      <View
+        style={[
+          styles.back,
+          {
+            ...Platform.select({
+              android: {
+                height: '15%',
+              },
+              ios: {
+                paddingTop: 30,
+                marginBottom: role !== undefined && role === 'SELLER' ? 20 : 90,
+              },
+            }),
+          },
+        ]}
+      />
       <View style={styles.titleInfo}>
         <View>
           <Text
@@ -182,15 +197,6 @@ const styles = StyleSheet.create({
   },
   back: {
     width: '100%',
-    ...Platform.select({
-      android: {
-        height: '15%',
-      },
-      ios: {
-        paddingTop: 30,
-        marginBottom: 20,
-      },
-    }),
     backgroundColor: AppStyles.color.white,
   },
   userOptionWrapper: {
@@ -229,13 +235,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 2,
-          height: 2,
-        },
-        shadowOpacity: 0.4,
-        shadowRadius: 10,
+        shadowColor: '#000000',
+        shadowRadius: 7,
+        shadowOffset: {height: 1, width: 1},
+        shadowOpacity: 0.11,
       },
       android: {
         elevation: 5,

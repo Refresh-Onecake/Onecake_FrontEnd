@@ -7,15 +7,7 @@ import {
   View,
   ScrollView,
 } from 'react-native';
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {Dispatch, FC, SetStateAction} from 'react';
 import {
   getSellerOrderList,
   ISellerOrderList,
@@ -78,6 +70,7 @@ export const OrderManageList: FC<OrderManageListProps> = ({
       ? setModalVisible(false)
       : setOrderListState(appKeys.orderList);
   };
+
   return (
     <View style={styles.view}>
       <View style={styles.header}>

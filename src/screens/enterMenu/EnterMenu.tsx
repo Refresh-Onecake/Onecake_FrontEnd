@@ -221,12 +221,22 @@ export const EnterMenu = ({
                         color={AppStyles.color.hotPink}
                       />
                       <Text
-                        style={{
-                          fontSize: AppStyles.font.small,
-                          color: AppStyles.color.hotPink,
-                          fontWeight: '700',
-                          paddingTop: 2,
-                        }}>
+                        style={[
+                          {
+                            fontSize: AppStyles.font.small,
+                            color: AppStyles.color.hotPink,
+                            paddingTop: 2,
+                          },
+                          {
+                            ...Platform.select({
+                              android: {
+                                fontFamily: 'NotoSansKR-Medium',
+                                lineHeight: 16,
+                              },
+                              ios: {fontWeight: '700'},
+                            }),
+                          },
+                        ]}>
                         {menuImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                       </Text>
                     </TouchableOpacity>
@@ -387,7 +397,19 @@ export const EnterMenu = ({
                     }
                   />
                 </View>
-                <Text style={{fontSize: 15}}>{val}</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    ...Platform.select({
+                      android: {
+                        fontFamily: 'NotoSansKR-Medium',
+                        lineHeight: 18,
+                      },
+                      ios: {},
+                    }),
+                  }}>
+                  {val}
+                </Text>
               </TouchableOpacity>
             ))}
             <View style={styles.cakeSizeAddInput}>
@@ -466,10 +488,17 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         height: 40,
+        fontFamily: 'NotoSansKR-Medium',
       },
     }),
   },
   cakeSizeItem: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 10,

@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -60,16 +61,29 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 30,
     fontSize: AppStyles.font.title,
-    fontWeight: '700',
     color: AppStyles.color.black,
     paddingTop: 77,
-    paddingBottom: 14,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        fontWeight: '700',
+        paddingBottom: 14,
+      },
+    }),
   },
   subTitle: {
     paddingLeft: 30,
     fontSize: AppStyles.font.subTitle,
-    fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {fontWeight: '400'},
+    }),
   },
 });

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import {useRecoilState} from 'recoil';
@@ -34,7 +35,18 @@ export const TabView = () => {
                 ? styles.seletedIndicator
                 : styles.unSelectedIndicator,
             ]}>
-            <Text>{val}</Text>
+            <Text
+              style={{
+                fontSize: 13,
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'NotoSansKR-Medium',
+                  },
+                  ios: {},
+                }),
+              }}>
+              {val}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

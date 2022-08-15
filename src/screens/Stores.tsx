@@ -108,8 +108,8 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <View>
             <Image
               style={{
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
               }}
               source={require('../asset/cake.png')}
             />
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    marginTop: 20,
     color: AppStyles.color.subTitle,
     fontSize: AppStyles.font.large,
   },

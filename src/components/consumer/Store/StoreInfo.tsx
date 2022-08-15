@@ -1,4 +1,4 @@
-import {ScrollView, View, Text, StyleSheet} from 'react-native';
+import {ScrollView, View, Text, StyleSheet, Platform} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
@@ -77,6 +77,14 @@ const style = StyleSheet.create({
     fontSize: 13,
     width: 60,
     marginRight: 40,
+    color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {},
+    }),
   },
   view: {
     flex: 1,
@@ -87,8 +95,13 @@ const style = StyleSheet.create({
   dataText: {
     flex: 1,
     color: '#7D7D7D',
-    fontWeight: '400',
     fontSize: 13,
     lineHeight: 20,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '400'},
+    }),
   },
 });

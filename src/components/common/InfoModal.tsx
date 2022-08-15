@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  Platform,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -38,7 +39,7 @@ const InfoModal: FC<InfoModalProps> = ({
       <SafeAreaView style={styles.centeredView}>
         <View style={[styles.modalView, commonStyles.shadow]}>
           <Image
-            style={{width: 53, height: 53, marginTop: 43}}
+            style={{width: 53, height: 53, marginTop: 35}}
             source={require('../../asset/checkIcon.png')}
           />
           <Text style={styles.title}>{title}</Text>
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: 'white',
     borderRadius: 20,
-    height: 300,
+    height: 279.21,
     width: 345,
     justifyContent: 'center',
     alignItems: 'center',
@@ -88,20 +89,42 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 19,
-    fontWeight: '700',
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
   },
   title: {
-    paddingTop: 32.6,
-    paddingBottom: 24.39,
-    fontWeight: '700',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        paddingTop: 20.6,
+        paddingBottom: 15.39,
+        fontWeight: '700',
+      },
+    }),
     fontSize: 23,
     color: AppStyles.color.black,
   },
   text: {
     color: '#818181',
-    fontWeight: '500',
     fontSize: 15,
-    lineHeight: 23,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        lineHeight: 23,
+        fontWeight: '500',
+      },
+    }),
   },
 });

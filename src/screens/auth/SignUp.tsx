@@ -1,5 +1,17 @@
 //prettier-ignore
-import {Alert, Image, Linking, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Linking,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Platform,
+} from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -578,6 +590,13 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                       color: AppStyles.color.white,
                       fontSize: 11,
                       fontWeight: '500',
+                      ...Platform.select({
+                        android: {
+                          fontFamily: 'NotoSansKR-Medium',
+                          lineHeight: 13,
+                        },
+                        ios: {},
+                      }),
                     }}>
                     인증 받기
                   </Text>
@@ -758,6 +777,12 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                 color: AppStyles.color.white,
                 fontSize: 15,
                 fontWeight: '500',
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'NotoSansKR-Medium',
+                  },
+                  ios: {},
+                }),
               }}>
               닫기
             </Text>
@@ -787,25 +812,48 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   h1: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
     marginBottom: 8.65,
-    fontWeight: '700',
     fontSize: 23,
     lineHeight: 28,
     color: AppStyles.color.black,
   },
   h2: {
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '500'},
+    }),
     fontSize: 17,
     lineHeight: 22,
     color: AppStyles.color.black,
   },
   h3: {
-    fontWeight: '500',
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.gray,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '500'},
+    }),
   },
   subText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
     color: AppStyles.color.darkGray,
     fontWeight: '500',
     fontSize: 14,
@@ -826,11 +874,24 @@ const styles = StyleSheet.create({
     height: 40,
   },
   inputText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
     fontSize: 12,
     fontWeight: '500',
     color: AppStyles.color.black,
   },
   textInput: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
     fontSize: 15,
     flex: 1,
     color: AppStyles.color.black,
@@ -843,6 +904,13 @@ const styles = StyleSheet.create({
     color: AppStyles.color.pink,
     fontWeight: '500',
     paddingTop: 5.36,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
   },
   termHeader: {
     flexDirection: 'row',
@@ -864,9 +932,14 @@ const styles = StyleSheet.create({
     // borderRadius: 12,
   },
   submitBtnText: {
-    fontWeight: '700',
     fontSize: 15,
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '700'},
+    }),
   },
   // 문자 인증 관련
   phoneNumberInputWrap: {
@@ -886,6 +959,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   dropdownText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {},
+    }),
     color: AppStyles.color.black,
     opacity: 0.5,
     fontWeight: '500',

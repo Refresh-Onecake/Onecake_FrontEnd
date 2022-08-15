@@ -51,7 +51,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진함에 접근함에 있어 동의가 필요합니다.</string>
 	<key>UIAppFonts</key>
@@ -77,6 +77,14 @@
 		<string>AntDesign.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>BlackHanSans-Regular.ttf</string>
+		<string>FontAwesome5_Regular.ttfFontAwesome5_Regular.ttf</string>
+		<string>NotoSansKR-Black.otf</string>
+		<string>NotoSansKR-Bold.otf</string>
+		<string>NotoSansKR-Light.otf</string>
+		<string>NotoSansKR-Medium.otf</string>
+		<string>NotoSansKR-Regular.otf</string>
+		<string>NotoSansKR-Thin.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

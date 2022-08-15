@@ -61,7 +61,7 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
         <View style={{flex: 1}}>
           <Text style={styles.title}>{item.menuName}</Text>
           <Text style={styles.subTitle}>{item.menuDescription}</Text>
-          <Text style={styles.price}>{priceFormatParser(item.price)}원~</Text>
+          <Text style={styles.price}>{item.price}원~</Text>
         </View>
       </TouchableOpacity>
     );
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
     paddingVertical: 15,
-    paddingHorizontal: 11,
+    paddingRight: 11,
   },
   image: {
     width: 64.5,
@@ -105,14 +105,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 13,
     lineHeight: 16,
+    paddingBottom: 3,
     color: AppStyles.color.black,
   },
   subTitle: {
     fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
+    paddingBottom: 11.46,
     color: AppStyles.color.midGray,
-    paddingBottom: 11,
   },
   price: {
     fontWeight: '400',

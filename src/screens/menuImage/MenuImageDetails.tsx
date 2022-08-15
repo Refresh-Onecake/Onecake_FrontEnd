@@ -54,7 +54,8 @@ export const MenuImageDetails = () => {
 const styles = StyleSheet.create({
   menuImageInfoWrap: {
     paddingHorizontal: 15.74,
-    paddingVertical: 22.26,
+    paddingTop: 22.26,
+    paddingBottom: 16.64,
   },
   img: {
     width: '100%',

@@ -1,7 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
-import {useRecoilValue} from 'recoil';
-import {menuRenderListItemState} from '../../../recoil/atom';
 import {AppStyles} from '../../../styles/AppStyles';
 
 type MenuImageInfoProps = {
@@ -25,7 +23,7 @@ export const MenuImageInfo: FC<MenuImageInfoProps> = ({
 
 const styles = StyleSheet.create({
   titleWrap: {
-    paddingBottom: 20.08,
+    paddingBottom: 9,
   },
   title: {
     fontWeight: '600',

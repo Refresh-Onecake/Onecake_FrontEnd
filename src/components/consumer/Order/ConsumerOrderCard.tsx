@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   view: {
     padding: 18,
     borderRadius: 16,
-    width: 325.49,
+    width: 336.49,
     height: 225.99,
     backgroundColor: AppStyles.color.white,
   },

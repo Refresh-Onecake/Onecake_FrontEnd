@@ -149,6 +149,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
             title="주문 취소 사유 선택"
             setVisible={setModalVisible}
           />
+          <View style={{paddingVertical: 12}} />
           <RadioList
             renderList={cancelReasonList}
             setSelectedItem={setCancelReason}

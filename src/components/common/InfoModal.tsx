@@ -38,12 +38,11 @@ const InfoModal: FC<InfoModalProps> = ({
       <SafeAreaView style={styles.centeredView}>
         <View style={[styles.modalView, commonStyles.shadow]}>
           <Image
-            style={{width: 53, height: 53, marginTop: 43}}
+            style={{width: 53, height: 53, marginTop: 35}}
             source={require('../../asset/checkIcon.png')}
           />
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.text}>{subTitle}</Text>
-
           <View style={styles.flex} />
           <TouchableOpacity
             style={styles.btnWrap}
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: 'white',
     borderRadius: 20,
-    height: 300,
+    height: 279.21,
     width: 345,
     justifyContent: 'center',
     alignItems: 'center',
@@ -92,8 +91,8 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
   },
   title: {
-    paddingTop: 32.6,
-    paddingBottom: 24.39,
+    paddingTop: 20.6,
+    paddingBottom: 15.39,
     fontWeight: '700',
     fontSize: 23,
     color: AppStyles.color.black,

@@ -30,6 +30,10 @@ export const MainNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarLabelStyle: {
+          fontFamily: 'NotoSansKR-Medium',
+          lineHeight: 16,
+        },
         tabBarActiveTintColor: AppStyles.color.hotPink,
         tabBarStyle: {
           ...Platform.select({
@@ -39,7 +43,13 @@ export const MainNavigator = () => {
               shadowOffset: {height: -20, width: 0},
               shadowOpacity: 0.05,
             },
+            android: {
+              fontFamily: 'NotoSansKR-Medium',
+            },
           }),
+        },
+        headerTitleStyle: {
+          fontFamily: 'NotoSansKR-Medium',
         },
       }}>
       <Tab.Screen
@@ -145,11 +155,22 @@ export const MainNavigator = () => {
 const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   headerTitleContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
 });

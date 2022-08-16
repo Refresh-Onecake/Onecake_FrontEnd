@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#818181',
     fontSize: 15,
+    textAlign: 'center',
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',

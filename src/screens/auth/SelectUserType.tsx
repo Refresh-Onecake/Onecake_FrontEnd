@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
       },
       android: {
-        elevation: 10,
+        elevation: 5,
       },
     }),
   },
   imgShape: {
-    width: 132,
-    height: 132,
+    width: 125,
+    height: 125,
     borderRadius: 100,
     overflow: 'hidden',
   },

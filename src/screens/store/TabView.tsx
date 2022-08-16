@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: AppStyles.color.white,
     width: +TabIndicatorWidth,
-    marginTop: 10,
+    marginTop: 7,
     height: 47,
   },
   selectedView: {

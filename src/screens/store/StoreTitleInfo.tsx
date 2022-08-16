@@ -108,7 +108,7 @@ export const StoreTitleInfo = () => {
           {
             ...Platform.select({
               android: {
-                height: '15%',
+                height: '20%',
               },
               ios: {
                 paddingTop: 30,
@@ -159,6 +159,7 @@ export const StoreTitleInfo = () => {
                   ...Platform.select({
                     android: {
                       fontFamily: 'NotoSansKR-Medium',
+                      lineHeight: 20,
                     },
                     ios: {},
                   }),
@@ -171,6 +172,7 @@ export const StoreTitleInfo = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'NotoSansKR-Medium',
+                    lineHeight: 20,
                   },
                   ios: {},
                 }),
@@ -195,6 +197,7 @@ export const StoreTitleInfo = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'NotoSansKR-Medium',
+                    lineHeight: 20,
                   },
                   ios: {},
                 }),
@@ -268,6 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 20,
   },
   Xicon: {
     height: 15,
@@ -285,7 +289,7 @@ const styles = StyleSheet.create({
     top: 250,
     position: 'absolute',
     width: 370,
-    height: 150,
+    height: 160,
     alignSelf: 'center',
     borderRadius: 13,
     backgroundColor: AppStyles.color.white,

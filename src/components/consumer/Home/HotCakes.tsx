@@ -90,6 +90,13 @@ export const HotCakes = () => {
         <Text>index</Text>
       </View> */}
       <FlatList data={data} renderItem={renderItem} horizontal />
+      <View
+        style={{
+          backgroundColor: AppStyles.color.lightGray,
+          height: 10,
+          borderBottomColor: '#C1C1C1',
+          borderBottomWidth: 1,
+        }}></View>
     </>
   );
 };
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.color.black,
   },
   text: {
-    top: 310,
+    top: 370,
     position: 'absolute',
     marginLeft: 16,
     zIndex: 10,
@@ -169,7 +176,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'NotoSansKR-Regular',
         lineHeight: 16,
       },
       ios: {},

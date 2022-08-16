@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: AppStyles.font.small,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'NotoSansKR-Regular',
         lineHeight: 16,
       },
       ios: {},
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   wrapper: {
     borderColor: AppStyles.color.border,
     borderWidth: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     borderRadius: 8,
     marginBottom: 15,
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',
-        lineHeight: 18,
+        lineHeight: 20,
       },
       ios: {},
     }),

@@ -77,8 +77,7 @@ export const KeywordCakes = () => {
 
 const styles = StyleSheet.create({
   title: {
-    marginTop: 31,
-    marginBottom: 12,
+    marginTop: 30,
     marginLeft: 16,
     color: AppStyles.color.black,
     fontSize: 19,

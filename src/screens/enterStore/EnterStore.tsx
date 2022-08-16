@@ -536,12 +536,15 @@ export const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     color: AppStyles.color.hotPink,
-    paddingTop: 5.66,
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+        paddingTop: 5,
       },
-      ios: {},
+      ios: {
+        paddingTop: 5.66,
+      },
     }),
   },
   imgInfo: {

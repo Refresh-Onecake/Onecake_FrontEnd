@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 20,
     color: AppStyles.color.subTitle,
-    fontSize: AppStyles.font.large,
+    fontSize: AppStyles.font.middle,
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',

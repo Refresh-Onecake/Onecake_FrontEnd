@@ -375,7 +375,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkNameIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -413,7 +413,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkIdIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -456,7 +456,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           onPress={() => setPasswdIcon(!passwdIcon)}>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 passwdIcon
                                   ? require('../../asset/visible_active.png')
@@ -509,7 +509,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           }>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 confirmPasswdIcon
                                   ? require('../../asset/visible_active.png')
@@ -589,13 +589,14 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                     style={{
                       color: AppStyles.color.white,
                       fontSize: 11,
-                      fontWeight: '500',
                       ...Platform.select({
                         android: {
                           fontFamily: 'NotoSansKR-Medium',
                           lineHeight: 13,
                         },
-                        ios: {},
+                        ios: {
+                          fontWeight: '500',
+                        },
                       }),
                     }}>
                     인증 받기
@@ -776,12 +777,13 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
               style={{
                 color: AppStyles.color.white,
                 fontSize: 15,
-                fontWeight: '500',
                 ...Platform.select({
                   android: {
                     fontFamily: 'NotoSansKR-Medium',
                   },
-                  ios: {},
+                  ios: {
+                    fontWeight: '500',
+                  },
                 }),
               }}>
               닫기
@@ -871,7 +873,7 @@ const styles = StyleSheet.create({
   },
   inputFlex: {
     flexDirection: 'row',
-    height: 40,
+    height: 35,
   },
   inputText: {
     ...Platform.select({
@@ -889,15 +891,16 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 20,
       },
-      ios: {},
+      ios: {
+        fontWeight: '500',
+        fontStyle: 'normal',
+      },
     }),
     fontSize: 15,
     flex: 1,
     color: AppStyles.color.black,
-    fontStyle: 'normal',
-    fontWeight: '500',
-    paddingLeft: 0,
   },
   errorText: {
     fontSize: 12,

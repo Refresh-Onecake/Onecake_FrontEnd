@@ -196,6 +196,11 @@ const styles = StyleSheet.create({
     paddingBottom: 11.49,
     paddingLeft: 11.09,
     backgroundColor: AppStyles.color.SelectImage,
+    ...Platform.select({
+      android: {
+        height: 100,
+      },
+    }),
   },
   memoTitle: {
     fontSize: 12,
@@ -216,6 +221,14 @@ const styles = StyleSheet.create({
     color: AppStyles.color.black,
     fontSize: 17,
     lineHeight: 20,
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        height: 50,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

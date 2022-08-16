@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {FC} from 'react';
 import {ISellerOrder, IStoreMenuListDto} from '../../services/orderService';
@@ -89,7 +90,15 @@ const styles = StyleSheet.create({
   viewTitle: {
     color: AppStyles.color.black,
     fontSize: 17,
-    fontWeight: '700',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+        lineHeight: 20,
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
   },
   listItem: {
     flexDirection: 'row',
@@ -102,23 +111,44 @@ const styles = StyleSheet.create({
     borderRadius: 13,
   },
   title: {
-    fontWeight: '600',
     fontSize: 13,
     lineHeight: 16,
     paddingBottom: 3,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   subTitle: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
     paddingBottom: 11.46,
     color: AppStyles.color.midGray,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   price: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
     color: AppStyles.color.midBlack,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
 });

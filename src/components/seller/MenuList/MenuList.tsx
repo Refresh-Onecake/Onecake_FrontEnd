@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
   btnWrap: {
     width: 270,
     height: 44,
-    marginTop: 20,
+    marginTop: 18,
   },
 });

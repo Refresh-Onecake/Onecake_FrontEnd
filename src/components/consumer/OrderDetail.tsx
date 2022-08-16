@@ -24,13 +24,10 @@ export default function OrderDetail() {
         }
       }),
     {
-      refetchOnWindowFocus: true,
-      staleTime: 5000,
-      cacheTime: Infinity,
       onSuccess: data => {
         data.form.map(val => {
           if (val.includes('사진')) {
-            const parseImgUrl = val.substring(7, val.length);
+            const parseImgUrl = val.substring(10, val.length);
             setImgUri(parseImgUrl);
           }
         });

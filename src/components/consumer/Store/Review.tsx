@@ -69,7 +69,11 @@ export const Review: FC = () => {
   return (
     <View>
       <Text style={styles.reviewNum}>최근 리뷰 {data?.reviewNum} 개</Text>
-      <FlatList data={data?.reviews} renderItem={renderItem} />
+      <FlatList
+        contentContainerStyle={{paddingBottom: 80}}
+        data={data?.reviews}
+        renderItem={renderItem}
+      />
     </View>
   );
 };

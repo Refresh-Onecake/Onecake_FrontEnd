@@ -52,7 +52,7 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
               {orderStateTranslate(item.orderState)}
             </Text>
           </View>
-          <Text style={styles.cardHeaderSubTitleText}>
+          <Text style={styles.cardHeaderSubTitleText} numberOfLines={2}>
             {item.menuName} {item.menuPrice}원
           </Text>
         </View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   view: {
     padding: 18,
     borderRadius: 16,
-    width: 325.49,
+    width: 336.49,
     height: 225.99,
     backgroundColor: AppStyles.color.white,
   },
@@ -87,9 +87,11 @@ const styles = StyleSheet.create({
   cardHeaderInfoWrap: {
     paddingLeft: 18,
     justifyContent: 'center',
+    flexShrink: 1,
   },
   cardHeaderTitle: {
     flexDirection: 'row',
+    flexShrink: 1,
   },
   menuImage: {
     width: 70,
@@ -97,7 +99,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   cardHeaderTitleText: {
+    fontWeight: '600',
     fontSize: 15,
+    flexShrink: 1,
     ...Platform.select({
       android: {
         fontFamily: 'NotoSansKR-Medium',

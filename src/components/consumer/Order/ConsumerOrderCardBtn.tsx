@@ -45,11 +45,6 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
     );
   }, []);
 
-  const onClickOrderHistoryDetail = () => {
-    setOrderHistoryId(orderHistoryId);
-    navigation.navigate('OrderDetail');
-  };
-
   const ConsumerOrderCardReviewBtn = useCallback(() => {
     return (
       <View style={styles.btnTextWrap}>
@@ -62,6 +57,11 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
     );
   }, []);
 
+  const onClickOrderHistoryDetail = () => {
+    setOrderHistoryId(orderHistoryId);
+    navigation.navigate('OrderDetail');
+  };
+  
   return (
     <View style={styles.btnWrap}>
       {currentOrderState.toLowerCase() !== orderStatusKeys.픽업완료 ? (

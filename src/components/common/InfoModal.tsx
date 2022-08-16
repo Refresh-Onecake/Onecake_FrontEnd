@@ -44,7 +44,6 @@ const InfoModal: FC<InfoModalProps> = ({
           />
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.text}>{subTitle}</Text>
-
           <View style={styles.flex} />
           <TouchableOpacity
             style={styles.btnWrap}

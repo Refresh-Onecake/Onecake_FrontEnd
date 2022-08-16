@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useRecoilValue} from 'recoil';
 import {useQuery, useQueryClient} from 'react-query';
@@ -95,19 +95,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  cakeTitle: {color: AppStyles.color.black, fontSize: 15, fontWeight: '400'},
+  cakeTitle: {
+    color: AppStyles.color.black,
+    fontSize: 15,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
+  },
   storeName: {
     color: AppStyles.color.black,
-    fontWeight: '600',
     fontSize: 20,
     marginTop: 18,
     marginBottom: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   orderState: {
     color: AppStyles.color.hotPink,
     fontSize: 15,
-    fontWeight: '600',
     marginTop: 30,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 18,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   orderDate: {
     flexDirection: 'row',
@@ -122,8 +149,16 @@ const styles = StyleSheet.create({
   orderOption: {
     fontSize: 13,
     marginTop: 5,
-    fontWeight: '500',
     color: '#989898',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   img: {
     width: 343,
@@ -133,9 +168,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   subText: {
-    fontWeight: '500',
     fontSize: 13,
     lineHeight: 16,
     color: '#989898',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

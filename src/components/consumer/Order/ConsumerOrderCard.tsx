@@ -1,4 +1,11 @@
-import {Image, ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ListRenderItemInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {FC} from 'react';
 import {IConsumerOrderHistoryType} from '../../../services/Consumer';
 import {commonStyles} from '../../../styles/commonStyles';
@@ -90,15 +97,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   cardHeaderTitleText: {
-    fontWeight: '600',
     fontSize: 15,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 18,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   cardHeaderSubTitleText: {
     paddingTop: 6.41,
-    fontWeight: '500',
     fontSize: 13,
     lineHeight: 16,
     color: '#777777',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   ConsumerOrderProgressWrap: {
     position: 'relative',

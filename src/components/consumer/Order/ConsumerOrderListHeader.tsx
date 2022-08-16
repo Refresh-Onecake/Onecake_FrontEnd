@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -34,12 +35,25 @@ const styles = StyleSheet.create({
   title: {
     flexGrow: 1,
     textAlign: 'center',
-    fontWeight: '600',
     fontSize: 15,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        marginTop: 20,
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   retry: {
     width: 24,
     height: 24,
+    ...Platform.select({
+      android: {
+        marginTop: 30,
+      },
+    }),
   },
 });

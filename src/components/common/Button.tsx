@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {ComponentProps, FC, ReactNode} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
@@ -52,8 +52,15 @@ export const Button: FC<ButtonProps & TouchableOpacityProps> = ({
         <Text
           style={{
             color: AppStyles.color.white,
-            fontWeight: '700',
             fontSize: textSize,
+            ...Platform.select({
+              android: {
+                fontFamily: 'NotoSansKR-Medium',
+              },
+              ios: {
+                fontWeight: '700',
+              },
+            }),
           }}>
           {text}
         </Text>

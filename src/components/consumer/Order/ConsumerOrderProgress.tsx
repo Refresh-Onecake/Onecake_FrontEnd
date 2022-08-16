@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 
@@ -38,8 +38,16 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
   text: {
-    fontWeight: '500',
     fontSize: 13,
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

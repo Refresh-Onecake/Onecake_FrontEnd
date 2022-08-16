@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -35,7 +36,7 @@ export const EnterComplete = () => {
             <Text style={styles.Title}>입점신청을 완료했어요!</Text>
             <Text style={styles.subTitle}>
               원케이크에 오신 것을 환영합니다.
-            </Text> 
+            </Text>
             <Text style={styles.subTitle}>
               원케이크를 통해 케이크를 판매해보세요.
             </Text>
@@ -82,17 +83,27 @@ const styles = StyleSheet.create({
     paddingBottom: AppStyles.padding.screen,
   },
   Title: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '700'},
+    }),
     width: '100%',
-    fontWeight: '700',
     fontSize: 23,
     color: AppStyles.color.black,
     marginBottom: 14,
   },
   subTitle: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '400'},
+    }),
     width: '100%',
     color: AppStyles.color.black,
     opacity: 0.5,
-    fontWeight: '400',
     fontSize: 14,
     lineHeight: 22,
   },

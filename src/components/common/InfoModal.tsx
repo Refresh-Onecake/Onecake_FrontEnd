@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  Platform,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -87,20 +88,43 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 19,
-    fontWeight: '700',
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
   },
   title: {
-    paddingTop: 20.6,
-    paddingBottom: 15.39,
-    fontWeight: '700',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        paddingTop: 20.6,
+        paddingBottom: 15.39,
+        fontWeight: '700',
+      },
+    }),
     fontSize: 23,
     color: AppStyles.color.black,
   },
   text: {
     color: '#818181',
-    fontWeight: '500',
     fontSize: 15,
-    lineHeight: 23,
+    textAlign: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        lineHeight: 23,
+        fontWeight: '500',
+      },
+    }),
   },
 });

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Platform,
 } from 'react-native';
 import React, {Dispatch, FC, SetStateAction} from 'react';
 import {
@@ -161,9 +162,16 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     justifyContent: 'center',
-    fontWeight: '700',
     fontSize: 18,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
   },
   contentView: {
     borderBottomWidth: 7,

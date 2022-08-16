@@ -175,7 +175,15 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <Text style={styles.errorText}>비밀번호를 입력해주세요</Text>
         )}
         <View style={styles.loginBtn}>
-          <Button onPress={handleSubmit(doSignIn)} text="로그인"></Button>
+          <Button onPress={handleSubmit(doSignIn)}>
+            <Text
+              style={{
+                color: AppStyles.color.white,
+                fontFamily: 'NotoSansKR-Medium',
+              }}>
+              로그인
+            </Text>
+          </Button>
         </View>
         <View style={styles.texts}>
           <Text
@@ -192,17 +200,14 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             비밀번호 찾기
           </Text>
         </View>
-        <Modal isVisible={modalVisible}>
-          <SafeAreaView style={styles.modal}>
-            <Text>
-              로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시
-              입력해 주세요.
-            </Text>
-            <TouchableOpacity style={styles.modalBtn} onPress={toggleModal}>
-              <Text style={{color: AppStyles.color.white}}>확인</Text>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </Modal>
+        <InfoModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          title={'로그인 정보 오류'}
+          subTitle={
+            '로그인 정보가 일치하지 않습니다. 아이디나 비밀번호를 확인 후 다시 입력해 주세요.'
+          }
+        />
         <InfoModal
           modalVisible={findIdVisible}
           setModalVisible={setFindIdVisible}
@@ -239,20 +244,21 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: 270,
     borderBottomWidth: 0.7,
-    height: Platform.OS === 'android' ? 70 : 40,
+    height: 40,
     borderBottomColor: AppStyles.color.black,
   },
   textInput: {
     fontSize: 13,
-    lineHeight: 16,
     fontWeight: '400',
     width: 270,
+    height: 40,
     ...Platform.select({
-      ios: {
-        height: 40,
+      ios: {},
+      android: {
+        lineHeight: 16,
+        fontFamily: 'NotoSansKR-Medium',
       },
     }),
-    borderBottomColor: AppStyles.color.border,
     color: AppStyles.color.black,
   },
   loginBtn: {
@@ -290,12 +296,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: AppStyles.color.pink,
     paddingTop: 3.66,
+    fontFamily: 'NotoSansKR-Medium',
   },
   authText: {
     fontSize: 13,
     fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
+    lineHeight: 16,
+    fontFamily: 'NotoSansKR-Medium',
   },
   bar: {
     height: '100%',

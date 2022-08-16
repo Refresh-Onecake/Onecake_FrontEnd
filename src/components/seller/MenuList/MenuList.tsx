@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
     color: AppStyles.color.subTitle,
     fontSize: AppStyles.font.middle,
   },

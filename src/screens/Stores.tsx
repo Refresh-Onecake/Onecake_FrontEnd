@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
@@ -108,8 +109,8 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <View>
             <Image
               style={{
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
               }}
               source={require('../asset/cake.png')}
             />
@@ -149,7 +150,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    marginTop: 20,
     color: AppStyles.color.subTitle,
-    fontSize: AppStyles.font.large,
+    fontSize: AppStyles.font.middle,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
 });

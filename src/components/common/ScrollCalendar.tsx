@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, TextStyle, View} from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {CalendarList, DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
@@ -77,9 +77,18 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
         theme={{
           monthTextColor: AppStyles.color.hotPink,
           textMonthFontSize: 18,
-          textMonthFontWeight: '500',
-          textDayFontSize: 18,
-          textDayFontWeight: '500',
+          ...Platform.select({
+            android: {
+              textMonthFontFamily: 'NotoSansKR-Medium',
+              textDayFontFamily: 'NotoSansKR-Medium',
+              textDayFontSize: 14,
+            },
+            ios: {
+              textDayFontSize: 18,
+              textDayFontWeight: '500',
+              textMonthFontWeight: '500',
+            },
+          }),
           todayTextColor: AppStyles.color.hotPink,
           'stylesheet.calendar.main': {
             dayContainer: {

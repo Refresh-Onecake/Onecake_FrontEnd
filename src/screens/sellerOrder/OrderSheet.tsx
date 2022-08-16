@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, TextInput} from 'react-native';
+import {Image, StyleSheet, Text, View, TextInput, Platform} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {
@@ -154,15 +154,30 @@ const styles = StyleSheet.create({
     paddingBottom: 15.5,
   },
   title: {
-    fontWeight: '400',
     fontSize: 15,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   text: {
-    fontWeight: '500',
     fontSize: 13,
     color: '#989898',
     lineHeight: 22,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   img: {
     marginTop: 14,
@@ -181,18 +196,39 @@ const styles = StyleSheet.create({
     paddingBottom: 11.49,
     paddingLeft: 11.09,
     backgroundColor: AppStyles.color.SelectImage,
+    ...Platform.select({
+      android: {
+        height: 100,
+      },
+    }),
   },
   memoTitle: {
-    fontWeight: '500',
     fontSize: 12,
-    lineHeight: 14,
     color: AppStyles.color.black,
     opacity: 0.5,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+        lineHeight: 14,
+      },
+    }),
   },
   memoTextInput: {
     color: AppStyles.color.black,
     fontSize: 17,
     lineHeight: 20,
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        height: 50,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

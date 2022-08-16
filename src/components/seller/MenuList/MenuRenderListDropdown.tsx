@@ -155,12 +155,20 @@ const styles = StyleSheet.create({
   },
   img: {
     width: 17,
-    height: 17,
+    height: 18,
   },
   text: {
-    fontWeight: '500',
     flex: 1,
     fontSize: 15,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 17,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

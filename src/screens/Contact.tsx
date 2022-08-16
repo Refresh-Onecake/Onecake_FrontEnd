@@ -1,6 +1,7 @@
 import {
   Image,
   Linking,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -93,6 +94,12 @@ const styles = StyleSheet.create({
   title: {
     color: AppStyles.color.subTitle,
     fontSize: AppStyles.font.middle,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
   btnWrap: {
     width: 270,

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {QueryClient, useQuery, useQueryClient} from 'react-query';
@@ -114,16 +114,35 @@ export const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 14,
     marginTop: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
   headerText: {
     color: AppStyles.color.hotPink,
     fontSize: 15,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   week: {
     flexDirection: 'row',
@@ -135,9 +154,16 @@ export const styles = StyleSheet.create({
   },
   weekText: {
     fontSize: 13,
-    fontWeight: '400',
     color: 'rgba(60,60,67,0.3)',
     letterSpacing: -0.078,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   contentContainer: {
     flex: 1,

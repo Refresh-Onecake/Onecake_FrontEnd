@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ListRenderItemInfo,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -78,9 +79,18 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 35,
     marginLeft: 16,
-    fontWeight: '800',
+
     color: AppStyles.color.black,
     fontSize: 19,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+        lineHeight: 25,
+      },
+      ios: {
+        fontWeight: '800',
+      },
+    }),
   },
   image: {
     width: 320,

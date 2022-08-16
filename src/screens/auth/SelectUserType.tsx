@@ -44,7 +44,13 @@ export const SelectUserType = ({
   return (
     <Fragment>
       <SafeAreaView style={styles.wrapper}>
-        <Text style={{fontSize: 18, fontWeight: '800', marginBottom: 48}}>
+        <Text
+          style={{
+            fontFamily: 'NotoSansKR-Bold',
+            fontSize: 18,
+            marginBottom: 48,
+            color: 'black',
+          }}>
           사용자 유형을 선택해주세요.
         </Text>
         <View>
@@ -86,6 +92,12 @@ export const SelectUserType = ({
               color: AppStyles.color.white,
               fontSize: 17,
               fontWeight: '600',
+              ...Platform.select({
+                android: {
+                  fontFamily: 'NotoSansKR-Medium',
+                  marginTop: 3,
+                },
+              }),
             }}>
             선택하기
           </Text>
@@ -127,13 +139,13 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
       },
       android: {
-        elevation: 10,
+        elevation: 5,
       },
     }),
   },
   imgShape: {
-    width: 132,
-    height: 132,
+    width: 125,
+    height: 125,
     borderRadius: 100,
     overflow: 'hidden',
   },
@@ -152,6 +164,8 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 1 : -8,
   },
   btnText: {
+    fontFamily: 'NotoSansKR-Medium',
+    color: AppStyles.color.black,
     paddingTop: 9,
     paddingBottom: 11,
     fontWeight: '600',
@@ -162,8 +176,13 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: 0,
-    justifyContent: 'center',
     height: 40,
+    ...Platform.select({
+      android: {height: 70},
+      ios: {
+        justifyContent: 'center',
+      },
+    }),
     alignItems: 'center',
     backgroundColor: AppStyles.color.hotPink,
   },

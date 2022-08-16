@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import SignIn from '../auth/SignIn';
@@ -156,7 +156,12 @@ export const StackNavigator = () => {
 export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   headerTitleContainer: {
     flex: 1,

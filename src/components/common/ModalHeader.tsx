@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {FC, SetStateAction} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
@@ -38,9 +45,16 @@ const styles = StyleSheet.create({
   text: {
     flexGrow: 1,
     textAlign: 'center',
-    fontWeight: '600',
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
 });

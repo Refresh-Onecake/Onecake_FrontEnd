@@ -1,5 +1,17 @@
 //prettier-ignore
-import {Alert, Image, Linking, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Linking,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Platform,
+} from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -363,7 +375,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkNameIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -401,7 +413,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkIdIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -444,7 +456,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           onPress={() => setPasswdIcon(!passwdIcon)}>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 passwdIcon
                                   ? require('../../asset/visible_active.png')
@@ -497,7 +509,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           }>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 confirmPasswdIcon
                                   ? require('../../asset/visible_active.png')
@@ -577,7 +589,15 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                     style={{
                       color: AppStyles.color.white,
                       fontSize: 11,
-                      fontWeight: '500',
+                      ...Platform.select({
+                        android: {
+                          fontFamily: 'NotoSansKR-Medium',
+                          lineHeight: 13,
+                        },
+                        ios: {
+                          fontWeight: '500',
+                        },
+                      }),
                     }}>
                     인증 받기
                   </Text>
@@ -757,7 +777,14 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
               style={{
                 color: AppStyles.color.white,
                 fontSize: 15,
-                fontWeight: '500',
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'NotoSansKR-Medium',
+                  },
+                  ios: {
+                    fontWeight: '500',
+                  },
+                }),
               }}>
               닫기
             </Text>
@@ -787,25 +814,48 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   h1: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
     marginBottom: 8.65,
-    fontWeight: '700',
     fontSize: 23,
     lineHeight: 28,
     color: AppStyles.color.black,
   },
   h2: {
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '500'},
+    }),
     fontSize: 17,
     lineHeight: 22,
     color: AppStyles.color.black,
   },
   h3: {
-    fontWeight: '500',
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.gray,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '500'},
+    }),
   },
   subText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
     color: AppStyles.color.darkGray,
     fontWeight: '500',
     fontSize: 14,
@@ -823,26 +873,47 @@ const styles = StyleSheet.create({
   },
   inputFlex: {
     flexDirection: 'row',
-    height: 40,
+    height: 35,
   },
   inputText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
     fontSize: 12,
     fontWeight: '500',
     color: AppStyles.color.black,
   },
   textInput: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 20,
+      },
+      ios: {
+        fontWeight: '500',
+        fontStyle: 'normal',
+      },
+    }),
     fontSize: 15,
     flex: 1,
     color: AppStyles.color.black,
-    fontStyle: 'normal',
-    fontWeight: '500',
-    paddingLeft: 0,
   },
   errorText: {
     fontSize: 12,
     color: AppStyles.color.pink,
     fontWeight: '500',
     paddingTop: 5.36,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
   },
   termHeader: {
     flexDirection: 'row',
@@ -864,9 +935,14 @@ const styles = StyleSheet.create({
     // borderRadius: 12,
   },
   submitBtnText: {
-    fontWeight: '700',
     fontSize: 15,
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {fontWeight: '700'},
+    }),
   },
   // 문자 인증 관련
   phoneNumberInputWrap: {
@@ -886,6 +962,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   dropdownText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 16,
+      },
+      ios: {},
+    }),
     color: AppStyles.color.black,
     opacity: 0.5,
     fontWeight: '500',

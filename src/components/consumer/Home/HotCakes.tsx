@@ -8,6 +8,7 @@ import {
   ListRenderItemInfo,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import React, {useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
@@ -61,15 +62,16 @@ export const HotCakes = () => {
 
   return (
     <>
-      <TouchableOpacity style={{zIndex: 30}}>
+      <TouchableOpacity
+        style={{zIndex: 30}}
+        onPress={() => setLocationVisible(true)}>
         <Text style={styles.location} onPress={() => setLocationVisible(true)}>
           마포구
-          <Icon
-            name="chevron-down"
-            size={25}
-            color="#D9D9D9"
-            onPress={() => setLocationVisible(true)}
-          />
+          <Icon name="chevron-down" size={25} color="#D9D9D9" />
+          {/* <Image
+            style={{width: 15, height: 10}}
+            source={require('../../../asset/down.png')}
+          /> */}
         </Text>
       </TouchableOpacity>
       <View style={styles.text}>
@@ -88,6 +90,13 @@ export const HotCakes = () => {
         <Text>index</Text>
       </View> */}
       <FlatList data={data} renderItem={renderItem} horizontal />
+      <View
+        style={{
+          backgroundColor: AppStyles.color.lightGray,
+          height: 10,
+          borderBottomColor: '#C1C1C1',
+          borderBottomWidth: 1,
+        }}></View>
     </>
   );
 };
@@ -98,8 +107,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     marginTop: 44,
-    fontWeight: '800',
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+        // lineHeight: 20,
+      },
+      ios: {
+        fontWeight: '800',
+      },
+    }),
   },
   image: {
     height: 446,
@@ -127,21 +144,42 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.color.black,
   },
   text: {
-    top: 310,
+    top: 370,
     position: 'absolute',
     marginLeft: 16,
     zIndex: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
   mainMent: {
     color: AppStyles.color.white,
-    fontWeight: '800',
     fontSize: 25,
     marginBottom: 8,
     zIndex: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '800',
+      },
+    }),
   },
   subMent: {
     color: AppStyles.color.white,
     fontSize: 13,
     zIndex: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Regular',
+        lineHeight: 16,
+      },
+      ios: {},
+    }),
   },
 });

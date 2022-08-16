@@ -1,6 +1,7 @@
 import {
   AppState,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -120,8 +121,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   btnText: {
-    fontWeight: '600',
     fontSize: 11,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
 });

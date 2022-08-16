@@ -1,4 +1,11 @@
-import {Image, ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ListRenderItemInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {FC} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {useQuery, useQueryClient} from 'react-query';
@@ -54,9 +61,7 @@ export const Review: FC = () => {
             <Text style={styles.history}>{review.timeHistory}</Text>
           </View>
         </View>
-        <Text style={{fontSize: AppStyles.font.middle, padding: 15}}>
-          {review.content}
-        </Text>
+        <Text style={styles.content}>{review.content}</Text>
       </View>
     );
   };
@@ -75,17 +80,37 @@ export const Review: FC = () => {
 
 const styles = StyleSheet.create({
   reviewNum: {
+    color: AppStyles.color.black,
     padding: 20,
-    fontWeight: '800',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Bold',
+        lineHeight: 16,
+      },
+      ios: {fontWeight: '800'},
+    }),
   },
   userName: {
     color: AppStyles.color.black,
     fontSize: AppStyles.font.middle,
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 18,
+      },
+      ios: {fontWeight: '500'},
+    }),
   },
   history: {
     color: AppStyles.color.midGray,
     fontSize: AppStyles.font.small,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Regular',
+        lineHeight: 16,
+      },
+      ios: {},
+    }),
   },
   image: {
     width: 36,
@@ -95,13 +120,24 @@ const styles = StyleSheet.create({
   wrapper: {
     borderColor: AppStyles.color.border,
     borderWidth: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   infoWrapper: {
     flexDirection: 'row',
     paddingHorizontal: 17,
     paddingTop: 17,
+  },
+  content: {
+    fontSize: 14,
+    padding: 15,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 20,
+      },
+      ios: {},
+    }),
   },
 });

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import {useRecoilState} from 'recoil';
@@ -34,7 +35,18 @@ export const TabView = () => {
                 ? styles.seletedIndicator
                 : styles.unSelectedIndicator,
             ]}>
-            <Text>{val}</Text>
+            <Text
+              style={{
+                fontSize: 13,
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'NotoSansKR-Medium',
+                  },
+                  ios: {},
+                }),
+              }}>
+              {val}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -54,14 +66,14 @@ export const TabView = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
-    backgroundColor: AppStyles.color.white,
+    backgroundColor: '#F4F4F4',
   },
   indicator: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: AppStyles.color.white,
     width: +TabIndicatorWidth,
-    marginTop: 10,
+    marginTop: 7,
     height: 47,
   },
   selectedView: {

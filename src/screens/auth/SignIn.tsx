@@ -125,7 +125,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             source={require('../../asset/login_title.png')}
           />
         </View>
-        <View style={[styles.inputWrapper, {marginBottom: 15}]}>
+        <View style={styles.inputWrapper}>
           <Controller
             control={control}
             rules={{

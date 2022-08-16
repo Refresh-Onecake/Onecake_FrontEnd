@@ -55,7 +55,7 @@ export const KeywordCakes = () => {
               ...Platform.select({
                 android: {
                   fontFamily: 'NotoSansKR-Medium',
-                  lineHeight: 16,
+                  lineHeight: 25,
                 },
                 ios: {},
               }),

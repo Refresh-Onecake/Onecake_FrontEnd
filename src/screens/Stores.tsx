@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
@@ -152,5 +153,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: AppStyles.color.subTitle,
     fontSize: AppStyles.font.large,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {},
+    }),
   },
 });

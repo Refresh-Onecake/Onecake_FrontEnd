@@ -66,7 +66,7 @@ export const TabView = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
-    backgroundColor: AppStyles.color.white,
+    backgroundColor: '#F4F4F4',
   },
   indicator: {
     alignItems: 'center',

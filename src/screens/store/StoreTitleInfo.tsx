@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: '100%',
     ...Platform.select({
       android: {
-        height: '15%',
+        paddingTop: 140,
       },
       ios: {
         paddingTop: 30,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   titleInfo: {
-    top: '30%',
+    top: 250,
     position: 'absolute',
     width: 370,
     height: 150,
@@ -290,8 +290,7 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 5,
-        height: 150,
-        top: '30%',
+        // top: '30%',
       },
     }),
   },
@@ -305,8 +304,14 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: AppStyles.font.large,
-    fontWeight: '600',
     alignSelf: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+        lineHeight: 30,
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   speaker: {
     height: 250,

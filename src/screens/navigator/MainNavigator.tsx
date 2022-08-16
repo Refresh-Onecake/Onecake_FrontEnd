@@ -67,7 +67,7 @@ export const MainNavigator = () => {
           tabBarIcon: ({focused}) => {
             return (
               <Image
-                style={{width: 21, height: 21}}
+                style={{width: 23.5, height: 23.5}}
                 source={
                   focused
                     ? require('../../asset/store_active.png')

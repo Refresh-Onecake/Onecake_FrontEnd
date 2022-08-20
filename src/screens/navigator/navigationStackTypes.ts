@@ -26,4 +26,5 @@ export type RootStackParamList = {
   ReSign: undefined;
   MenuImage: undefined;
   MenuImageDetails: undefined;
+  Setting: undefined;
 };

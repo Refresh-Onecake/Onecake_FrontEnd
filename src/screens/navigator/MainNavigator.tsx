@@ -144,8 +144,6 @@ export const MainNavigator = () => {
               />
             );
           },
-          headerShown: true,
-          headerTitle: '설정',
         }}
       />
     </Tab.Navigator>

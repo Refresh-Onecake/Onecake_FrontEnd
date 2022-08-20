@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, Platform, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-
 import SignIn from '../auth/SignIn';
 import {SignUp, SelectUserType, FindPwd} from '../auth';
 import {StoreDetail} from '../store';
@@ -12,12 +11,13 @@ import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
 import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
-import {ReSign} from '../../components/seller/SettingSeller';
+import {ReSign} from '../../components/common/Setting/ReSign';
 import OrderDetail from '../../components/consumer/OrderDetail';
 import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
 import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
+import {Setting} from '../../components/common/Setting/Setting';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -57,6 +57,18 @@ export const StackNavigator = () => {
       <Stack.Screen name="EnterComplete" component={EnterComplete} />
       <Stack.Screen name="EnterStart" component={EnterStart} />
       <Stack.Screen name="StoreDetail" component={StoreDetail} />
+      <Stack.Screen
+        name="Setting"
+        component={Setting}
+        options={{
+          headerShown: true,
+          headerTitle: '설정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
       <Stack.Screen
         name="EnterMenu"
         component={EnterMenu}

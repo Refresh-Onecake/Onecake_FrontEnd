@@ -1,20 +1,9 @@
-import {
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {Fragment, useEffect} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
-import {Button} from '../../common/Button';
+import {Button} from '../Button';
 import {commonStyles} from '../../../styles/commonStyles';
-import {
-  useAsync,
-  useGetMemberInfoQuery,
-  useLogoutAndReSignQuery,
-} from '../../../hooks';
+import {useGetMemberInfoQuery, useLogoutAndReSignQuery} from '../../../hooks';
 import {fetchResign} from '../../../services';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -55,21 +44,36 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     backgroundColor: AppStyles.color.white,
+    marginTop: 1,
   },
   title: {
-    fontWeight: '600',
     fontSize: 15,
     color: AppStyles.color.black,
     paddingTop: 21,
     paddingLeft: 15,
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   subTitle: {
     paddingTop: 14,
     paddingLeft: 15,
     paddingRight: 28,
     fontSize: 14.5,
-    fontWeight: '400',
     color: '#3E3E3E',
+    ...Platform.select({
+      android: {
+        fontFamily: 'NotoSansKR-Medium',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   view: {
     flexDirection: 'row',

@@ -38,11 +38,11 @@ export default class Mypage extends Component {
           {/* <Text>{data?.num}건</Text> */}
           <Text style={styles.count}>182건</Text>
         </View>
-        <View>
+        <View style={styles.countWrapper}>
           <Text style={styles.countTitle}>이번 달 판매 주문 수</Text>
           <Text style={styles.count}>182건</Text>
         </View>
-        <View>
+        <View style={styles.countWrapper}>
           <Text style={styles.countTitle}>지난 달 판매 주문 수</Text>
           <Text style={styles.count}>182건</Text>
         </View>
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     marginTop: 11,
-    marginBottom: 25,
     marginLeft: 15,
     fontSize: 14,
     color: '#7D7D7D',
@@ -131,6 +130,14 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  countWrapper: {
+    height: 100,
+    width: '90%',
+    marginLeft: 15,
+    borderBottomColor: AppStyles.color.border,
+    borderBottomWidth: 1,
+    paddingVertical: 30,
+  },
   line: {
     height: 4,
     width: '100%',
@@ -139,7 +146,7 @@ const styles = StyleSheet.create({
   },
   countTitle: {
     color: AppStyles.color.black,
-    marginLeft: 15,
+    marginBottom: 13,
     fontSize: 15,
     ...Platform.select({
       ios: {},
@@ -150,7 +157,6 @@ const styles = StyleSheet.create({
     }),
   },
   count: {
-    marginLeft: 15,
     fontSize: 13,
     color: AppStyles.color.hotPink,
     ...Platform.select({

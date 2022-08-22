@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAsync, useLogoutAndReSignQuery} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys} from '../enum';
-import {Setting} from '../components/common/Setting';
+import SellerMypage from '../components/seller/SellerMypage';
 import {fetchLogout} from '../services';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -32,27 +32,6 @@ const MyPage = () => {
   });
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
-
-  const logout = useCallback(() => {
-    Alert.alert(
-      '로그아웃하기',
-      '로그아웃하시겠어요?',
-      [
-        {
-          text: '취소하기',
-        },
-        {
-          text: '로그아웃하기',
-          onPress: () => {
-            logoutMutation.mutate();
-          },
-        },
-      ],
-      {cancelable: false},
-    );
-  }, []);
-
   return (
     <SafeAreaView style={styles.view}>
       <View>
@@ -67,7 +46,7 @@ const MyPage = () => {
           <Icon name="cog" size={25} color="grey" />
         </TouchableOpacity>
       </View>
-      {role === appKeys.seller ? <View></View> : <View></View>}
+      {role === appKeys.seller ? <SellerMypage /> : <View></View>}
     </SafeAreaView>
   );
 };

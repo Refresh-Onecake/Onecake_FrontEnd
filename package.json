@@ -64,11 +64,6 @@
     "react-test-renderer": "17.0.2",
     "typescript": "^4.4.4"
   },
-  "rnpm": {
-    "assets": [
-      "./asset/fonts/"
-    ]
-  },
   "resolutions": {
     "@types/react": "^17"
   },

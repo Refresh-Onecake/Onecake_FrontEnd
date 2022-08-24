@@ -16,7 +16,7 @@ LocaleConfig.locales['ko'] = {
   //prettier-ignore
   dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
   //prettier-ignore
-  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesShort: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
   today: '오늘',
 };
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -79,9 +79,9 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
           textMonthFontSize: 18,
           ...Platform.select({
             android: {
-              textMonthFontFamily: 'NotoSansKR-Medium',
-              textDayFontFamily: 'NotoSansKR-Medium',
-              textDayFontSize: 14,
+              textMonthFontFamily: 'AppleSDGothicNeo-Bold',
+              textDayFontFamily: 'AppleSDGothicNeo-Bold',
+              textDayFontSize: 18,
             },
             ios: {
               textDayFontSize: 18,
@@ -90,6 +90,8 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
             },
           }),
           todayTextColor: AppStyles.color.hotPink,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           'stylesheet.calendar.main': {
             dayContainer: {
               borderTopColor: AppStyles.color.border,

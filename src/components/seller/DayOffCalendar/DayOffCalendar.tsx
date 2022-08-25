@@ -1,4 +1,11 @@
-import {Image, Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Calendar, DateData} from 'react-native-calendars';
 import moment, {Moment} from 'moment';
@@ -13,23 +20,78 @@ type DayOffCalendarProps = {
   handleOnDayPress: (day: DateData) => void;
 };
 
+type onPressCalendarArrowFunc = (arrow: 'left' | 'right') => void;
+
 export const DayOffCalendar = ({
   markedDates,
   handleOnDayPress,
 }: DayOffCalendarProps) => {
+  const [curYear, setCurYear] = useState(moment().year());
+  const [curMonth, setCurMonth] = useState(moment().month());
+  const [curDay, setCurDay] = useState(
+    moment().format('YYYY-MM-DD').toString(),
+  );
+  const onPressCalendarArrow: onPressCalendarArrowFunc = useCallback(
+    arrow => {
+      if (arrow === 'left') {
+        curMonth - 1 === 0
+          ? (setCurYear(() => curYear - 1), setCurMonth(12))
+          : setCurMonth(() => curMonth - 1);
+      } else {
+        curMonth + 1 === 13
+          ? (setCurYear(() => curYear + 1), setCurMonth(1))
+          : setCurMonth(() => curMonth + 1);
+      }
+      const curTmpDay = `${curYear}-${
+        curMonth < 10 ? '0' + curMonth.toString() : curMonth
+      }-01`;
+      setCurDay(curTmpDay);
+    },
+    [curMonth, curYear],
+  );
+
   return (
     <View style={styles.view}>
       <View style={styles.headerView}>
-        <Text style={[styles.text, {paddingTop: 4}]}>날짜</Text>
+        <Text style={[styles.text, {paddingTop: 4, paddingLeft: 9}]}>날짜</Text>
         <View style={styles.dateTextView}>
           <Text style={styles.dateText}>{moment().format('YYYY.MM.DD')}</Text>
         </View>
       </View>
       <View style={{paddingHorizontal: 13, paddingTop: 1}}>
         <Calendar
+          initialDate={curDay}
           onDayPress={handleOnDayPress}
           markedDates={markedDates}
+          monthFormat={'yyyy년 MM월'}
           hideExtraDays={true}
+          hideArrows={true}
+          renderHeader={() => {
+            return (
+              <View style={styles.calendarHeader}>
+                <Text style={styles.text}>
+                  {curYear}년 {curMonth}월
+                </Text>
+                <View style={styles.arrowView}>
+                  <TouchableOpacity
+                    style={{paddingRight: 22}}
+                    onPress={() => onPressCalendarArrow('left')}>
+                    <Image
+                      source={require('../../../asset/arrowLeft.png')}
+                      style={styles.arrow}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => onPressCalendarArrow('right')}>
+                    <Image
+                      source={require('../../../asset/arrowRight.png')}
+                      style={styles.arrow}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            );
+          }}
           theme={{
             calendarBackground: AppStyles.color.backgroundGray,
             dayTextColor: AppStyles.color.black,
@@ -66,20 +128,6 @@ export const DayOffCalendar = ({
               },
             },
           }}
-          monthFormat={'yyyy년 MM월'}
-          renderArrow={direction =>
-            direction === 'left' ? (
-              <Image
-                style={styles.arrow}
-                source={require('../../../asset/arrowLeft.png')}
-              />
-            ) : (
-              <Image
-                style={styles.arrow}
-                source={require('../../../asset/arrowRight.png')}
-              />
-            )
-          }
         />
       </View>
     </View>
@@ -119,8 +167,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   arrow: {
-    width: 13,
-    height: 13,
+    width: 12,
+    height: 12,
     resizeMode: 'contain',
+  },
+  calendarHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingBottom: 8,
+  },
+  arrowView: {
+    flexDirection: 'row',
   },
 });

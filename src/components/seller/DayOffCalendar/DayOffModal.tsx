@@ -23,6 +23,7 @@ export const DayOffModal = () => {
       {},
     );
     setMarkedDates(obj);
+    console.log(selectedDate);
   }, [selectedDate]);
 
   const handleOnDayPress = useCallback(
@@ -35,6 +36,7 @@ export const DayOffModal = () => {
     },
     [selectedDate],
   );
+
   return (
     <View style={styles.view}>
       <View style={styles.headerView}>

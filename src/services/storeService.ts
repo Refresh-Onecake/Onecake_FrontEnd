@@ -26,6 +26,7 @@ export type IStoreInfo = {
 };
 
 export type IReviews = {
+  userName: string;
   reviewNum: number;
   reviews: [
     {
@@ -67,7 +68,6 @@ export const getCakeList = async (storeId: number) => {
 
 export const getStoreInfo = async (storeId: number) => {
   const token = await AsyncStorage.getItem(appKeys.accessTokenKey);
-  console.log('shsohso');
   if (token) {
     const response = await fetch(`${baseURL}${storeId}/storeInfo`, {
       method: 'GET',

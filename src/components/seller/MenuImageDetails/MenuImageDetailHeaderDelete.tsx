@@ -21,7 +21,6 @@ export const MenuImageDetailHeaderDelete = () => {
   );
 
   const onClickDelete = () => {
-    console.log('클릭됨');
     menuImageDetailDeleteMutation.mutate();
   };
   return (

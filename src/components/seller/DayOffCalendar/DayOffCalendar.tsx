@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import {Calendar, DateData} from 'react-native-calendars';
-import moment, {Moment} from 'moment';
+import moment, {min, Moment} from 'moment';
 import {AppStyles} from '../../../styles/AppStyles';
 
 type DayOffCalendarProps = {
@@ -20,36 +20,43 @@ type DayOffCalendarProps = {
   handleOnDayPress: (day: DateData) => void;
 };
 
-type onPressCalendarArrowFunc = (arrow: 'left' | 'right') => void;
+type Action = {type: 'INCREASE'} | {type: 'DECREASE'};
+
+const onPressCalendarArrowReducer = (
+  currentDay: string,
+  action: Action,
+): string => {
+  const year = parseInt(currentDay.substring(0, 4));
+  const month = parseInt(currentDay.substring(5, 7));
+  switch (action.type) {
+    case 'DECREASE':
+      return month - 1 === 0
+        ? `${year - 1}-12-01`
+        : `${year}-${
+            month - 1 < 10 ? '0' + (month - 1).toString() : month - 1
+          }-01`;
+    case 'INCREASE':
+      return month + 1 === 13
+        ? `${year + 1}-01-01`
+        : `${year}-${
+            month + 1 < 10 ? '0' + (month + 1).toString() : month + 1
+          }-01`;
+    default:
+      throw new Error('Unhandled action');
+  }
+};
 
 export const DayOffCalendar = ({
   markedDates,
   handleOnDayPress,
 }: DayOffCalendarProps) => {
-  const [curYear, setCurYear] = useState(moment().year());
-  const [curMonth, setCurMonth] = useState(moment().month());
-  const [curDay, setCurDay] = useState(
-    moment().format('YYYY-MM-DD').toString(),
+  const [currentDay, dispatch] = useReducer(
+    onPressCalendarArrowReducer,
+    moment().format('YYYY-MM-DD'),
   );
-  const onPressCalendarArrow: onPressCalendarArrowFunc = useCallback(
-    arrow => {
-      if (arrow === 'left') {
-        curMonth - 1 === 0
-          ? (setCurYear(() => curYear - 1), setCurMonth(12))
-          : setCurMonth(() => curMonth - 1);
-      } else {
-        curMonth + 1 === 13
-          ? (setCurYear(() => curYear + 1), setCurMonth(1))
-          : setCurMonth(() => curMonth + 1);
-      }
-      const curTmpDay = `${curYear}-${
-        curMonth < 10 ? '0' + curMonth.toString() : curMonth
-      }-01`;
-      setCurDay(curTmpDay);
-    },
-    [curMonth, curYear],
-  );
-
+  useEffect(() => console.log(currentDay), [currentDay]);
+  const onIncreaseCurrentMonth = () => dispatch({type: 'INCREASE'});
+  const onDecreaseCurrentMonth = () => dispatch({type: 'DECREASE'});
   return (
     <View style={styles.view}>
       <View style={styles.headerView}>
@@ -60,7 +67,7 @@ export const DayOffCalendar = ({
       </View>
       <View style={{paddingHorizontal: 13, paddingTop: 1}}>
         <Calendar
-          initialDate={curDay}
+          initialDate={currentDay}
           onDayPress={handleOnDayPress}
           markedDates={markedDates}
           monthFormat={'yyyy년 MM월'}
@@ -70,19 +77,20 @@ export const DayOffCalendar = ({
             return (
               <View style={styles.calendarHeader}>
                 <Text style={styles.text}>
-                  {curYear}년 {curMonth}월
+                  {`${currentDay.substring(0, 4)}년 ${parseInt(
+                    currentDay.substring(5, 7),
+                  )}일`}
                 </Text>
                 <View style={styles.arrowView}>
                   <TouchableOpacity
                     style={{paddingRight: 22}}
-                    onPress={() => onPressCalendarArrow('left')}>
+                    onPress={onDecreaseCurrentMonth}>
                     <Image
                       source={require('../../../asset/arrowLeft.png')}
                       style={styles.arrow}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => onPressCalendarArrow('right')}>
+                  <TouchableOpacity onPress={onIncreaseCurrentMonth}>
                     <Image
                       source={require('../../../asset/arrowRight.png')}
                       style={styles.arrow}

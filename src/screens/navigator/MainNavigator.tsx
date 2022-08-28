@@ -97,6 +97,7 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
+          headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 15,
             fontWeight: Platform.OS === 'ios' ? '600' : '800',

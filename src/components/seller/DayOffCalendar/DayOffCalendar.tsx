@@ -1,14 +1,7 @@
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useReducer} from 'react';
 import {Calendar, DateData} from 'react-native-calendars';
-import moment, {min, Moment} from 'moment';
+import moment from 'moment';
 import {AppStyles} from '../../../styles/AppStyles';
 
 type DayOffCalendarProps = {
@@ -21,7 +14,6 @@ type DayOffCalendarProps = {
 };
 
 type Action = {type: 'INCREASE'} | {type: 'DECREASE'};
-
 const onPressCalendarArrowReducer = (
   currentDay: string,
   action: Action,
@@ -54,7 +46,6 @@ export const DayOffCalendar = ({
     onPressCalendarArrowReducer,
     moment().format('YYYY-MM-DD'),
   );
-  useEffect(() => console.log(currentDay), [currentDay]);
   const onIncreaseCurrentMonth = () => dispatch({type: 'INCREASE'});
   const onDecreaseCurrentMonth = () => dispatch({type: 'DECREASE'});
   return (

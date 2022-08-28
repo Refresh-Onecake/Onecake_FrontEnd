@@ -25,7 +25,6 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
   index,
   dataLength,
 }) => {
-  console.log(item.orderHistoryId);
   return (
     <View
       style={[

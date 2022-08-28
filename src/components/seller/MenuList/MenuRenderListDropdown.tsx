@@ -81,8 +81,6 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
 
   const onClickEditMenu = () => {
     refetch();
-    console.log(data);
-
     setVisible(false);
     navigation.navigate('EnterMenu');
   };

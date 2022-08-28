@@ -7,10 +7,10 @@ import Stores from '../Stores';
 import Order from '../Order';
 import Contact from '../Contact';
 import MyPage from '../MyPage';
-import {AppStyles} from '../../styles/AppStyles';
 import {useAsync} from '../../hooks';
 import {appKeys} from '../../enum';
 import {getStringValueFromAsyncStorage} from '../../utils';
+import {AppStyles} from '../../styles/AppStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +68,15 @@ export const MainNavigator = () => {
               />
             );
           },
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -88,6 +97,15 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -126,6 +144,16 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: '주문 상담',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -146,6 +174,16 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: '설정',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
     </Tab.Navigator>

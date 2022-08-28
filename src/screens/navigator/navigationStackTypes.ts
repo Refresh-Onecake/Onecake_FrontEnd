@@ -26,4 +26,6 @@ export type RootStackParamList = {
   ReSign: undefined;
   MenuImage: undefined;
   MenuImageDetails: undefined;
+  // 설정 관련
+  ProfileEdit: undefined;
 };

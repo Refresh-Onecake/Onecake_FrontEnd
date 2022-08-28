@@ -12,7 +12,6 @@ import {AppStyles} from '../../styles/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import {styles as EnterStoreStyle} from './EnterStore';
-import {ProgressBar} from '../../components';
 export const EnterStart = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {

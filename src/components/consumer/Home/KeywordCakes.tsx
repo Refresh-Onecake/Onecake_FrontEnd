@@ -51,11 +51,11 @@ export const KeywordCakes = () => {
           <Text
             style={{
               color: AppStyles.color.lightGray,
-              textAlign: 'center',
+              alignSelf: 'center',
               ...Platform.select({
                 android: {
-                  fontFamily: 'NotoSansKR-Medium',
-                  lineHeight: 25,
+                  fontFamily: 'AppleSDGothicNeoM',
+                  lineHeight: 15,
                 },
                 ios: {},
               }),
@@ -83,8 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Bold',
-        lineHeight: 25,
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
       ios: {
         fontWeight: '800',

@@ -61,7 +61,7 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
     setOrderHistoryId(orderHistoryId);
     navigation.navigate('OrderDetail');
   };
-  
+
   return (
     <View style={styles.btnWrap}>
       {currentOrderState.toLowerCase() !== orderStatusKeys.픽업완료 ? (
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.black,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {
         fontWeight: '600',

@@ -179,7 +179,7 @@ const SignIn = ({navigation}: StackScreenProps<RootStackParamList>) => {
             <Text
               style={{
                 color: AppStyles.color.white,
-                fontFamily: 'NotoSansKR-Medium',
+                fontFamily: 'AppleSDGothicNeo-Bold',
               }}>
               로그인
             </Text>
@@ -255,11 +255,9 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 16,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
     }),
-    color: AppStyles.color.black,
   },
   loginBtn: {
     marginTop: 26,
@@ -296,15 +294,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: AppStyles.color.pink,
     paddingTop: 3.66,
-    fontFamily: 'NotoSansKR-Medium',
+    fontFamily: 'AppleSDGothicNeoM',
   },
   authText: {
     fontSize: 13,
     fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
-    lineHeight: 16,
-    fontFamily: 'NotoSansKR-Medium',
+    fontFamily: 'AppleSDGothicNeoM',
   },
   bar: {
     height: '100%',

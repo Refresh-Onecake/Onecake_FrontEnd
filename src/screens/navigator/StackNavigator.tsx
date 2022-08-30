@@ -170,7 +170,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '600'},
     }),

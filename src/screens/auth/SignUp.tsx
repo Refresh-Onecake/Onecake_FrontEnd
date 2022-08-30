@@ -36,6 +36,7 @@ import {RootStackParamList} from '../navigator';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import InfoModal from '../../components/common/InfoModal';
 
 export type IFormInputs = {
   name: string;
@@ -202,8 +203,8 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
   };
 
   //prettier-ignore
-  const {control, handleSubmit, watch, clearErrors ,formState: {errors}} = useForm<IFormInputs>({
-      defaultValues: {
+  const { control, handleSubmit, watch, clearErrors, formState: { errors } } = useForm<IFormInputs>({
+    defaultValues: {
       name: '',
       id: '',
       password: '',
@@ -277,6 +278,9 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
 
   // 회원가입 제출
   const onSubmit = (data: IFormInputs) => {
+    // if (errors.id || errors.name || errors.password || errors.confirmPasswd) {
+    //   setVisible(true);
+    // }
     console.log(data);
     if (checkedOneCakeTerm === false || checkedPrivacyTerm === false) {
       Alert.alert(
@@ -336,11 +340,19 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
     checkedPrivacyTerm && checkedOneCakeTerm ? setCheckedTermAll(true) : null;
   }, [checkedOneCakeTerm, checkedPrivacyTerm]);
 
+  const [visible, setVisible] = useState<boolean>(false);
+
   return (
     <Fragment>
       <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
       <SafeAreaView style={styles.container}>
         <ScrollView>
+          <InfoModal
+            modalVisible={visible}
+            setModalVisible={setVisible}
+            title={'입력 에러'}
+            subTitle={'입력값을 확인해주세요!'}
+          />
           <AutoFocusProvider contentContainerStyle={styles.flex}>
             {/* 회원가입 폼 컴포넌트 */}
             <View style={styles.signUpWrapper}>
@@ -385,6 +397,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                   )}
                   name="name"
                 />
+                {/* {errors.name ? setVisible(true) : setVisible(false)} */}
                 {errors.name && (
                   <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
                 )}
@@ -591,7 +604,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                       fontSize: 11,
                       ...Platform.select({
                         android: {
-                          fontFamily: 'NotoSansKR-Medium',
+                          fontFamily: 'AppleSDGothicNeoM',
                           lineHeight: 13,
                         },
                         ios: {
@@ -779,7 +792,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                 fontSize: 15,
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {
                     fontWeight: '500',
@@ -816,7 +829,7 @@ const styles = StyleSheet.create({
   h1: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
       ios: {
         fontWeight: '700',
@@ -830,7 +843,7 @@ const styles = StyleSheet.create({
   h2: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '500'},
     }),
@@ -844,7 +857,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.gray,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '500'},
     }),
@@ -852,7 +865,7 @@ const styles = StyleSheet.create({
   subText: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),
@@ -878,7 +891,7 @@ const styles = StyleSheet.create({
   inputText: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 13,
       },
       ios: {},
@@ -890,7 +903,7 @@ const styles = StyleSheet.create({
   textInput: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 20,
       },
       ios: {
@@ -909,7 +922,7 @@ const styles = StyleSheet.create({
     paddingTop: 5.36,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 13,
       },
       ios: {},
@@ -939,7 +952,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '700'},
     }),
@@ -964,7 +977,7 @@ const styles = StyleSheet.create({
   dropdownText: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 16,
       },
       ios: {},

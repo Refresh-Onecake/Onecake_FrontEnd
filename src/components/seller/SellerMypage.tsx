@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
         lineHeight: 30,
       },
     }),
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
       ios: {},
       android: {
         lineHeight: 20,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
     }),
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
       ios: {},
       android: {
         lineHeight: 25,
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
     }),
   },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       ios: {},
       android: {
         lineHeight: 16,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
     }),
   },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
       ios: {},
       android: {
         lineHeight: 20,
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
     }),
   },
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
       ios: {},
       android: {
         lineHeight: 16,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
     }),
   },

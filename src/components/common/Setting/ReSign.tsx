@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
       ios: {
         fontWeight: '600',
@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     color: '#3E3E3E',
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 25,
       },
       ios: {
         fontWeight: '400',

@@ -71,6 +71,7 @@ export const Setting = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
+                    paddingTop: 37,
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -87,6 +88,7 @@ export const Setting = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
+                    paddingTop: 37,
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -119,6 +121,7 @@ export const Setting = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
+                    paddingTop: 37,
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -135,6 +138,7 @@ export const Setting = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
+                    paddingTop: 37,
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -163,9 +167,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: AppStyles.padding.screen,
   },
   text: {
-    ...Platform.select({
-      android: {paddingBottom: 17},
-    }),
     fontSize: 14,
     color: '#1B1B1B',
   },

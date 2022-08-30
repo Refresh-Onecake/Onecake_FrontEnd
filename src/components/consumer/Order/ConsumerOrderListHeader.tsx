@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         marginTop: 20,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {
         fontWeight: '600',

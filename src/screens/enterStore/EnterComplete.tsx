@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   Title: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '700'},
     }),
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   subTitle: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '400'},
     }),

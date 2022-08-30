@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   title: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),

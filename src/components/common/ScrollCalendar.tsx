@@ -79,8 +79,8 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
           textMonthFontSize: 18,
           ...Platform.select({
             android: {
-              textMonthFontFamily: 'NotoSansKR-Medium',
-              textDayFontFamily: 'NotoSansKR-Medium',
+              textMonthFontFamily: 'AppleSDGothicNeoM',
+              textDayFontFamily: 'AppleSDGothicNeoM',
               textDayFontSize: 14,
             },
             ios: {

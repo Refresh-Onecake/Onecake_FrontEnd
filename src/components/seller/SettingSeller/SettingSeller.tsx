@@ -56,7 +56,7 @@ export const SettingSeller = () => {
             {
               ...Platform.select({
                 android: {
-                  fontFamily: 'NotoSansKR-Bold',
+                  fontFamily: 'AppleSDGothicNeo-Bold',
                 },
                 ios: {fontWeight: '700', paddingBottom: 37},
               }),
@@ -71,7 +71,7 @@ export const SettingSeller = () => {
               {
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -87,7 +87,7 @@ export const SettingSeller = () => {
               {
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -104,7 +104,7 @@ export const SettingSeller = () => {
             {
               ...Platform.select({
                 android: {
-                  fontFamily: 'NotoSansKR-Bold',
+                  fontFamily: 'AppleSDGothicNeo-Bold',
                 },
                 ios: {fontWeight: '700', paddingBottom: 37},
               }),
@@ -119,7 +119,7 @@ export const SettingSeller = () => {
               {
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),
@@ -135,7 +135,7 @@ export const SettingSeller = () => {
               {
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {fontWeight: '500', paddingBottom: 37},
                 }),

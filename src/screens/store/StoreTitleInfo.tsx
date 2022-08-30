@@ -130,7 +130,7 @@ export const StoreTitleInfo = () => {
               {
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                     lineHeight: 16,
                   },
                   ios: {},
@@ -158,7 +158,7 @@ export const StoreTitleInfo = () => {
                 {
                   ...Platform.select({
                     android: {
-                      fontFamily: 'NotoSansKR-Medium',
+                      fontFamily: 'AppleSDGothicNeoM',
                       lineHeight: 20,
                     },
                     ios: {},
@@ -171,7 +171,7 @@ export const StoreTitleInfo = () => {
               style={{
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                     lineHeight: 20,
                   },
                   ios: {},
@@ -196,7 +196,7 @@ export const StoreTitleInfo = () => {
               style={{
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                     lineHeight: 20,
                   },
                   ios: {},
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.black,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 30,
       },
       ios: {
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 30,
       },
       ios: {fontWeight: '600'},

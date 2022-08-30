@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: AppStyles.font.middle,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),

@@ -77,15 +77,13 @@ export const CityCakes = () => {
 
 const styles = StyleSheet.create({
   title: {
-    marginTop: 35,
+    marginTop: 30,
     marginLeft: 16,
-
     color: AppStyles.color.black,
     fontSize: 19,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Bold',
-        lineHeight: 25,
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
       ios: {
         fontWeight: '800',

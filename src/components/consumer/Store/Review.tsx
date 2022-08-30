@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     padding: 20,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
         lineHeight: 16,
       },
       ios: {fontWeight: '800'},
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: AppStyles.font.middle,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 18,
       },
       ios: {fontWeight: '500'},
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: AppStyles.font.small,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Regular',
+        fontFamily: 'AppleSDGothicNeoL',
         lineHeight: 16,
       },
       ios: {},
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     padding: 15,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 20,
       },
       ios: {},

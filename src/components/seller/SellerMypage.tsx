@@ -21,8 +21,8 @@ export default class Mypage extends Component {
           {/* <Image style={styles.image} source={{uri: data?.storeImage}} /> */}
           <View style={styles.userText}>
             <Text style={styles.userMent}>안녕하세요! 김민지 사장님</Text>
-            <Text style={styles.text}>@onecake</Text>
-            <Text style={styles.text}>010-1111-1111</Text>
+            <Text style={styles.mail}>@onecake</Text>
+            <Text style={styles.text}>010-1234-5678</Text>
           </View>
         </View>
         <Text style={styles.title}>판매 데이터 분석</Text>
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
+        lineHeight: 20,
         fontFamily: 'AppleSDGothicNeo-Bold',
-        lineHeight: 30,
       },
     }),
     color: AppStyles.color.black,
@@ -89,14 +89,23 @@ const styles = StyleSheet.create({
   userText: {
     marginRight: 30,
   },
-  text: {
+  mail: {
     color: AppStyles.color.subTitle,
     fontSize: 17,
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 20,
-        fontFamily: 'AppleSDGothicNeoM',
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+    }),
+  },
+  text: {
+    color: AppStyles.color.subTitle,
+    fontSize: 11,
+    ...Platform.select({
+      ios: {},
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
     }),
   },
@@ -112,20 +121,18 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 25,
         fontFamily: 'AppleSDGothicNeo-Bold',
       },
     }),
   },
   subTitle: {
-    marginTop: 11,
+    marginTop: 10,
     marginLeft: 15,
     fontSize: 14,
     color: '#7D7D7D',
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 16,
         fontFamily: 'AppleSDGothicNeoM',
       },
     }),
@@ -151,7 +158,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 20,
         fontFamily: 'AppleSDGothicNeo-Bold',
       },
     }),
@@ -162,7 +168,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        lineHeight: 16,
         fontFamily: 'AppleSDGothicNeoM',
       },
     }),

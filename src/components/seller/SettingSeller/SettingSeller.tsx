@@ -43,6 +43,12 @@ export const SettingSeller = () => {
     });
   }, [navigation]);
 
+  const onClickProfileEdit = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileEdit',
+    });
+  }, [navigation]);
+
   return (
     <View>
       <View
@@ -60,7 +66,7 @@ export const SettingSeller = () => {
           ]}>
           프로필
         </Text>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickProfileEdit}>
           <Text
             style={[
               styles.text,
@@ -105,6 +111,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: '#1B1B1B',
-    fontFamily: 'AppleSDGothicNeoM',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
   },
 });

@@ -47,5 +47,6 @@ export const AppStyles = {
   },
   fontFamily: {
     bold: 'AppleSDGothicNeo-Bold',
+    medium: 'AppleSDGothicNeoM',
   },
 };

@@ -9,4 +9,6 @@ export const ProfileEdit = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  view: {},
+});

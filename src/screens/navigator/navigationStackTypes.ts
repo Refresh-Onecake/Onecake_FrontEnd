@@ -28,4 +28,5 @@ export type RootStackParamList = {
   MenuImageDetails: undefined;
   // 설정 관련
   ProfileEdit: undefined;
+  ProfileInfoEdit: undefined;
 };

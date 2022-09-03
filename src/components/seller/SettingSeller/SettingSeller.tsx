@@ -49,6 +49,12 @@ export const SettingSeller = () => {
     });
   }, [navigation]);
 
+  const onClickProfileInfoEdit = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileInfoEdit',
+    });
+  }, [navigation]);
+
   return (
     <View>
       <View
@@ -78,7 +84,7 @@ export const SettingSeller = () => {
             프로필 수정
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickProfileInfoEdit}>
           <Text style={[styles.text, {fontWeight: '500'}]}>정보 설정</Text>
         </TouchableOpacity>
       </View>

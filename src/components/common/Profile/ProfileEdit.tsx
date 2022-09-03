@@ -13,6 +13,7 @@ import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {Button} from '../Button';
 import {commonStyles} from '../../../styles/commonStyles';
+import {ScreenBottomButton} from '../ScreenBottomButton';
 
 export const ProfileEdit = () => {
   return (
@@ -45,9 +46,7 @@ export const ProfileEdit = () => {
       <View style={{flex: 1}} />
       {/* 완료 버튼 */}
       {/* TODO: 하단에 쓰이는 버튼만 컴포넌트로 만들 예정 */}
-      <View style={[styles.BottomBtnWrap, commonStyles.shadowTop]}>
-        <Button text="완료" />
-      </View>
+      <ScreenBottomButton text={'완료'} />
     </SafeAreaView>
   );
 };
@@ -114,21 +113,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         fontFamily: AppStyles.fontFamily.medium,
-      },
-    }),
-  },
-  BottomBtnWrap: {
-    height: 58,
-    paddingTop: 14,
-    paddingHorizontal: 15,
-    backgroundColor: AppStyles.color.white,
-    ...Platform.select({
-      android: {
-        height: 72,
-        paddingBottom: 14,
-      },
-      ios: {
-        height: 58,
       },
     }),
   },

@@ -4,7 +4,7 @@ import {AppStyles} from '../../styles/AppStyles';
 
 export type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>;
 
-type ButtonProps = {
+export type ButtonProps = {
   children?: ReactNode;
   text?: string;
   backgroundColor?: string;

@@ -95,7 +95,7 @@ export const SelectUserType = ({
               ...Platform.select({
                 android: {
                   fontFamily: 'AppleSDGothicNeoM',
-                  marginTop: 3,
+                  marginTop: 15,
                 },
               }),
             }}>

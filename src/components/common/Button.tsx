@@ -55,7 +55,7 @@ export const Button: FC<ButtonProps & TouchableOpacityProps> = ({
             fontSize: textSize,
             ...Platform.select({
               android: {
-                fontFamily: 'NotoSansKR-Medium',
+                fontFamily: 'AppleSDGothicNeo-Bold',
               },
               ios: {
                 fontWeight: '700',

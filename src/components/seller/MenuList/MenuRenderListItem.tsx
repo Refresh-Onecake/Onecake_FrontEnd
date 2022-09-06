@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.black,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '600'},
     }),
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     paddingBottom: 11,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '400'},
     }),
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.midBlack,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '400'},
     }),

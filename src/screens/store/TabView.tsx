@@ -40,7 +40,7 @@ export const TabView = () => {
                 fontSize: 13,
                 ...Platform.select({
                   android: {
-                    fontFamily: 'NotoSansKR-Medium',
+                    fontFamily: 'AppleSDGothicNeoM',
                   },
                   ios: {},
                 }),

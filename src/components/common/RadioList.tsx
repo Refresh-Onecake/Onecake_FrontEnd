@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Bold',
+        fontFamily: 'AppleSDGothicNeo-Bold',
       },
       ios: {
         fontWeight: '500',

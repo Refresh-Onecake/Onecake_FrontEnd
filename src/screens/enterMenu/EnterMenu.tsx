@@ -230,8 +230,7 @@ export const EnterMenu = ({
                           {
                             ...Platform.select({
                               android: {
-                                fontFamily: 'NotoSansKR-Medium',
-                                lineHeight: 16,
+                                fontFamily: 'AppleSDGothicNeoM',
                               },
                               ios: {fontWeight: '700'},
                             }),
@@ -402,7 +401,7 @@ export const EnterMenu = ({
                     fontSize: 15,
                     ...Platform.select({
                       android: {
-                        fontFamily: 'NotoSansKR-Medium',
+                        fontFamily: 'AppleSDGothicNeoM',
                         lineHeight: 18,
                       },
                       ios: {},
@@ -488,14 +487,14 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {
         height: 40,
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
     }),
   },
   cakeSizeItem: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),

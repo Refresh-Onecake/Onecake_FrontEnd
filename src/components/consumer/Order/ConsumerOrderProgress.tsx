@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     color: AppStyles.color.white,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 16,
       },
       ios: {

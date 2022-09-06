@@ -46,7 +46,7 @@ export const SelectUserType = ({
       <SafeAreaView style={styles.wrapper}>
         <Text
           style={{
-            fontFamily: 'NotoSansKR-Bold',
+            fontFamily: 'AppleSDGothicNeo-Bold',
             fontSize: 18,
             marginBottom: 48,
             color: 'black',
@@ -94,7 +94,7 @@ export const SelectUserType = ({
               fontWeight: '600',
               ...Platform.select({
                 android: {
-                  fontFamily: 'NotoSansKR-Medium',
+                  fontFamily: 'AppleSDGothicNeoM',
                   marginTop: 3,
                 },
               }),
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 1 : -8,
   },
   btnText: {
-    fontFamily: 'NotoSansKR-Medium',
+    fontFamily: 'AppleSDGothicNeoM',
     color: AppStyles.color.black,
     paddingTop: 9,
     paddingBottom: 11,

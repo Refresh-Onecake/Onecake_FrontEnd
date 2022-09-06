@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
         lineHeight: 18,
       },
       ios: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     color: '#777777',
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {
         fontWeight: '500',

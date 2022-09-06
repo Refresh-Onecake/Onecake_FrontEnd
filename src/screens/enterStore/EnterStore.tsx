@@ -516,8 +516,7 @@ export const styles = StyleSheet.create({
     color: AppStyles.color.black,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
-        lineHeight: 16,
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '600'},
     }),
@@ -538,8 +537,7 @@ export const styles = StyleSheet.create({
     color: AppStyles.color.hotPink,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
-        lineHeight: 16,
+        fontFamily: 'AppleSDGothicNeoM',
         paddingTop: 5,
       },
       ios: {
@@ -554,8 +552,7 @@ export const styles = StyleSheet.create({
     paddingTop: 2,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
-        lineHeight: 16,
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '700'},
     }),
@@ -569,7 +566,7 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'center',
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {
         fontWeight: '600',
@@ -598,7 +595,7 @@ export const styles = StyleSheet.create({
     color: AppStyles.color.white,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {fontWeight: '600'},
     }),
@@ -606,7 +603,7 @@ export const styles = StyleSheet.create({
   subText: {
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),
@@ -628,7 +625,7 @@ export const styles = StyleSheet.create({
     color: AppStyles.color.black,
     ...Platform.select({
       android: {
-        fontFamily: 'NotoSansKR-Medium',
+        fontFamily: 'AppleSDGothicNeoM',
       },
       ios: {},
     }),

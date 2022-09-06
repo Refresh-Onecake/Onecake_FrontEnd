@@ -45,7 +45,6 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
         queryClient.invalidateQueries(queryKeys.sellerOrderList);
         queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
       },
@@ -71,7 +70,6 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
         queryClient.invalidateQueries(queryKeys.sellerOrderList);
         queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
         setModalVisible(false);

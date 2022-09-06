@@ -31,7 +31,7 @@ export const getMenuList = async (menuId?: number) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },
+      },  
     );
     return response;
   }

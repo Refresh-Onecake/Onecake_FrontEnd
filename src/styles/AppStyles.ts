@@ -45,4 +45,8 @@ export const AppStyles = {
     bold: 'NotoSansKR-Bold',
     black: 'NotoSansKR-Black',
   },
+  fontFamily: {
+    bold: 'AppleSDGothicNeo-Bold',
+    medium: 'AppleSDGothicNeoM',
+  },
 };

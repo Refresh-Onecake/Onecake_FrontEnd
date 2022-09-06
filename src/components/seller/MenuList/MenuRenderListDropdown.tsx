@@ -64,8 +64,6 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
-        console.log('삭제 성공');
         queryClient.invalidateQueries(queryKeys.sellerMenuList);
       },
       onError: e => {
@@ -83,8 +81,6 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
 
   const onClickEditMenu = () => {
     refetch();
-    console.log(data);
-
     setVisible(false);
     navigation.navigate('EnterMenu');
   };

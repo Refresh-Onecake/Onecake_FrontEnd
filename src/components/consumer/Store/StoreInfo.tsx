@@ -28,9 +28,6 @@ export const StoreInfo = () => {
       refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
-      onSuccess: data => {
-        console.log('storeInfo', data);
-      },
       onError: err => {
         console.log(err);
         const response = err as Error;

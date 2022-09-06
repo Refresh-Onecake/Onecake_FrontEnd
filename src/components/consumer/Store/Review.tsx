@@ -35,10 +35,6 @@ export const Review: FC = () => {
       refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
-      onSuccess: data => {
-        console.log('review', data.reviewNum);
-        console.log('review', data.reviews);
-      },
       onError: err => {
         console.log('err');
         const response = err as Error;

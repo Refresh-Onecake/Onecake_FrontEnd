@@ -35,13 +35,25 @@ export const SettingSeller = () => {
       ],
       {cancelable: false},
     );
-  }, []);
+  }, [logoutMutation]);
 
   const onClickReSign = useCallback(() => {
     navigation.navigate('StackNavigator', {
       screen: 'ReSign',
     });
-  }, []);
+  }, [navigation]);
+
+  const onClickProfileEdit = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileEdit',
+    });
+  }, [navigation]);
+
+  const onClickProfileInfoEdit = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileInfoEdit',
+    });
+  }, [navigation]);
 
   return (
     <View>
@@ -54,95 +66,39 @@ export const SettingSeller = () => {
           style={[
             styles.text,
             {
-              ...Platform.select({
-                android: {
-                  fontFamily: 'AppleSDGothicNeo-Bold',
-                },
-                ios: {fontWeight: '700', paddingBottom: 37},
-              }),
+              fontWeight: Platform.OS === 'ios' ? '700' : '800',
+              paddingBottom: 37,
             },
           ]}>
           프로필
         </Text>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickProfileEdit}>
           <Text
             style={[
               styles.text,
               {
-                ...Platform.select({
-                  android: {
-                    fontFamily: 'AppleSDGothicNeoM',
-                  },
-                  ios: {fontWeight: '500', paddingBottom: 37},
-                }),
+                fontWeight: '500',
+                paddingBottom: 37,
               },
             ]}>
             프로필 수정
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openModal}>
-          <Text
-            style={[
-              styles.text,
-              {
-                ...Platform.select({
-                  android: {
-                    fontFamily: 'AppleSDGothicNeoM',
-                  },
-                  ios: {fontWeight: '500', paddingBottom: 37},
-                }),
-              },
-            ]}>
-            정보 설정
-          </Text>
+        <TouchableOpacity onPress={onClickProfileInfoEdit}>
+          <Text style={[styles.text, {fontWeight: '500'}]}>정보 설정</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.Wrap}>
-        <Text
-          style={[
-            styles.text,
-            {
-              ...Platform.select({
-                android: {
-                  fontFamily: 'AppleSDGothicNeo-Bold',
-                },
-                ios: {fontWeight: '700', paddingBottom: 37},
-              }),
-            },
-          ]}>
+        <Text style={[styles.text, {fontWeight: '700', paddingBottom: 37}]}>
           계정
         </Text>
         <TouchableOpacity onPress={logout}>
-          <Text
-            style={[
-              styles.text,
-              {
-                ...Platform.select({
-                  android: {
-                    fontFamily: 'AppleSDGothicNeoM',
-                  },
-                  ios: {fontWeight: '500', paddingBottom: 37},
-                }),
-              },
-            ]}>
+          <Text style={[styles.text, {fontWeight: '500', paddingBottom: 37}]}>
             로그아웃
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onClickReSign}>
-          <Text
-            style={[
-              styles.text,
-              {
-                ...Platform.select({
-                  android: {
-                    fontFamily: 'AppleSDGothicNeoM',
-                  },
-                  ios: {fontWeight: '500', paddingBottom: 37},
-                }),
-              },
-            ]}>
-            탈퇴하기
-          </Text>
+          <Text style={[styles.text, {fontWeight: '500'}]}>탈퇴하기</Text>
         </TouchableOpacity>
       </View>
       <InfoModal
@@ -159,10 +115,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: AppStyles.padding.screen,
   },
   text: {
-    ...Platform.select({
-      android: {paddingBottom: 17},
-    }),
     fontSize: 14,
     color: '#1B1B1B',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
   },
 });

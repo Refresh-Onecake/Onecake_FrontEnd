@@ -20,5 +20,6 @@ export const queryKeys = {
   cityCakeList: ['cityCakeList'] as const,
   keywordCakeList: ['keywordCakeList'] as const,
   // consumer
-  ConsumerOrderHistory: '@ConsumerOrderHistory' as const,
+  ConsumerOrderHistory: ['@ConsumerOrderHistory'] as const,
+  ProfileEdit: ['@ProfileEdit'] as const,
 };

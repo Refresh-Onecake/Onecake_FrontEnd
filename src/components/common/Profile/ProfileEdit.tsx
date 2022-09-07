@@ -9,13 +9,34 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
-import {Button} from '../Button';
-import {commonStyles} from '../../../styles/commonStyles';
 import {ScreenBottomButton} from '../ScreenBottomButton';
+import {useRecoilState} from 'recoil';
+import {profileEditState} from '../../../recoil/atom';
+import {handleImageUpload} from '../../../utils';
+import {IStoreImg} from '../../../screens/enterStore';
+import {useSetUserProfile} from '../../../hooks/Query/Common/useSetUserProfile';
 
 export const ProfileEdit = () => {
+  const [profile, setProfile] = useRecoilState(profileEditState);
+  const [storeImg, setStoreImg] = useState<IStoreImg>();
+  const [name, setName] = useState(profile.nickname);
+  const mutation = useSetUserProfile();
+  const onPressCameraBtn = () => {
+    handleImageUpload(setStoreImg);
+  };
+
+  const submit = () => {
+    mutation.mutate(profile);
+  };
+
+  useEffect(() => {
+    if (storeImg?.uri) {
+      setProfile({nickname: profile.nickname, profileImg: storeImg.uri});
+    }
+  }, [profile.nickname, setProfile, storeImg]);
+
   return (
     <SafeAreaView style={styles.view}>
       {/* 이미지 변경 */}
@@ -24,10 +45,10 @@ export const ProfileEdit = () => {
         <Image
           style={styles.image}
           source={{
-            uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+            uri: profile.profileImg,
           }}
         />
-        <Pressable style={styles.cameraIconView}>
+        <Pressable style={styles.cameraIconView} onPress={onPressCameraBtn}>
           <Image
             style={styles.cameraIcon}
             source={require('../../../asset/camera.png')}
@@ -37,6 +58,8 @@ export const ProfileEdit = () => {
       {/* 이름 */}
       <View style={styles.nameView}>
         <TextInput
+          value={name}
+          onChangeText={setName}
           underlineColorAndroid="transparent"
           selectionColor={AppStyles.color.hotPink}
           style={styles.nameTextInput}
@@ -46,7 +69,7 @@ export const ProfileEdit = () => {
       <View style={{flex: 1}} />
       {/* 완료 버튼 */}
       {/* TODO: 하단에 쓰이는 버튼만 컴포넌트로 만들 예정 */}
-      <ScreenBottomButton text={'완료'} />
+      <ScreenBottomButton text={'완료'} onPress={submit} />
     </SafeAreaView>
   );
 };

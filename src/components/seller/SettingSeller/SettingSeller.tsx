@@ -9,15 +9,17 @@ import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
 import {useLogoutAndReSignQuery} from '../../../hooks';
 import {fetchLogout, fetchResign} from '../../../services';
+import {useRecoilState} from 'recoil';
+import {profileEditState} from '../../../recoil/atom';
+import {useGetUserProfile} from '../../../hooks/Query/Common';
 
 export const SettingSeller = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const openModal = useCallback(() => {
-    setModalVisible(() => true);
-  }, []);
+
   const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
 
+  const {data, refetch} = useGetUserProfile();
   const logout = useCallback(() => {
     Alert.alert(
       '로그아웃하기',
@@ -44,10 +46,11 @@ export const SettingSeller = () => {
   }, [navigation]);
 
   const onClickProfileEdit = useCallback(() => {
+    refetch();
     navigation.navigate('StackNavigator', {
       screen: 'ProfileEdit',
     });
-  }, [navigation]);
+  }, [data, refetch]);
 
   const onClickProfileInfoEdit = useCallback(() => {
     navigation.navigate('StackNavigator', {

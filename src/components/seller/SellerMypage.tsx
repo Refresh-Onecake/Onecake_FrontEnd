@@ -5,51 +5,87 @@ import {
   Platform,
   Image,
   ScrollView,
+  Dimensions,
 } from 'react-native';
-import React, {Component} from 'react';
+import {LineChart} from 'react-native-chart-kit';
+import React from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
-export default class Mypage extends Component {
-  render() {
-    return (
-      <ScrollView>
-        <View style={styles.wrapper}>
-          <Image
-            style={styles.image}
-            source={require('../../asset/congratulation.png')}
-          />
-          {/* <Image style={styles.image} source={{uri: data?.storeImage}} /> */}
-          <View style={styles.userText}>
-            <Text style={styles.userMent}>안녕하세요! 김민지 사장님</Text>
-            <Text style={styles.mail}>@onecake</Text>
-            <Text style={styles.text}>010-1234-5678</Text>
-          </View>
+const SellerMypage = () => {
+  const data = {
+    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월'],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+        color: (opacity = 1) => `rgba(255, 49, 150, ${opacity})`, // optional
+        strokeWidth: 1, // optional
+      },
+    ],
+  };
+  const width = Dimensions.get('window').width;
+
+  const chartConfig = {
+    backgroundColor: 'white',
+    backgroundGradientFrom: 'white',
+    backgroundGradientTo: 'white',
+    decimalPlaces: 2, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 49, 150, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(90, 90, 90, ${opacity})`,
+    style: {
+      borderRadius: 16,
+    },
+    propsForDots: {
+      r: '6',
+      strokeWidth: '2',
+      stroke: '#FF3196',
+    },
+  };
+
+  return (
+    <ScrollView>
+      <View style={styles.wrapper}>
+        <Image
+          style={styles.image}
+          source={require('../../asset/congratulation.png')}
+        />
+        {/* <Image style={styles.image} source={{uri: data?.storeImage}} /> */}
+        <View style={styles.userText}>
+          <Text style={styles.userMent}>안녕하세요! 김민지 사장님</Text>
+          <Text style={styles.mail}>@onecake</Text>
+          <Text style={styles.text}>010-1234-5678</Text>
         </View>
-        <Text style={styles.title}>판매 데이터 분석</Text>
-        <Text style={styles.subTitle}>지난 달보다 매출이 감소했어요!</Text>
-        <View style={styles.chart}></View>
-        <View style={styles.line}></View>
-        <Text style={styles.title}>우리 가게 판매 데이터</Text>
-        <Text style={styles.subTitle}>
-          우리 가게의 매출을 한 눈에 살펴봐요.
-        </Text>
-        <View style={styles.countWrapper}>
-          <Text style={styles.countTitle}>이번 달 총 주문 수</Text>
-          {/* <Text>{data?.num}건</Text> */}
-          <Text style={styles.count}>182건</Text>
-        </View>
-        <View style={styles.countWrapper}>
-          <Text style={styles.countTitle}>이번 달 판매 주문 수</Text>
-          <Text style={styles.count}>182건</Text>
-        </View>
-        <View style={styles.countWrapper}>
-          <Text style={styles.countTitle}>지난 달 판매 주문 수</Text>
-          <Text style={styles.count}>182건</Text>
-        </View>
-      </ScrollView>
-    );
-  }
-}
+      </View>
+      <Text style={styles.title}>판매 데이터 분석</Text>
+      <Text style={styles.subTitle}>지난 달보다 매출이 감소했어요!</Text>
+      <View style={styles.chart}>
+        <LineChart
+          data={data}
+          width={width}
+          height={220}
+          chartConfig={chartConfig}
+        />
+      </View>
+      <View style={styles.line}></View>
+      <Text style={styles.title}>우리 가게 판매 데이터</Text>
+      <Text style={styles.subTitle}>우리 가게의 매출을 한 눈에 살펴봐요.</Text>
+      <View style={styles.countWrapper}>
+        <Text style={styles.countTitle}>이번 달 총 주문 수</Text>
+        {/* <Text>{data?.num}건</Text> */}
+        <Text style={styles.count}>182건</Text>
+      </View>
+      <View style={styles.countWrapper}>
+        <Text style={styles.countTitle}>이번 달 판매 주문 수</Text>
+        <Text style={styles.count}>182건</Text>
+      </View>
+      <View style={styles.countWrapper}>
+        <Text style={styles.countTitle}>지난 달 판매 주문 수</Text>
+        <Text style={styles.count}>182건</Text>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default SellerMypage;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -127,6 +163,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     marginTop: 10,
+    marginBottom: 24,
     marginLeft: 15,
     fontSize: 14,
     color: '#7D7D7D',

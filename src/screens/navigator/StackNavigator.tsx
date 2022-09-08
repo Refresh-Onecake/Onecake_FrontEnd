@@ -17,6 +17,7 @@ import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
 import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
+import {ProfileEdit, ProfileInfoEdit} from '../../components/common/Profile';
 import {Setting} from '../../components/common/Setting/Setting';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -159,6 +160,31 @@ export const StackNavigator = () => {
           headerBackImage: BackBtn,
           headerRight: () => <MenuImageDetailHeaderDelete />,
           headerRightContainerStyle: styles.headerRightContainer,
+        }}
+      />
+      {/* 설정 관련 */}
+      <Stack.Screen
+        name="ProfileEdit"
+        component={ProfileEdit}
+        options={{
+          headerShown: true,
+          headerTitle: '프로필 수정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="ProfileInfoEdit"
+        component={ProfileInfoEdit}
+        options={{
+          headerShown: true,
+          headerTitle: '정보 설정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
         }}
       />
     </Stack.Navigator>

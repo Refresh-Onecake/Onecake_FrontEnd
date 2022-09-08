@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {FC} from 'react';
+import React from 'react';
 import {IMenuList} from '../../../services';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useNavigation} from '@react-navigation/native';
@@ -18,12 +18,12 @@ export type MenuRenderListProps = {
   data: IMenuList[] | undefined;
 };
 
-export const MenuRenderList: FC<MenuRenderListProps> = ({data}) => {
+export const MenuRenderList = ({data}: MenuRenderListProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
     <View style={[styles.view]}>
-      <ScrollView style={[styles.shadowView, styles.listWrap]}>
+      <ScrollView style={styles.listWrap}>
         {data &&
           data.map((val, idx) => (
             <MenuRenderListItem

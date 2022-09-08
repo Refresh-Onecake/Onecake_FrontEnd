@@ -36,9 +36,6 @@ export const CakeList: FC = () => {
       refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
-      onSuccess: data => {
-        console.log('cakeList', data.length);
-      },
       onError: err => {
         console.log('err');
         const response = err as Error;

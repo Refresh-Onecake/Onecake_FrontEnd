@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "527185262052-k0lutkekpciu6u17j23cg7snr37a6rts.apps.googleusercontent.com",
+          "client_id": "527185262052-62r6eje982vrfpgmquv4c9mf1c0jhqh4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.onecake_frontend",
@@ -37,6 +37,13 @@
             {
               "client_id": "527185262052-coh9f6isch8t11hc20hkh98bnc3jto1v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "527185262052-351cgh377ksuj20513fudnv8gu8009lp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Onecake-FrontEnd"
+              }
             }
           ]
         }

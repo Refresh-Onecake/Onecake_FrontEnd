@@ -32,8 +32,6 @@ export const useDeleteMenuImageDetailQuery = (
     {
       retry: 3,
       onSuccess: data => {
-        console.log('특정 메뉴 이미지 삭제');
-        console.log(data);
         queryClient.invalidateQueries(queryKeys.sellerMenuImageItemDetail);
         queryClient.invalidateQueries(queryKeys.sellerMenuListItemDetails);
         navigation.navigate('MenuImage');

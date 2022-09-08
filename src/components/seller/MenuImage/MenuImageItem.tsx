@@ -69,7 +69,6 @@ export const MenuImageItem: FC<MenuImageItemProps> = ({
       retry: 3,
       onSuccess: data => {
         console.log('사진등록 성공');
-        console.log(data);
         setImageUri(data);
       },
       onError: e => {

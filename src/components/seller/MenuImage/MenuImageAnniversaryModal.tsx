@@ -51,8 +51,6 @@ const MenuImageAnniversaryModal: FC<MenuImageAnniversaryModalProps> = ({
     queryClient,
   );
   const onClickUploadAnniversaryButton = () => {
-    console.log('클릭함');
-    console.log(menuId);
     UploadAnniversaryImageMutation.mutate();
     setVisible(() => false);
   };

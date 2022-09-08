@@ -51,7 +51,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진함에 접근함에 있어 동의가 필요합니다.</string>
 	<key>UIAppFonts</key>
@@ -70,8 +70,8 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-Medium.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>AntDesign.ttf</string>
@@ -85,6 +85,11 @@
 		<string>NotoSansKR-Medium.otf</string>
 		<string>NotoSansKR-Regular.otf</string>
 		<string>NotoSansKR-Thin.otf</string>
+		<string>AppleSDGothicNeo-Bold.ttf</string>
+		<string>AppleSDGothicNeoEB.ttf</string>
+		<string>AppleSDGothicNeoH.ttf</string>
+		<string>AppleSDGothicNeoL.ttf</string>
+		<string>AppleSDGothicNeoM.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -17,37 +17,45 @@ import {profileEditState} from '../../../recoil/atom';
 import {handleImageUpload} from '../../../utils';
 import {IStoreImg} from '../../../screens/enterStore';
 import {useSetUserProfile} from '../../../hooks/Query/Common/useSetUserProfile';
+import {
+  fetchUploadPicture,
+  usePictureMutation,
+} from '../../../hooks/Query/Common/usePictureMutation';
+import {useQueryClient} from 'react-query';
+import {useGetUserProfile} from '../../../hooks/Query/Common';
 
 export const ProfileEdit = () => {
-  const [profile, setProfile] = useRecoilState(profileEditState);
+  const {data} = useGetUserProfile();
   const [storeImg, setStoreImg] = useState<IStoreImg>();
-  const [name, setName] = useState(profile.nickname);
-  const mutation = useSetUserProfile();
+  const [imgUri, setImgUri] = useState('');
+  const [name, setName] = useState(data?.nickname);
+
+  const queryClient = useQueryClient();
+  const setUserProfileMutation = useSetUserProfile(queryClient);
+  const pictureMutation = usePictureMutation(setImgUri);
   const onPressCameraBtn = () => {
     handleImageUpload(setStoreImg);
   };
 
   const submit = () => {
-    mutation.mutate(profile);
+    // const userProfile = {nickname: name, profileImg: profile.profileImg};
+    // console.log(userProfile);
+    // setUserProfileMutation.mutate(userProfile);
   };
-
-  useEffect(() => {
-    if (storeImg?.uri) {
-      setProfile({nickname: profile.nickname, profileImg: storeImg.uri});
-    }
-  }, [profile.nickname, setProfile, storeImg]);
 
   return (
     <SafeAreaView style={styles.view}>
       {/* 이미지 변경 */}
       <View style={styles.imageView}>
         {/* TODO:: uri는 이후 api를 통해 변경할 수 있어야 한다. */}
+
         <Image
           style={styles.image}
           source={{
-            uri: profile.profileImg,
+            uri: data?.profileImg !== '' ? data?.profileImg : undefined,
           }}
         />
+
         <Pressable style={styles.cameraIconView} onPress={onPressCameraBtn}>
           <Image
             style={styles.cameraIcon}

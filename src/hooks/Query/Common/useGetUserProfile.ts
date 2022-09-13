@@ -25,9 +25,8 @@ export const useGetUserProfile = () => {
 
   return useQuery(queryKeys.ProfileEdit, getUserProfile, {
     onSuccess: data => {
-      setProfileInfo(data);
+      // setProfileInfo(data);
+      console.log(data);
     },
-    refetchOnWindowFocus: false,
-    enabled: false,
   });
 };

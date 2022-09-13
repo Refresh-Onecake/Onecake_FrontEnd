@@ -18,8 +18,6 @@ export const SettingSeller = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
-
-  const {data, refetch} = useGetUserProfile();
   const logout = useCallback(() => {
     Alert.alert(
       '로그아웃하기',
@@ -45,12 +43,11 @@ export const SettingSeller = () => {
     });
   }, [navigation]);
 
-  const onClickProfileEdit = useCallback(() => {
-    refetch();
+  const onClickProfileEdit = () => {
     navigation.navigate('StackNavigator', {
       screen: 'ProfileEdit',
     });
-  }, [data, refetch]);
+  };
 
   const onClickProfileInfoEdit = useCallback(() => {
     navigation.navigate('StackNavigator', {

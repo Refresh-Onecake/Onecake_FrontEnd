@@ -1,5 +1,6 @@
 import {Alert, Platform} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {fetchUploadPicture} from '../hooks/Query/Common/usePictureMutation';
 import {IStoreImg} from '../screens/enterStore';
 
 /**

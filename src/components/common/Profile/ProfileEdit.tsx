@@ -9,25 +9,79 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
-import {Button} from '../Button';
-import {commonStyles} from '../../../styles/commonStyles';
 import {ScreenBottomButton} from '../ScreenBottomButton';
+import {useRecoilState} from 'recoil';
+import {profileEditState} from '../../../recoil/atom';
+import {handleImageUpload} from '../../../utils';
+import {IStoreImg} from '../../../screens/enterStore';
+import {useSetUserProfile} from '../../../hooks/Query/Common/useSetUserProfile';
+import {
+  fetchUploadPicture,
+  usePictureMutation,
+} from '../../../hooks/Query/Common/usePictureMutation';
+import {useQueryClient} from 'react-query';
+import {useGetUserProfile} from '../../../hooks/Query/Common';
+import {launchImageLibrary} from 'react-native-image-picker';
+import InfoModal from '../InfoModal';
 
 export const ProfileEdit = () => {
+  const {data} = useGetUserProfile();
+  const [storeImg, setStoreImg] = useState<IStoreImg>();
+  const [imgUri, setImgUri] = useState(data?.profileImg);
+  const [name, setName] = useState(data?.nickname);
+  const [infoModalTitle, setInfoModalTitle] = useState([
+    '프로필 수정',
+    '프로필 수정 정보를 다시 한번 확인해주세요.',
+  ]);
+  const [infoModal, setInfoModal] = useState(false);
+
+  const queryClient = useQueryClient();
+  const setUserProfileMutation = useSetUserProfile(queryClient);
+  const pictureMutation = usePictureMutation(setImgUri);
+
+  const onPressCameraBtn = async () => {
+    await launchImageLibrary({mediaType: 'photo'}).then(resp => {
+      resp.assets?.map(({fileName, type, uri}) => {
+        const img = {
+          name: fileName,
+          type: type,
+          uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
+        };
+        pictureMutation.mutate(img);
+      });
+    });
+  };
+
+  const submit = () => {
+    if (name === undefined || name === '') {
+      setInfoModalTitle(prev => [prev[0], '닉네임을 확인해주세요.']);
+      setInfoModal(true);
+    } else if (imgUri === undefined) {
+      setInfoModalTitle(prev => [prev[0], '프로필 사진을 확인해주세요.']);
+      setInfoModal(true);
+    } else {
+      setUserProfileMutation.mutate({nickname: name, profileImg: imgUri});
+      setInfoModalTitle(prev => [prev[0], '변경 되었습니다.']);
+      setInfoModal(true);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.view}>
       {/* 이미지 변경 */}
       <View style={styles.imageView}>
         {/* TODO:: uri는 이후 api를 통해 변경할 수 있어야 한다. */}
+
         <Image
           style={styles.image}
           source={{
-            uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+            uri: imgUri !== '' ? imgUri : undefined,
           }}
         />
-        <Pressable style={styles.cameraIconView}>
+
+        <Pressable style={styles.cameraIconView} onPress={onPressCameraBtn}>
           <Image
             style={styles.cameraIcon}
             source={require('../../../asset/camera.png')}
@@ -37,6 +91,8 @@ export const ProfileEdit = () => {
       {/* 이름 */}
       <View style={styles.nameView}>
         <TextInput
+          value={name}
+          onChangeText={setName}
           underlineColorAndroid="transparent"
           selectionColor={AppStyles.color.hotPink}
           style={styles.nameTextInput}
@@ -46,7 +102,13 @@ export const ProfileEdit = () => {
       <View style={{flex: 1}} />
       {/* 완료 버튼 */}
       {/* TODO: 하단에 쓰이는 버튼만 컴포넌트로 만들 예정 */}
-      <ScreenBottomButton text={'완료'} />
+      <ScreenBottomButton text={'완료'} onPress={submit} />
+      <InfoModal
+        setModalVisible={setInfoModal}
+        modalVisible={infoModal}
+        title={infoModalTitle[0]}
+        subTitle={infoModalTitle[1]}
+      />
     </SafeAreaView>
   );
 };

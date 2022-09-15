@@ -3,6 +3,7 @@
  * @description react query에 필요한 key값을 enum으로 관리하기 위해 만들었습니다.
  */
 export const queryKeys = {
+  UploadPhoto: ['@UploadPhoto'] as const, 
   sellerMenuList: ['sellerMenuList'] as const,
   sellerOrderList: ['sellerOrderList'] as const,
   sellerOrderSheet: ['sellerOrderSheet'] as const,
@@ -20,5 +21,6 @@ export const queryKeys = {
   cityCakeList: ['cityCakeList'] as const,
   keywordCakeList: ['keywordCakeList'] as const,
   // consumer
-  ConsumerOrderHistory: '@ConsumerOrderHistory' as const,
+  ConsumerOrderHistory: ['@ConsumerOrderHistory'] as const,
+  ProfileEdit: ['@ProfileEdit'] as const,
 };

@@ -1,5 +1,6 @@
 import {AxiosError, AxiosPromise} from 'axios';
 import {QueryClient, useMutation, useQueryClient} from 'react-query';
+import {queryKeys} from '../../../enum';
 import {IStoreImg} from '../../../screens/enterStore';
 import {customAxios} from '../../../services/customAxios';
 
@@ -12,7 +13,7 @@ export const fetchUploadPicture = async (storeImg: IStoreImg | undefined) => {
 };
 
 export const usePictureMutation = (
-  setter: React.Dispatch<React.SetStateAction<string>>,
+  setter: React.Dispatch<React.SetStateAction<string | undefined>>,
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return useMutation(

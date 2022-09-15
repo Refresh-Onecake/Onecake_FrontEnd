@@ -23,24 +23,49 @@ import {
 } from '../../../hooks/Query/Common/usePictureMutation';
 import {useQueryClient} from 'react-query';
 import {useGetUserProfile} from '../../../hooks/Query/Common';
+import {launchImageLibrary} from 'react-native-image-picker';
+import InfoModal from '../InfoModal';
 
 export const ProfileEdit = () => {
   const {data} = useGetUserProfile();
   const [storeImg, setStoreImg] = useState<IStoreImg>();
-  const [imgUri, setImgUri] = useState('');
+  const [imgUri, setImgUri] = useState(data?.profileImg);
   const [name, setName] = useState(data?.nickname);
+  const [infoModalTitle, setInfoModalTitle] = useState([
+    '프로필 수정',
+    '프로필 수정 정보를 다시 한번 확인해주세요.',
+  ]);
+  const [infoModal, setInfoModal] = useState(false);
 
   const queryClient = useQueryClient();
   const setUserProfileMutation = useSetUserProfile(queryClient);
   const pictureMutation = usePictureMutation(setImgUri);
-  const onPressCameraBtn = () => {
-    handleImageUpload(setStoreImg);
+
+  const onPressCameraBtn = async () => {
+    await launchImageLibrary({mediaType: 'photo'}).then(resp => {
+      resp.assets?.map(({fileName, type, uri}) => {
+        const img = {
+          name: fileName,
+          type: type,
+          uri: Platform.OS === 'android' ? uri : uri?.replace('file://', ''),
+        };
+        pictureMutation.mutate(img);
+      });
+    });
   };
 
   const submit = () => {
-    // const userProfile = {nickname: name, profileImg: profile.profileImg};
-    // console.log(userProfile);
-    // setUserProfileMutation.mutate(userProfile);
+    if (name === undefined || name === '') {
+      setInfoModalTitle(prev => [prev[0], '닉네임을 확인해주세요.']);
+      setInfoModal(true);
+    } else if (imgUri === undefined) {
+      setInfoModalTitle(prev => [prev[0], '프로필 사진을 확인해주세요.']);
+      setInfoModal(true);
+    } else {
+      setUserProfileMutation.mutate({nickname: name, profileImg: imgUri});
+      setInfoModalTitle(prev => [prev[0], '변경 되었습니다.']);
+      setInfoModal(true);
+    }
   };
 
   return (
@@ -52,7 +77,7 @@ export const ProfileEdit = () => {
         <Image
           style={styles.image}
           source={{
-            uri: data?.profileImg !== '' ? data?.profileImg : undefined,
+            uri: imgUri !== '' ? imgUri : undefined,
           }}
         />
 
@@ -78,6 +103,12 @@ export const ProfileEdit = () => {
       {/* 완료 버튼 */}
       {/* TODO: 하단에 쓰이는 버튼만 컴포넌트로 만들 예정 */}
       <ScreenBottomButton text={'완료'} onPress={submit} />
+      <InfoModal
+        setModalVisible={setInfoModal}
+        modalVisible={infoModal}
+        title={infoModalTitle[0]}
+        subTitle={infoModalTitle[1]}
+      />
     </SafeAreaView>
   );
 };

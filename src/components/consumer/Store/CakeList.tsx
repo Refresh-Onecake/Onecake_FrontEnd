@@ -5,6 +5,7 @@ import {
   Text,
   View,
   FlatList,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import {FC} from 'react';
@@ -35,9 +36,6 @@ export const CakeList: FC = () => {
       refetchOnWindowFocus: true,
       staleTime: 5000,
       cacheTime: Infinity,
-      onSuccess: data => {
-        console.log('cakeList', data.length);
-      },
       onError: err => {
         console.log('err');
         const response = err as Error;
@@ -103,12 +101,40 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   cakeTitle: {
-    fontSize: AppStyles.font.middle,
-    fontWeight: '800',
+    fontSize: 13,
     marginBottom: 5,
+    color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+        lineHeight: 16,
+      },
+      ios: {fontWeight: '800'},
+    }),
   },
-  desc: {marginBottom: 10},
-  price: {fontWeight: '600'},
+  desc: {
+    marginBottom: 10,
+    marginTop: 5,
+    fontSize: 11,
+    ...Platform.select({
+      android: {
+        lineHeight: 16,
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
+  },
+  price: {
+    fontSize: 11,
+    color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        lineHeight: 16,
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
+  },
   arrow: {
     position: 'absolute',
     right: 1,
@@ -118,6 +144,12 @@ const styles = StyleSheet.create({
     fontSize: AppStyles.font.middle,
     marginVertical: 10,
     alignSelf: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
   cake: {
     height: 200,

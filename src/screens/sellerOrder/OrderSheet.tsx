@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, TextInput} from 'react-native';
+import {Image, StyleSheet, Text, View, TextInput, Platform} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {
@@ -9,21 +9,20 @@ import {
 } from '../../services/orderService';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
-import {dateFormatParser, timeFormatToKorea} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import {OrderManageFooter} from '../../components';
 import {useRecoilValue} from 'recoil';
 import {orderSheetIdState} from '../../recoil/atom';
-import {useQueryRefetchingOnError} from '../../hooks';
 import {getMultipleData} from '../../../App';
 import {refetchToken} from '../../services';
+import {parse} from 'dotenv';
 
 export const OrderSheet = () => {
   const queryClient = useQueryClient();
 
-  const [memo, setMemo] = useState<string>('');
-  const orderId = useRecoilValue<number>(orderSheetIdState);
+  const [memo, setMemo] = useState('');
+  const orderId = useRecoilValue(orderSheetIdState);
   const [imgUri, setImgUri] = useState<string | undefined>();
 
   const {data, status} = useQuery<IOrderSheet>(
@@ -51,7 +50,8 @@ export const OrderSheet = () => {
         console.log(data);
         data.form.map(val => {
           if (val.includes('사진')) {
-            const parseImgUrl = val.substring(18, val.length);
+            const parseImgUrl = val.substring(10, val.length);
+            console.log(parseImgUrl);
             setImgUri(parseImgUrl);
           }
         });
@@ -83,14 +83,6 @@ export const OrderSheet = () => {
       },
     },
   );
-
-  const TextInputRef = useRef<TextInput | null>(null);
-  const setFocus = useCallback(
-    () => TextInputRef.current?.focus(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [TextInputRef.current],
-  );
-
   const handleSubmitMemo = () => {
     memoMutation.mutate({orderId, memo});
   };
@@ -107,7 +99,7 @@ export const OrderSheet = () => {
           <View>
             {data?.form.map((val, idx) => (
               <Text style={styles.text} key={idx}>
-                {val}
+                {val.includes('사진') ? '레퍼런스 사진 : 첨부' : val}
               </Text>
             ))}
           </View>
@@ -117,7 +109,7 @@ export const OrderSheet = () => {
               <View>
                 <Image
                   source={{
-                    uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+                    uri: imgUri,
                   }}
                   style={styles.img}
                 />
@@ -162,15 +154,30 @@ const styles = StyleSheet.create({
     paddingBottom: 15.5,
   },
   title: {
-    fontWeight: '400',
     fontSize: 15,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   text: {
-    fontWeight: '500',
     fontSize: 13,
     color: '#989898',
     lineHeight: 22,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   img: {
     marginTop: 14,
@@ -189,18 +196,39 @@ const styles = StyleSheet.create({
     paddingBottom: 11.49,
     paddingLeft: 11.09,
     backgroundColor: AppStyles.color.SelectImage,
+    ...Platform.select({
+      android: {
+        height: 100,
+      },
+    }),
   },
   memoTitle: {
-    fontWeight: '500',
     fontSize: 12,
-    lineHeight: 14,
     color: AppStyles.color.black,
     opacity: 0.5,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+        lineHeight: 14,
+      },
+    }),
   },
   memoTextInput: {
     color: AppStyles.color.black,
     fontSize: 17,
     lineHeight: 20,
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        height: 50,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

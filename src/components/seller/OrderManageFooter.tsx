@@ -45,7 +45,6 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
         queryClient.invalidateQueries(queryKeys.sellerOrderList);
         queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
       },
@@ -71,7 +70,6 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
         queryClient.invalidateQueries(queryKeys.sellerOrderList);
         queryClient.invalidateQueries(queryKeys.sellerOrderSheet);
         setModalVisible(false);
@@ -93,7 +91,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
     <View>
       {
         {
-          ['RECEIVED'.toString()]: (
+          [orderStatusKeys.주문대기중]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button
@@ -109,7 +107,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
               </View>
             </View>
           ),
-          ['ACCEPTED'.toString()]: (
+          [orderStatusKeys.주문완료]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button
@@ -119,7 +117,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
               </View>
             </View>
           ),
-          ['MAKING'.toString()]: (
+          [orderStatusKeys.제작중]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button
@@ -129,7 +127,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
               </View>
             </View>
           ),
-          ['CANCELED'.toString()]: (
+          [orderStatusKeys.취소된주문]: (
             <View style={[styles.view, styles.shadowView]}>
               <View style={styles.btnWrap}>
                 <Button
@@ -149,6 +147,7 @@ export const OrderManageFooter: FC<OrderManageFooterProps> = ({state}) => {
             title="주문 취소 사유 선택"
             setVisible={setModalVisible}
           />
+          <View style={{paddingVertical: 12}} />
           <RadioList
             renderList={cancelReasonList}
             setSelectedItem={setCancelReason}

@@ -20,7 +20,7 @@ export const useGetSellerMenuSheetByMenuId = (
   const setMenuSheet = useSetRecoilState(menuEditSheetInfoState);
   const setEditTargetMenuId = useSetRecoilState(EditTargetMenuIdState);
   assert(
-    menuId !== undefined,
+    menuId !== undefined, 
     '저장된 주문서를 가져올 때 필요한 menuId는 undefined가 되어선 안된다.',
   );
   return useQuery(

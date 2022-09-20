@@ -19,7 +19,6 @@ export const useGetMenuListItemDetailsQuery = (
       }),
     {
       onSuccess(data) {
-        console.log(data);
         data.images.unshift({
           id: -1,
           image: 'UPLOAD',

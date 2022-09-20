@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ListRenderItemInfo,
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -50,7 +51,14 @@ export const KeywordCakes = () => {
           <Text
             style={{
               color: AppStyles.color.lightGray,
-              textAlign: 'center',
+              alignSelf: 'center',
+              ...Platform.select({
+                android: {
+                  fontFamily: 'AppleSDGothicNeoM',
+                  lineHeight: 15,
+                },
+                ios: {},
+              }),
             }}>
             # {cakeKeywords[item.item.keyword]}
           </Text>
@@ -69,12 +77,18 @@ export const KeywordCakes = () => {
 
 const styles = StyleSheet.create({
   title: {
-    marginTop: 31,
-    marginBottom: 12,
+    marginTop: 30,
     marginLeft: 16,
-    fontWeight: '800',
     color: AppStyles.color.black,
     fontSize: 19,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+      ios: {
+        fontWeight: '800',
+      },
+    }),
   },
   image: {
     width: 320,
@@ -90,6 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     opacity: 0.6,
     height: 22,
+    justifyContent: 'center',
     width: 70,
     bottom: 1,
     marginBottom: 14,

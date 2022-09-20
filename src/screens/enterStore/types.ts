@@ -7,9 +7,9 @@ export interface IEnterStoreInputForm {
 }
 
 export type IStoreImg = {
-  name: string | undefined;
-  type: string | undefined;
-  uri: string | undefined;
+  name?: string;
+  type?: string;
+  uri?: string;
 };
 
 export type IAddress = {

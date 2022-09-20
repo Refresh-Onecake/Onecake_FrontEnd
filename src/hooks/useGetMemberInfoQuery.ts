@@ -23,9 +23,6 @@ export const useGetMemberInfoQuery = (
         }
       }),
     {
-      onSuccess: data => {
-        console.log(data);
-      },
       onError: err => {
         console.log('사용자 멤머 정보 가져오기 실패');
         const response = err;

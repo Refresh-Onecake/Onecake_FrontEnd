@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {AppStyles} from '../styles/AppStyles';
@@ -67,11 +68,6 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   useEffect(() => {
     focusManager.setFocused(isFocused);
   }, [isFocused]);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <SafeAreaView style={styles.view}>
       {role === 'SELLER' ? (
@@ -80,36 +76,12 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <MenuList data={data} />
         </>
       ) : (
-        // <>
-        //   <TouchableOpacity
-        //     style={styles.card}
-        //     onPress={() => {
-        //       setStoreId(0);
-        //       navigation.navigate('StoreDetail');
-        //     }}>
-        //     <Icon
-        //       size={18}
-        //       style={{position: 'absolute', right: 0}}
-        //       name="heart-outline"
-        //     />
-        //     <Image
-        //       style={styles.image}
-        //       source={require('../asset/customer.png')}></Image>
-        //     <Text>[강남구] 링링케이크</Text>
-        //     <View style={styles.liked}>
-        //       <Text style={{marginRight: 3}}>찜</Text>
-        //       {/* TODO: 받아와야함*/}
-        //       <Text>234</Text>
-        //       <Text>개</Text>
-        //     </View>
-        //   </TouchableOpacity>
-        // </>
         <View style={styles.flex}>
           <View>
             <Image
               style={{
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
               }}
               source={require('../asset/cake.png')}
             />
@@ -149,7 +121,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    marginTop: 20,
     color: AppStyles.color.subTitle,
-    fontSize: AppStyles.font.large,
+    fontSize: AppStyles.font.middle,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
 });

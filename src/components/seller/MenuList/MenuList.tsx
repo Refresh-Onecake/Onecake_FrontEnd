@@ -1,33 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   Image,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  AppState,
   Platform,
 } from 'react-native';
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
-import {getMenuList} from '../../../services/menuService';
-import {QueryClient, useQuery, useQueryClient} from 'react-query';
-import {queryKeys} from '../../../enum';
+import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {Button} from '../../common/Button';
 import {RootStackParamList} from '../../../screens/navigator';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {IMenuList} from '../../../services/menuService';
 import {MenuRenderList} from './MenuRenderList';
-import {focusManager} from 'react-query';
-import {useIsFocused} from '@react-navigation/native';
-import {useQueryRefetchingOnError} from '../../../hooks';
 
 export type MenuListProps = {
   data: IMenuList[] | undefined;
 };
-export const MenuList: FC<MenuListProps> = ({data}) => {
+export const MenuList = ({data}: MenuListProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
@@ -68,12 +60,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
     color: AppStyles.color.subTitle,
     fontSize: AppStyles.font.middle,
   },
   btnWrap: {
     width: 270,
     height: 44,
-    marginTop: 20,
+    marginTop: 18,
   },
 });

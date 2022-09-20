@@ -4,21 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {FC} from 'react';
-import {
-  ISellerOrder,
-  ISellerOrderList,
-  IStoreMenuListDto,
-} from '../../services/orderService';
+import {ISellerOrder, IStoreMenuListDto} from '../../services/orderService';
 import {AppStyles} from '../../styles/AppStyles';
 import {priceFormatParser} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../screens/navigator';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {orderListModalState, orderSheetIdState} from '../../recoil/atom';
 import {appKeys} from '../../enum';
 export type OrderManageContentProps = {
@@ -38,16 +31,15 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
     idx: number;
     id: number;
   }) => {
+    const setOrderSheetId = useSetRecoilState(orderSheetIdState);
     const [orderListState, setOrderModalState] =
       useRecoilState(orderListModalState);
-    const [orderSheetId, setOrderSheetId] =
-      useRecoilState<number>(orderSheetIdState);
 
-    console.log(status);
     const onPressItem = () => {
       setOrderModalState(appKeys.orderListMore);
       setOrderSheetId(id);
     };
+
     return (
       <TouchableOpacity
         style={[
@@ -63,14 +55,14 @@ export const OrderManageContent: FC<OrderManageContentProps> = ({
           <Image
             style={styles.image}
             source={{
-              uri: 'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/a9bcd249-5d3c-41bb-b4cf-afcb406b20ee-D446A8F7-4323-4A61-8158-794082BBF508.jpg',
+              uri: item.image,
             }}
           />
         </View>
         <View style={{flex: 1}}>
           <Text style={styles.title}>{item.menuName}</Text>
           <Text style={styles.subTitle}>{item.menuDescription}</Text>
-          <Text style={styles.price}>{priceFormatParser(item.price)}원~</Text>
+          <Text style={styles.price}>{item.price}원~</Text>
         </View>
       </TouchableOpacity>
     );
@@ -98,12 +90,20 @@ const styles = StyleSheet.create({
   viewTitle: {
     color: AppStyles.color.black,
     fontSize: 17,
-    fontWeight: '700',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+        lineHeight: 20,
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
   },
   listItem: {
     flexDirection: 'row',
     paddingVertical: 15,
-    paddingHorizontal: 11,
+    paddingRight: 11,
   },
   image: {
     width: 64.5,
@@ -111,22 +111,44 @@ const styles = StyleSheet.create({
     borderRadius: 13,
   },
   title: {
-    fontWeight: '600',
     fontSize: 13,
     lineHeight: 16,
+    paddingBottom: 3,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   subTitle: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
+    paddingBottom: 11.46,
     color: AppStyles.color.midGray,
-    paddingBottom: 11,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   price: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
     color: AppStyles.color.midBlack,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
 });

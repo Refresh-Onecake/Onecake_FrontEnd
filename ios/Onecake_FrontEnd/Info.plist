@@ -70,13 +70,26 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-Medium.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>BlackHanSans-Regular.ttf</string>
+		<string>FontAwesome5_Regular.ttfFontAwesome5_Regular.ttf</string>
+		<string>NotoSansKR-Black.otf</string>
+		<string>NotoSansKR-Bold.otf</string>
+		<string>NotoSansKR-Light.otf</string>
+		<string>NotoSansKR-Medium.otf</string>
+		<string>NotoSansKR-Regular.otf</string>
+		<string>NotoSansKR-Thin.otf</string>
+		<string>AppleSDGothicNeo-Bold.ttf</string>
+		<string>AppleSDGothicNeoEB.ttf</string>
+		<string>AppleSDGothicNeoH.ttf</string>
+		<string>AppleSDGothicNeoL.ttf</string>
+		<string>AppleSDGothicNeoM.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

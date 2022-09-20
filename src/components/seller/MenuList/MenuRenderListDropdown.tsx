@@ -64,8 +64,6 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
     {
       retry: 3,
       onSuccess: data => {
-        console.log(data);
-        console.log('삭제 성공');
         queryClient.invalidateQueries(queryKeys.sellerMenuList);
       },
       onError: e => {
@@ -83,8 +81,6 @@ export const MenuRenderListDropdown: FC<MenuRenderListDropdownProps> = ({
 
   const onClickEditMenu = () => {
     refetch();
-    console.log(data);
-
     setVisible(false);
     navigation.navigate('EnterMenu');
   };
@@ -155,12 +151,20 @@ const styles = StyleSheet.create({
   },
   img: {
     width: 17,
-    height: 17,
+    height: 18,
   },
   text: {
-    fontWeight: '500',
     flex: 1,
     fontSize: 15,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 17,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

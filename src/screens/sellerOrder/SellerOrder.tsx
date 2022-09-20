@@ -1,19 +1,16 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {QueryClient, useQuery, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
 import {DateData} from 'react-native-calendars';
 
 import {AppStyles} from '../../styles/AppStyles';
-import {
-  getSellerOrderList,
-  ISellerOrderList,
-} from '../../services/orderService';
 import {appKeys, queryKeys} from '../../enum';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {currentYearState, orderListModalState} from '../../recoil/atom';
 import {OrderManageList} from './OrderManageList';
 import {BottomSheet, ScrollCalendar} from '../../components/common';
+import {DayOffModal} from '../../components/seller/DayOffCalendar';
 
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
@@ -23,36 +20,10 @@ export const SellerOrder = () => {
     useRecoilState(orderListModalState);
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedDate, setClickedDate] = useState<DateData>();
+  const [dayOffModalVisible, setDayOffModalVisible] = useState(false);
   const scrollYear = useRecoilValue(currentYearState);
 
   const queryClient = useQueryClient();
-
-  //주문 일자를 받아서 달력에 표시해주기 위한 query
-  // const {data, status} = useQuery<ISellerOrderList[]>(
-  //   queryKeys.sellerOrderList,
-  //   async () =>
-  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  //     await getSellerOrderList().then(res => {
-  //       if (!res?.ok) {
-  //         console.log(res?.status.toString());
-  //         throw new Error(res?.status.toString());
-  //       } else {
-  //         if (res) return res.json();
-  //       }
-  //     }),
-  //   {
-  //     onError: err => {
-  //       console.log('여기서 떠야지 이놈아', err);
-  //     },
-  //     onSuccess: data => {
-  //       setOrderDate([]);
-  //       data.map((val, idx) => {
-  //         setOrderDate(prev => [...prev, val.orderDate]);
-  //         console.log(orderDate);
-  //       });
-  //     },
-  //   },
-  // );
 
   const onDayPress = (date: DateData) => {
     setClickedDate(() => date);
@@ -66,6 +37,10 @@ export const SellerOrder = () => {
     }
   }, [modalVisible]);
 
+  const onDayOffBtnPress = useCallback(() => {
+    setDayOffModalVisible(true);
+  }, []);
+
   return (
     <View style={styles.flex}>
       <View style={styles.header}>
@@ -78,9 +53,9 @@ export const SellerOrder = () => {
           ]}>
           주문
         </Text>
-        <View>
+        <TouchableOpacity onPress={onDayOffBtnPress}>
           <Text style={styles.headerText}>휴무</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.week}>
         {WEEK.map((val, idx) => (
@@ -93,13 +68,20 @@ export const SellerOrder = () => {
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        height="100%">
+        height={Platform.OS === 'ios' ? '100%' : '95%'}>
         <View>
           <OrderManageList
             date={clickedDate}
             setModalVisible={setModalVisible}
           />
         </View>
+      </BottomSheet>
+      {/* 휴무일 지정 캘린더 */}
+      <BottomSheet
+        modalVisible={dayOffModalVisible}
+        setModalVisible={setDayOffModalVisible}
+        height={Platform.OS === 'ios' ? '100%' : '95%'}>
+        <DayOffModal />
       </BottomSheet>
     </View>
   );
@@ -114,16 +96,35 @@ export const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 14,
     marginTop: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
   headerText: {
     color: AppStyles.color.hotPink,
     fontSize: 15,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   week: {
     flexDirection: 'row',
@@ -135,9 +136,16 @@ export const styles = StyleSheet.create({
   },
   weekText: {
     fontSize: 13,
-    fontWeight: '400',
     color: 'rgba(60,60,67,0.3)',
     letterSpacing: -0.078,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
   },
   contentContainer: {
     flex: 1,

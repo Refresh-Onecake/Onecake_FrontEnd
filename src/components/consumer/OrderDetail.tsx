@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useRecoilValue} from 'recoil';
 import {useQuery, useQueryClient} from 'react-query';
@@ -24,13 +24,10 @@ export default function OrderDetail() {
         }
       }),
     {
-      refetchOnWindowFocus: true,
-      staleTime: 5000,
-      cacheTime: Infinity,
       onSuccess: data => {
         data.form.map(val => {
           if (val.includes('사진')) {
-            const parseImgUrl = val.substring(7, val.length);
+            const parseImgUrl = val.substring(10, val.length);
             setImgUri(parseImgUrl);
           }
         });
@@ -95,19 +92,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  cakeTitle: {color: AppStyles.color.black, fontSize: 15, fontWeight: '400'},
+  cakeTitle: {
+    color: AppStyles.color.black,
+    fontSize: 15,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '400',
+      },
+    }),
+  },
   storeName: {
     color: AppStyles.color.black,
-    fontWeight: '600',
     fontSize: 20,
     marginTop: 18,
     marginBottom: 10,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   orderState: {
     color: AppStyles.color.hotPink,
     fontSize: 15,
-    fontWeight: '600',
     marginTop: 30,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 18,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   orderDate: {
     flexDirection: 'row',
@@ -122,8 +146,16 @@ const styles = StyleSheet.create({
   orderOption: {
     fontSize: 13,
     marginTop: 5,
-    fontWeight: '500',
     color: '#989898',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 16,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   img: {
     width: 343,
@@ -133,9 +165,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   subText: {
-    fontWeight: '500',
     fontSize: 13,
     lineHeight: 16,
     color: '#989898',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

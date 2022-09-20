@@ -1,4 +1,11 @@
-import {Image, ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ListRenderItemInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {FC} from 'react';
 import {IConsumerOrderHistoryType} from '../../../services/Consumer';
 import {commonStyles} from '../../../styles/commonStyles';
@@ -18,7 +25,6 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
   index,
   dataLength,
 }) => {
-  console.log(item.orderHistoryId);
   return (
     <View
       style={[
@@ -45,7 +51,7 @@ export const ConsumerOrderCard: FC<IConsumerOrderCardProps> = ({
               {orderStateTranslate(item.orderState)}
             </Text>
           </View>
-          <Text style={styles.cardHeaderSubTitleText}>
+          <Text style={styles.cardHeaderSubTitleText} numberOfLines={2}>
             {item.menuName} {item.menuPrice}원
           </Text>
         </View>
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
   view: {
     padding: 18,
     borderRadius: 16,
-    width: 325.49,
+    width: 336.49,
     height: 225.99,
     backgroundColor: AppStyles.color.white,
   },
@@ -80,9 +86,11 @@ const styles = StyleSheet.create({
   cardHeaderInfoWrap: {
     paddingLeft: 18,
     justifyContent: 'center',
+    flexShrink: 1,
   },
   cardHeaderTitle: {
     flexDirection: 'row',
+    flexShrink: 1,
   },
   menuImage: {
     width: 70,
@@ -92,13 +100,30 @@ const styles = StyleSheet.create({
   cardHeaderTitleText: {
     fontWeight: '600',
     fontSize: 15,
+    flexShrink: 1,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 18,
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   cardHeaderSubTitleText: {
     paddingTop: 6.41,
-    fontWeight: '500',
     fontSize: 13,
     lineHeight: 16,
     color: '#777777',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
   ConsumerOrderProgressWrap: {
     position: 'relative',

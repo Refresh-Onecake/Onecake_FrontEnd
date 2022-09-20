@@ -4,7 +4,6 @@
  * @param setter Date타입의 date
  */
 export const parseTime = (date: Date) => {
-  console.log(date);
   const tmpHours = `${date.getHours() < 10 ? '0' : ''}${date.getHours()}`;
   // let meridiem;
   const meridiem = parseInt(tmpHours) - 12 < 0 ? 'AM' : 'PM';

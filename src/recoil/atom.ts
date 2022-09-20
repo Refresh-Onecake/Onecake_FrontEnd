@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import {atom, selector} from 'recoil';
 import {IEditFetchMenu, IFetchMenu} from '../screens/enterMenu';
 import {IMenuList, IRefreshToken} from '../services';
 import moment from 'moment';
@@ -92,4 +92,14 @@ export const orderHistoryIdState = atom<number>({
 //메뉴리스트를 선택한 후 그리드에서 사진을 선택했을때 디테일 페이지로 보내주는 atom
 export const menuImageDetailState = atom<IMenuImageDetailsItem>({
   key: 'menuImageDetailState',
+});
+
+// 마이페이지 프로필 수정
+export const profileEditState = atom({
+  key: 'profileEditState',
+  default: {
+    profileImg:
+      'https://onecake-image-bucket.s3.ap-northeast-2.amazonaws.com/472fe03a-20df-4a95-a614-ff0094b27034-Mask%20group.png',
+    nickname: '원게익',
+  },
 });

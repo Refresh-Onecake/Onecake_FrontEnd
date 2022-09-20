@@ -1,5 +1,16 @@
 //prettier-ignore
-import {Alert, Image, Linking, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Linking,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Platform,
+} from 'react-native';
 import React, {
   FC,
   Fragment,
@@ -10,20 +21,19 @@ import React, {
 } from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {useForm, Controller} from 'react-hook-form';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Modal from 'react-native-modal';
+import {ScrollView} from 'react-native-gesture-handler';
 import {useMutation} from 'react-query';
 import {StackScreenProps} from '@react-navigation/stack';
 
 import {assert, regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
-import {countryCodes, ICountryCode} from '../../utils';
+import {ICountryCode} from '../../utils';
 import {fetchSignUp, getUserData, ISignIn, ISignUp} from '../../services';
 import {RootStackParamList} from '../navigator';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CountryCodeButton, CountryCodeModal} from '../../components/common';
 
 export type IFormInputs = {
   name: string;
@@ -47,6 +57,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
     dial_code: '+82',
     code: 'KR',
   });
+
   //prettier-ignore
   const [validPhoneNumberText, setValidPhoneNumberText] = useState<boolean>(false);
   //prettier-ignore
@@ -116,33 +127,6 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
       );
     },
   });
-  // 모달 내에서 아이템을 클릭했을 때 핸들러
-  const handleRenderItemClick = ({name, dial_code, code}: ICountryCode) => {
-    const selectedObject = {
-      name,
-      dial_code,
-      code,
-    };
-    setSelectedCountry(selectedObject);
-    console.log(selectedObject);
-  };
-
-  // TODO: 이후에 관심사 분리를 통해 뺄 컴포넌트;
-  const RenderItem = ({data}: {data: ICountryCode}) => (
-    <TouchableOpacity
-      style={styles.modalItem}
-      onPress={() => handleRenderItemClick(data)}>
-      <Text
-        style={
-          selectedCountry.name === data.name
-            ? {color: AppStyles.color.pink}
-            : {color: AppStyles.color.gray}
-        }>
-        {data.name}, {data.code}
-      </Text>
-      <Text>{data.dial_code}</Text>
-    </TouchableOpacity>
-  );
 
   // 사용하지 않는 함수이나 이후 필요할 수 있어서 남겨둠.
   // const convertPhoneNumber = (phoneNumber: string) => {
@@ -190,8 +174,8 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
   };
 
   //prettier-ignore
-  const {control, handleSubmit, watch, clearErrors ,formState: {errors}} = useForm<IFormInputs>({
-      defaultValues: {
+  const { control, handleSubmit, watch, clearErrors, formState: { errors } } = useForm<IFormInputs>({
+    defaultValues: {
       name: '',
       id: '',
       password: '',
@@ -265,6 +249,9 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
 
   // 회원가입 제출
   const onSubmit = (data: IFormInputs) => {
+    // if (errors.id || errors.name || errors.password || errors.confirmPasswd) {
+    //   setVisible(true);
+    // }
     console.log(data);
     if (checkedOneCakeTerm === false || checkedPrivacyTerm === false) {
       Alert.alert(
@@ -324,11 +311,19 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
     checkedPrivacyTerm && checkedOneCakeTerm ? setCheckedTermAll(true) : null;
   }, [checkedOneCakeTerm, checkedPrivacyTerm]);
 
+  const [visible, setVisible] = useState<boolean>(false);
+
   return (
     <Fragment>
       <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
       <SafeAreaView style={styles.container}>
         <ScrollView>
+          <InfoModal
+            modalVisible={visible}
+            setModalVisible={setVisible}
+            title={'입력 에러'}
+            subTitle={'입력값을 확인해주세요!'}
+          />
           <AutoFocusProvider contentContainerStyle={styles.flex}>
             {/* 회원가입 폼 컴포넌트 */}
             <View style={styles.signUpWrapper}>
@@ -363,7 +358,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkNameIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -373,6 +368,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                   )}
                   name="name"
                 />
+                {/* {errors.name ? setVisible(true) : setVisible(false)} */}
                 {errors.name && (
                   <Text style={styles.errorText}>한글만 입력 가능합니다.</Text>
                 )}
@@ -401,7 +397,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                         <View style={styles.iconWrapper}>
                           {checkIdIcon && (
                             <Image
-                              style={{width: 11.45, height: 11.45}}
+                              style={{width: 12, height: 11}}
                               source={require('../../asset/check_Icon_default_active.png')}
                             />
                           )}
@@ -444,7 +440,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           onPress={() => setPasswdIcon(!passwdIcon)}>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 passwdIcon
                                   ? require('../../asset/visible_active.png')
@@ -497,7 +493,7 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                           }>
                           {value.length > 0 && (
                             <Image
-                              style={{width: 13, height: 13}}
+                              style={{width: 15, height: 13}}
                               source={
                                 confirmPasswdIcon
                                   ? require('../../asset/visible_active.png')
@@ -532,26 +528,10 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                 }}>
                 {/* 국제번호 선택 컴포넌트 */}
                 <View style={styles.phoneNumberInputWrap}>
-                  <TouchableOpacity
-                    style={styles.dropdown}
-                    onPress={toggleModal}>
-                    <Text style={styles.dropdownText}>
-                      {`${selectedCountry.dial_code} ${selectedCountry.code}`}
-                    </Text>
-                    <View
-                      style={{justifyContent: 'center', alignItems: 'center'}}>
-                      <Icon
-                        name="chevron-down"
-                        style={{
-                          color: AppStyles.color.black,
-                          opacity: 0.5,
-                          paddingLeft: 3,
-                        }}
-                        size={AppStyles.IconSize.small}
-                      />
-                    </View>
-                  </TouchableOpacity>
-
+                  <CountryCodeButton
+                    selectedCountry={selectedCountry}
+                    onPress={toggleModal}
+                  />
                   <TextInput
                     style={[styles.textInput]}
                     keyboardType="default"
@@ -577,7 +557,15 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
                     style={{
                       color: AppStyles.color.white,
                       fontSize: 11,
-                      fontWeight: '500',
+                      ...Platform.select({
+                        android: {
+                          fontFamily: 'AppleSDGothicNeoM',
+                          lineHeight: 13,
+                        },
+                        ios: {
+                          fontWeight: '500',
+                        },
+                      }),
                     }}>
                     인증 받기
                   </Text>
@@ -742,29 +730,12 @@ export const SignUp: FC<Props> = ({route, navigation}) => {
           </AutoFocusProvider>
         </ScrollView>
       </SafeAreaView>
-      <Modal isVisible={isModalVisible} style={{margin: 0}}>
-        <SafeAreaView style={styles.modalStyle}>
-          <FlatList
-            style={{flex: 1}}
-            data={countryCodes}
-            renderItem={({item}) => <RenderItem data={item} />}
-            keyExtractor={(item: ICountryCode) => item.code}
-          />
-          <Pressable
-            style={[styles.btn, {paddingVertical: 10}]}
-            onPress={toggleModal}>
-            <Text
-              style={{
-                color: AppStyles.color.white,
-                fontSize: 15,
-                fontWeight: '500',
-              }}>
-              닫기
-            </Text>
-          </Pressable>
-        </SafeAreaView>
-        <SafeAreaView style={{backgroundColor: AppStyles.color.hotPink}} />
-      </Modal>
+      <CountryCodeModal
+        isModalVisible={isModalVisible}
+        toggleModal={toggleModal}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
       <SafeAreaView style={{flex: 0, backgroundColor: AppStyles.color.white}} />
     </Fragment>
   );
@@ -787,25 +758,48 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   h1: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+      ios: {
+        fontWeight: '700',
+      },
+    }),
     marginBottom: 8.65,
-    fontWeight: '700',
     fontSize: 23,
     lineHeight: 28,
     color: AppStyles.color.black,
   },
   h2: {
-    fontWeight: '500',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '500'},
+    }),
     fontSize: 17,
     lineHeight: 22,
     color: AppStyles.color.black,
   },
   h3: {
-    fontWeight: '500',
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.gray,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '500'},
+    }),
   },
   subText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
     color: AppStyles.color.darkGray,
     fontWeight: '500',
     fontSize: 14,
@@ -823,26 +817,47 @@ const styles = StyleSheet.create({
   },
   inputFlex: {
     flexDirection: 'row',
-    height: 40,
+    height: 35,
   },
   inputText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
     fontSize: 12,
     fontWeight: '500',
     color: AppStyles.color.black,
   },
   textInput: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 20,
+      },
+      ios: {
+        fontWeight: '500',
+        fontStyle: 'normal',
+      },
+    }),
     fontSize: 15,
     flex: 1,
     color: AppStyles.color.black,
-    fontStyle: 'normal',
-    fontWeight: '500',
-    paddingLeft: 0,
   },
   errorText: {
     fontSize: 12,
     color: AppStyles.color.pink,
     fontWeight: '500',
     paddingTop: 5.36,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 13,
+      },
+      ios: {},
+    }),
   },
   termHeader: {
     flexDirection: 'row',
@@ -864,9 +879,14 @@ const styles = StyleSheet.create({
     // borderRadius: 12,
   },
   submitBtnText: {
-    fontWeight: '700',
     fontSize: 15,
     color: AppStyles.color.white,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '700'},
+    }),
   },
   // 문자 인증 관련
   phoneNumberInputWrap: {
@@ -876,32 +896,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: AppStyles.color.border,
-  },
-  dropdown: {
-    backgroundColor: AppStyles.color.lightGray,
-    flexDirection: 'row',
-    paddingHorizontal: 7,
-    borderRadius: 14,
-    marginRight: 10,
-  },
-  dropdownText: {
-    color: AppStyles.color.black,
-    opacity: 0.5,
-    fontWeight: '500',
-    fontSize: 13,
-    paddingVertical: 3,
-  },
-  modalStyle: {
-    backgroundColor: AppStyles.color.white,
-    flex: 1,
-    margin: 0,
-  },
-  modalItem: {
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderBottomWidth: 1,
-    paddingBottom: 8,
     borderBottomColor: AppStyles.color.border,
   },
 });

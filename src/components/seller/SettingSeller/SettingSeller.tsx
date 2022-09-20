@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -9,15 +9,15 @@ import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
 import {useLogoutAndReSignQuery} from '../../../hooks';
 import {fetchLogout, fetchResign} from '../../../services';
+import {useRecoilState} from 'recoil';
+import {profileEditState} from '../../../recoil/atom';
+import {useGetUserProfile} from '../../../hooks/Query/Common';
 
 export const SettingSeller = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const openModal = useCallback(() => {
-    setModalVisible(() => true);
-  }, []);
-  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
 
+  const logoutMutation = useLogoutAndReSignQuery(fetchLogout, navigation);
   const logout = useCallback(() => {
     Alert.alert(
       '로그아웃하기',
@@ -35,13 +35,25 @@ export const SettingSeller = () => {
       ],
       {cancelable: false},
     );
-  }, []);
+  }, [logoutMutation]);
 
   const onClickReSign = useCallback(() => {
     navigation.navigate('StackNavigator', {
       screen: 'ReSign',
     });
-  }, []);
+  }, [navigation]);
+
+  const onClickProfileEdit = () => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileEdit',
+    });
+  };
+
+  const onClickProfileInfoEdit = useCallback(() => {
+    navigation.navigate('StackNavigator', {
+      screen: 'ProfileInfoEdit',
+    });
+  }, [navigation]);
 
   return (
     <View>
@@ -50,15 +62,29 @@ export const SettingSeller = () => {
           styles.Wrap,
           {borderBottomWidth: 1, borderBottomColor: AppStyles.color.border},
         ]}>
-        <Text style={[styles.text, {fontWeight: '700', paddingBottom: 37}]}>
+        <Text
+          style={[
+            styles.text,
+            {
+              fontWeight: Platform.OS === 'ios' ? '700' : '800',
+              paddingBottom: 37,
+            },
+          ]}>
           프로필
         </Text>
-        <TouchableOpacity onPress={openModal}>
-          <Text style={[styles.text, {fontWeight: '500', paddingBottom: 37}]}>
+        <TouchableOpacity onPress={onClickProfileEdit}>
+          <Text
+            style={[
+              styles.text,
+              {
+                fontWeight: '500',
+                paddingBottom: 37,
+              },
+            ]}>
             프로필 수정
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openModal}>
+        <TouchableOpacity onPress={onClickProfileInfoEdit}>
           <Text style={[styles.text, {fontWeight: '500'}]}>정보 설정</Text>
         </TouchableOpacity>
       </View>
@@ -91,5 +117,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: '#1B1B1B',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
   },
 });

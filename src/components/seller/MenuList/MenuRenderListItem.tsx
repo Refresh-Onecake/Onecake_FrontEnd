@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -43,7 +44,6 @@ export const MenuRenderListItem: FC<MenuRenderListItemProps> = ({
   const setMenuRenderListItemState = useSetRecoilState(menuRenderListItemState);
   const openDropdown = useCallback(() => {
     DropdownButton.current?.measure((_fx, _fy, _w, h, _px, py) => {
-      console.log(py, _px, _w);
       setDropdownTop(py + 20);
       setDropdownLeft(_px - 185.44);
       setDropdownWidth(_w);
@@ -115,24 +115,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 11,
   },
   title: {
-    fontWeight: '600',
     fontSize: 13,
     lineHeight: 16,
     paddingVertical: 4,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   subTitle: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
     color: AppStyles.color.midGray,
     paddingBottom: 11,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '400'},
+    }),
   },
   price: {
-    fontWeight: '400',
     fontSize: 11,
     lineHeight: 13,
     color: AppStyles.color.midBlack,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '400'},
+    }),
   },
   more: {
     justifyContent: 'center',

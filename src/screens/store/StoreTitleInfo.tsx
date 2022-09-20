@@ -102,21 +102,41 @@ export const StoreTitleInfo = () => {
   return (
     <>
       <Image style={styles.image} source={{uri: data?.storeImage}} />
-      <View style={styles.back} />
+      <View
+        style={[
+          styles.back,
+          {
+            ...Platform.select({
+              android: {
+                height: '20%',
+              },
+              ios: {
+                paddingTop: 30,
+                marginBottom: role !== undefined && role === 'SELLER' ? 20 : 90,
+              },
+            }),
+          },
+        ]}
+      />
       <View style={styles.titleInfo}>
         <View>
+          <Text style={styles.storeName}>{data?.storeName}</Text>
           <Text
-            style={{
-              fontSize: AppStyles.font.title,
-              fontWeight: '500',
-            }}>
-            {data?.storeName}
-          </Text>
-          <Text
-            style={{
-              marginTop: 10,
-              fontSize: AppStyles.font.subTitle,
-            }}>
+            style={[
+              {
+                marginTop: 10,
+                fontSize: AppStyles.font.subTitle,
+              },
+              {
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'AppleSDGothicNeoM',
+                    lineHeight: 16,
+                  },
+                  ios: {},
+                }),
+              },
+            ]}>
             {data?.storeDescription}
           </Text>
         </View>
@@ -130,10 +150,35 @@ export const StoreTitleInfo = () => {
               },
             ]}>
             <TouchableOpacity onPress={pressHeart}>
-              <Icon size={15} name={liked ? 'heart' : 'heart-outline'} />
+              <Icon size={18} name={liked ? 'heart' : 'heart-outline'} />
             </TouchableOpacity>
-            <Text style={{marginLeft: 5, marginRight: 5}}>찜</Text>
-            <Text>{likedNum}</Text>
+            <Text
+              style={[
+                {marginLeft: 5, marginRight: 5},
+                {
+                  ...Platform.select({
+                    android: {
+                      fontFamily: 'AppleSDGothicNeoM',
+                      lineHeight: 20,
+                    },
+                    ios: {},
+                  }),
+                },
+              ]}>
+              찜
+            </Text>
+            <Text
+              style={{
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'AppleSDGothicNeoM',
+                    lineHeight: 20,
+                  },
+                  ios: {},
+                }),
+              }}>
+              {likedNum}
+            </Text>
           </View>
           <TouchableOpacity
             style={styles.userOption}
@@ -144,10 +189,21 @@ export const StoreTitleInfo = () => {
             }>
             <Icon
               style={{marginRight: 5}}
-              size={15}
+              size={18}
               name="chat-processing-outline"
             />
-            <Text>상담하기</Text>
+            <Text
+              style={{
+                ...Platform.select({
+                  android: {
+                    fontFamily: 'AppleSDGothicNeoM',
+                    lineHeight: 20,
+                  },
+                  ios: {},
+                }),
+              }}>
+              상담하기
+            </Text>
           </TouchableOpacity>
           <Modal isVisible={modalVisible}>
             <View style={styles.modal}>
@@ -178,13 +234,13 @@ export const StoreTitleInfo = () => {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    height: '30%',
+    height: 280,
   },
   back: {
     width: '100%',
     ...Platform.select({
       android: {
-        height: '15%',
+        paddingTop: 140,
       },
       ios: {
         paddingTop: 30,
@@ -192,6 +248,19 @@ const styles = StyleSheet.create({
       },
     }),
     backgroundColor: AppStyles.color.white,
+  },
+  storeName: {
+    color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 30,
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
+    fontSize: AppStyles.font.title,
   },
   userOptionWrapper: {
     flexDirection: 'row',
@@ -202,6 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 20,
   },
   Xicon: {
     height: 15,
@@ -216,10 +286,10 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   titleInfo: {
-    top: '26%',
+    top: 250,
     position: 'absolute',
     width: 370,
-    height: '16%',
+    height: 160,
     alignSelf: 'center',
     borderRadius: 13,
     backgroundColor: AppStyles.color.white,
@@ -229,13 +299,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 2,
-          height: 2,
-        },
-        shadowOpacity: 0.4,
-        shadowRadius: 10,
+        shadowColor: '#000000',
+        shadowRadius: 7,
+        shadowOffset: {height: 1, width: 1},
+        shadowOpacity: 0.11,
       },
       android: {
         elevation: 5,
@@ -252,8 +319,14 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: AppStyles.font.large,
-    fontWeight: '600',
     alignSelf: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        lineHeight: 30,
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   speaker: {
     height: 250,

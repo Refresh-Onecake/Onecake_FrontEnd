@@ -7,10 +7,10 @@ import Stores from '../Stores';
 import Order from '../Order';
 import Contact from '../Contact';
 import MyPage from '../MyPage';
-import {AppStyles} from '../../styles/AppStyles';
 import {useAsync} from '../../hooks';
 import {appKeys} from '../../enum';
 import {getStringValueFromAsyncStorage} from '../../utils';
+import {AppStyles} from '../../styles/AppStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +30,10 @@ export const MainNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarLabelStyle: {
+          fontFamily: 'AppleSDGothicNeoM',
+          lineHeight: 16,
+        },
         tabBarActiveTintColor: AppStyles.color.hotPink,
         tabBarStyle: {
           ...Platform.select({
@@ -39,7 +43,13 @@ export const MainNavigator = () => {
               shadowOffset: {height: -20, width: 0},
               shadowOpacity: 0.05,
             },
+            android: {
+              fontFamily: 'AppleSDGothicNeoM',
+            },
           }),
+        },
+        headerTitleStyle: {
+          fontFamily: 'AppleSDGothicNeoM',
         },
       }}>
       <Tab.Screen
@@ -58,6 +68,15 @@ export const MainNavigator = () => {
               />
             );
           },
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -67,7 +86,7 @@ export const MainNavigator = () => {
           tabBarIcon: ({focused}) => {
             return (
               <Image
-                style={{width: 21, height: 21}}
+                style={{width: 23.5, height: 23.5}}
                 source={
                   focused
                     ? require('../../asset/store_active.png')
@@ -78,6 +97,16 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -116,6 +145,16 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: '주문 상담',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
       <Tab.Screen
@@ -136,6 +175,16 @@ export const MainNavigator = () => {
           },
           headerShown: true,
           headerTitle: '설정',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 15,
+            fontWeight: Platform.OS === 'ios' ? '600' : '800',
+            fontFamily: 'AppleSDGothicNeo-Bold',
+          },
+          headerStyle: {
+            borderBottomWidth: 5,
+            borderBottomColor: '#F4F4F4',
+          },
         }}
       />
     </Tab.Navigator>
@@ -145,11 +194,22 @@ export const MainNavigator = () => {
 const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   headerTitleContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
 });

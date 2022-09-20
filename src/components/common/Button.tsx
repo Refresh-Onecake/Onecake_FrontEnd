@@ -1,10 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {ComponentProps, FC, ReactNode} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
 export type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>;
 
-type ButtonProps = {
+export type ButtonProps = {
   children?: ReactNode;
   text?: string;
   backgroundColor?: string;
@@ -52,8 +52,15 @@ export const Button: FC<ButtonProps & TouchableOpacityProps> = ({
         <Text
           style={{
             color: AppStyles.color.white,
-            fontWeight: '700',
             fontSize: textSize,
+            ...Platform.select({
+              android: {
+                fontFamily: 'AppleSDGothicNeo-Bold',
+              },
+              ios: {
+                fontWeight: '700',
+              },
+            }),
           }}>
           {text}
         </Text>

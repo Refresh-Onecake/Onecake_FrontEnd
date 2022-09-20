@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {FC} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
@@ -53,11 +60,18 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   text: {
-    fontWeight: '500',
     fontSize: 15,
     lineHeight: 18,
     color: AppStyles.color.black,
     marginLeft: 18,
     textAlign: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+      ios: {
+        fontWeight: '500',
+      },
+    }),
   },
 });

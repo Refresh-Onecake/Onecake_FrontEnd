@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -11,7 +12,6 @@ import {AppStyles} from '../../styles/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigator';
 import {styles as EnterStoreStyle} from './EnterStore';
-import {ProgressBar} from '../../components';
 export const EnterStart = ({
   navigation,
 }: StackScreenProps<RootStackParamList>) => {
@@ -60,16 +60,28 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 30,
     fontSize: AppStyles.font.title,
-    fontWeight: '700',
     color: AppStyles.color.black,
     paddingTop: 77,
-    paddingBottom: 14,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeo-Bold',
+      },
+      ios: {
+        fontWeight: '700',
+        paddingBottom: 14,
+      },
+    }),
   },
   subTitle: {
     paddingLeft: 30,
     fontSize: AppStyles.font.subTitle,
-    fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '400'},
+    }),
   },
 });

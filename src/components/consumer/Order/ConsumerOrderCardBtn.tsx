@@ -1,6 +1,7 @@
 import {
   AppState,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -44,11 +45,6 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
     );
   }, []);
 
-  const onClickOrderHistoryDetail = () => {
-    setOrderHistoryId(orderHistoryId);
-    navigation.navigate('OrderDetail');
-  };
-
   const ConsumerOrderCardReviewBtn = useCallback(() => {
     return (
       <View style={styles.btnTextWrap}>
@@ -60,6 +56,11 @@ export const ConsumerOrderCardBtn: FC<ConsumerOrderCardBtnProps> = ({
       </View>
     );
   }, []);
+
+  const onClickOrderHistoryDetail = () => {
+    setOrderHistoryId(orderHistoryId);
+    navigation.navigate('OrderDetail');
+  };
 
   return (
     <View style={styles.btnWrap}>
@@ -120,8 +121,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   btnText: {
-    fontWeight: '600',
     fontSize: 11,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
 });

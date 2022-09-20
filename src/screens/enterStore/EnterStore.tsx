@@ -168,6 +168,7 @@ export const EnterStore = () => {
                     <Text style={styles.inputTitle}>가게 이름</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
+                        style={styles.subText}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
@@ -195,6 +196,7 @@ export const EnterStore = () => {
                     <Text style={styles.inputTitle}>사업자 등록번호</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
+                        style={styles.subText}
                         keyboardType="decimal-pad"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -228,13 +230,7 @@ export const EnterStore = () => {
                       size={27}
                       color={AppStyles.color.hotPink}
                     />
-                    <Text
-                      style={{
-                        fontSize: AppStyles.font.small,
-                        color: AppStyles.color.hotPink,
-                        fontWeight: '700',
-                        paddingTop: 2,
-                      }}>
+                    <Text style={styles.imgInfo}>
                       {storeImg ? '이미지 (1/1)' : '이미지 (0/1)'}
                     </Text>
                   </TouchableOpacity>
@@ -255,7 +251,7 @@ export const EnterStore = () => {
                   style={styles.InputWrapper}
                   onPress={toggleModal}>
                   <TextInput
-                    style={{color: AppStyles.color.black}}
+                    style={[styles.subText, {color: AppStyles.color.black}]}
                     placeholderTextColor={AppStyles.color.darkGray}
                     selectionColor={AppStyles.color.hotPink}
                     placeholder="도로명 주소를 입력해주세요."
@@ -277,6 +273,7 @@ export const EnterStore = () => {
                     <Text style={styles.inputTitle}>가게 전화번호</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
+                        style={styles.subText}
                         keyboardType="decimal-pad"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -306,6 +303,7 @@ export const EnterStore = () => {
                     <Text style={styles.inputTitle}>가게 소개</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
+                        style={styles.subText}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
@@ -412,6 +410,7 @@ export const EnterStore = () => {
                     <Text style={styles.inputTitle}>카카오톡 채널</Text>
                     <View style={styles.InputWrapper}>
                       <TextInput
+                        style={styles.subText}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
@@ -473,15 +472,7 @@ export const EnterStore = () => {
               borderBottomRightRadius: 20,
             }}
             onPress={toggleModal}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: AppStyles.color.white,
-                textAlignVertical: 'center',
-                fontWeight: '600',
-              }}>
-              닫기
-            </Text>
+            <Text style={styles.close}>닫기</Text>
           </TouchableOpacity>
         </SafeAreaView>
       </Modal>
@@ -520,9 +511,15 @@ export const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    fontWeight: '600',
+
     paddingTop: 20,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   InputWrapper: {
     justifyContent: 'center',
@@ -538,10 +535,43 @@ export const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     color: AppStyles.color.hotPink,
-    paddingTop: 5.66,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+        paddingTop: 5,
+      },
+      ios: {
+        paddingTop: 5.66,
+      },
+    }),
+  },
+  imgInfo: {
+    fontSize: AppStyles.font.small,
+    color: AppStyles.color.hotPink,
+
+    paddingTop: 2,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '700'},
+    }),
   },
   imageWrapper: {
     flexDirection: 'row',
+  },
+  close: {
+    fontSize: 16,
+    color: AppStyles.color.white,
+    textAlignVertical: 'center',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {
+        fontWeight: '600',
+      },
+    }),
   },
   selectImage: {
     width: 102.68,
@@ -563,7 +593,20 @@ export const styles = StyleSheet.create({
   submitText: {
     fontSize: 17,
     color: AppStyles.color.white,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
+  },
+  subText: {
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
   timePickerWrap: {
     flexDirection: 'row',
@@ -580,5 +623,11 @@ export const styles = StyleSheet.create({
   timePickerTitle: {
     flex: 1,
     color: AppStyles.color.black,
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {},
+    }),
   },
 });

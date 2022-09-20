@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import SignIn from '../auth/SignIn';
@@ -18,6 +18,7 @@ import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
 import {menuRenderListItemState} from '../../recoil/atom';
 import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
+import {ProfileEdit, ProfileInfoEdit} from '../../components/common/Profile';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BackBtn = () => {
@@ -149,6 +150,31 @@ export const StackNavigator = () => {
           headerRightContainerStyle: styles.headerRightContainer,
         }}
       />
+      {/* 설정 관련 */}
+      <Stack.Screen
+        name="ProfileEdit"
+        component={ProfileEdit}
+        options={{
+          headerShown: true,
+          headerTitle: '프로필 수정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="ProfileInfoEdit"
+        component={ProfileInfoEdit}
+        options={{
+          headerShown: true,
+          headerTitle: '정보 설정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -156,7 +182,12 @@ export const StackNavigator = () => {
 export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+      ios: {fontWeight: '600'},
+    }),
   },
   headerTitleContainer: {
     flex: 1,

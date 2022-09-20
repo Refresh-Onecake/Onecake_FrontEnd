@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, TextStyle, View} from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import {CalendarList, DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
@@ -16,7 +16,7 @@ LocaleConfig.locales['ko'] = {
   //prettier-ignore
   dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
   //prettier-ignore
-  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+  dayNamesShort: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
   today: '오늘',
 };
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -77,10 +77,21 @@ export const ScrollCalendar: FC<ScrollCalendarProps> = ({
         theme={{
           monthTextColor: AppStyles.color.hotPink,
           textMonthFontSize: 18,
-          textMonthFontWeight: '500',
-          textDayFontSize: 18,
-          textDayFontWeight: '500',
+          ...Platform.select({
+            android: {
+              textMonthFontFamily: 'AppleSDGothicNeo-Bold',
+              textDayFontFamily: 'AppleSDGothicNeo-Bold',
+              textDayFontSize: 18,
+            },
+            ios: {
+              textDayFontSize: 18,
+              textDayFontWeight: '500',
+              textMonthFontWeight: '500',
+            },
+          }),
           todayTextColor: AppStyles.color.hotPink,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           'stylesheet.calendar.main': {
             dayContainer: {
               borderTopColor: AppStyles.color.border,

@@ -14,6 +14,7 @@ import {CountryCodeModal} from '../CountryCodeModal';
 import {ICountryCode} from '../../../utils';
 import {CountryCodeButton} from '../CountryCodeButton';
 import {ScreenBottomButton} from '../ScreenBottomButton';
+import {useGetUserPhoneNumberQuery} from '../../../hooks/Query/Common/useGetUserPhoneNumber';
 
 export const ProfileInfoEdit = () => {
   const [selectedCountry, setSelectedCountry] = useState<ICountryCode>({
@@ -21,9 +22,11 @@ export const ProfileInfoEdit = () => {
     dial_code: '+82',
     code: 'KR',
   });
+  const {data, status} = useGetUserPhoneNumberQuery();
+
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(data);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -31,9 +34,6 @@ export const ProfileInfoEdit = () => {
     setPhoneNumber(() => '');
   }, []);
 
-  useEffect(() => {
-    console.log(phoneNumber);
-  }, [phoneNumber]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.InfoWrap}>

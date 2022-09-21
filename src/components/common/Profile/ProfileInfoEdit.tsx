@@ -15,6 +15,7 @@ import {ICountryCode} from '../../../utils';
 import {CountryCodeButton} from '../CountryCodeButton';
 import {ScreenBottomButton} from '../ScreenBottomButton';
 import {useGetUserPhoneNumberQuery} from '../../../hooks/Query/Common/useGetUserPhoneNumber';
+import {useUserPhoneNumberMutate} from '../../../hooks/Query/Common/useUserPhoneNumberMutation';
 
 export const ProfileInfoEdit = () => {
   const [selectedCountry, setSelectedCountry] = useState<ICountryCode>({
@@ -23,7 +24,7 @@ export const ProfileInfoEdit = () => {
     code: 'KR',
   });
   const {data, status} = useGetUserPhoneNumberQuery();
-
+  const mutation = useUserPhoneNumberMutate();
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(data);
@@ -34,6 +35,10 @@ export const ProfileInfoEdit = () => {
     setPhoneNumber(() => '');
   }, []);
 
+  const submit = () => {
+    console.log(phoneNumber);
+    mutation.mutate(phoneNumber as string);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.InfoWrap}>
@@ -64,7 +69,7 @@ export const ProfileInfoEdit = () => {
         setSelectedCountry={setSelectedCountry}
       />
       <View style={styles.flex} />
-      <ScreenBottomButton text={'적용하기'} />
+      <ScreenBottomButton text={'적용하기'} onPress={submit} />
     </SafeAreaView>
   );
 };

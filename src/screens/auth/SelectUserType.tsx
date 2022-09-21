@@ -164,7 +164,11 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 1 : -8,
   },
   btnText: {
-    fontFamily: 'AppleSDGothicNeoM',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
     color: AppStyles.color.black,
     paddingTop: 9,
     paddingBottom: 11,

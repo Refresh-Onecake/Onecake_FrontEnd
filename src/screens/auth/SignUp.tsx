@@ -34,6 +34,7 @@ import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CountryCodeButton, CountryCodeModal} from '../../components/common';
+import InfoModal from '../../components/common/InfoModal';
 
 export type IFormInputs = {
   name: string;

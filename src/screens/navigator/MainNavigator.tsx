@@ -31,7 +31,11 @@ export const MainNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarLabelStyle: {
-          fontFamily: 'AppleSDGothicNeoM',
+          ...Platform.select({
+            android: {
+              fontFamily: 'AppleSDGothicNeoM',
+            },
+          }),
           lineHeight: 16,
         },
         tabBarActiveTintColor: AppStyles.color.hotPink,

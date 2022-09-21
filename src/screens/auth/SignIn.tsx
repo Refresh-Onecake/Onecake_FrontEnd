@@ -294,14 +294,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: AppStyles.color.pink,
     paddingTop: 3.66,
-    fontFamily: 'AppleSDGothicNeoM',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
   },
   authText: {
     fontSize: 13,
     fontWeight: '400',
     color: AppStyles.color.black,
     opacity: 0.5,
-    fontFamily: 'AppleSDGothicNeoM',
+    ...Platform.select({
+      android: {
+        fontFamily: 'AppleSDGothicNeoM',
+      },
+    }),
   },
   bar: {
     height: '100%',

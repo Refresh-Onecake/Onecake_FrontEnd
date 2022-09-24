@@ -56,7 +56,7 @@ export const SettingSeller = () => {
   }, [navigation]);
 
   return (
-    <View>
+    <View style={styles.view}>
       <View
         style={[
           styles.Wrap,
@@ -110,6 +110,10 @@ export const SettingSeller = () => {
 };
 
 const styles = StyleSheet.create({
+  view: {
+    backgroundColor: AppStyles.color.white,
+    flex: 1,
+  },
   Wrap: {
     paddingVertical: 23,
     paddingHorizontal: AppStyles.padding.screen,

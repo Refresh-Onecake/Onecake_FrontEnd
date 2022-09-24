@@ -29,11 +29,11 @@ export type OrderManageListProps = {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
   close?: () => void;
 };
-export const OrderManageList: FC<OrderManageListProps> = ({
+export const OrderManageList = ({
   date,
   setModalVisible,
   close,
-}) => {
+}: OrderManageListProps) => {
   const [orderListState, setOrderListState] =
     useRecoilState(orderListModalState);
 

@@ -10,7 +10,6 @@ export type UserProfile = {
 };
 
 export const getUserProfile = async () => {
-  //TODO:
   const {data} = await customAxios().get<UserProfile>('/api/v1/member/profile');
   return data;
 };

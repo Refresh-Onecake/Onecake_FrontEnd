@@ -41,6 +41,10 @@ export const SellerOrder = () => {
     setDayOffModalVisible(true);
   }, []);
 
+  const onDayOffModalToggle = useCallback(() => {
+    setDayOffModalVisible(() => !dayOffModalVisible);
+  }, [dayOffModalVisible]);
+
   return (
     <View style={styles.flex}>
       <View style={styles.header}>
@@ -81,7 +85,7 @@ export const SellerOrder = () => {
         modalVisible={dayOffModalVisible}
         setModalVisible={setDayOffModalVisible}
         height={Platform.OS === 'ios' ? '100%' : '95%'}>
-        <DayOffModal />
+        <DayOffModal onDayOffModalToggle={onDayOffModalToggle} />
       </BottomSheet>
     </View>
   );

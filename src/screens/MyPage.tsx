@@ -5,6 +5,7 @@ import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys} from '../enum';
 import {SettingSeller} from '../components/seller/SettingSeller';
+import {SellerMyPage} from './mypage/SellerMyPage';
 
 const MyPage = () => {
   const [role, setRole] = useState<string>();
@@ -22,7 +23,7 @@ const MyPage = () => {
     <SafeAreaView style={styles.view}>
       {role === appKeys.seller ? (
         <View>
-          <SettingSeller />
+          <SellerMyPage />
         </View>
       ) : (
         <View>

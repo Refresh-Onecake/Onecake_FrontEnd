@@ -29,4 +29,6 @@ export type RootStackParamList = {
   // 설정 관련
   ProfileEdit: undefined;
   ProfileInfoEdit: undefined;
+  MyPage: undefined;
+  Setting: undefined;
 };

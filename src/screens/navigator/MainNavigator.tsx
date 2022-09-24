@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Image, Platform, StyleSheet} from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Home from '../Home';
@@ -11,10 +17,16 @@ import {useAsync} from '../../hooks';
 import {appKeys} from '../../enum';
 import {getStringValueFromAsyncStorage} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
+import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDetails';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from './navigationStackTypes';
 
 const Tab = createBottomTabNavigator();
 
 export const MainNavigator = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const [role, setRole] = useState<string>();
   const [error, resetError] = useAsync(async () => {
     resetError();
@@ -26,6 +38,11 @@ export const MainNavigator = () => {
       setRole(fetchData);
     }
   });
+
+  const onPressSellerMyPageSetting = () => {
+    navigation.navigate('Setting');
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -178,7 +195,7 @@ export const MainNavigator = () => {
             );
           },
           headerShown: true,
-          headerTitle: '설정',
+          headerTitle: role === 'SELLER' ? '마이페이지' : '설정',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 15,
@@ -188,6 +205,18 @@ export const MainNavigator = () => {
           headerStyle: {
             borderBottomWidth: 5,
             borderBottomColor: '#F4F4F4',
+          },
+          headerRight: () => {
+            return (
+              role === 'SELLER' && (
+                <TouchableOpacity onPress={onPressSellerMyPageSetting}>
+                  <Image
+                    style={{width: 20, height: 20, marginRight: 10}}
+                    source={require('../../asset/setting.png')}
+                  />
+                </TouchableOpacity>
+              )
+            );
           },
         }}
       />

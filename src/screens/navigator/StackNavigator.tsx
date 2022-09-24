@@ -12,7 +12,7 @@ import {EnterStore, EnterComplete, EnterStart} from '../enterStore';
 import {EnterMenu} from '../enterMenu';
 import {OrderManageList} from '../sellerOrder/OrderManageList';
 import {OrderSheet} from '../sellerOrder/OrderSheet';
-import {ReSign} from '../../components/seller/SettingSeller';
+import {ReSign, SettingSeller} from '../../components/seller/SettingSeller';
 import OrderDetail from '../../components/consumer/OrderDetail';
 import {MenuImage, MenuImageDetails} from '../menuImage';
 import {useRecoilValue} from 'recoil';
@@ -169,6 +169,18 @@ export const StackNavigator = () => {
         options={{
           headerShown: true,
           headerTitle: '정보 설정',
+          headerTitleStyle: styles.headerTitle,
+          headerTitleContainerStyle: styles.headerTitleContainer,
+          headerBackTitleVisible: false,
+          headerBackImage: BackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="Setting"
+        component={SettingSeller}
+        options={{
+          headerShown: true,
+          headerTitle: '설정',
           headerTitleStyle: styles.headerTitle,
           headerTitleContainerStyle: styles.headerTitleContainer,
           headerBackTitleVisible: false,

@@ -10,7 +10,10 @@ import {DayOffCalendar} from './DayOffCalendar';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../../styles/AppStyles';
 
-export const DayOffModal = () => {
+type DayOffModalProps = {
+  onDayOffModalToggle: () => void;
+};
+export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
   const [selectedDate, setSelectedDate] = useState<string[]>([]);
   const [markedDates, setMarkedDates] = useState({});
 
@@ -40,8 +43,8 @@ export const DayOffModal = () => {
   return (
     <View style={styles.view}>
       <View style={styles.headerView}>
-        <TouchableOpacity>
-          <Text style={styles.text}>취소</Text>
+        <TouchableOpacity onPress={onDayOffModalToggle}>
+          <Text style={styles.text}>닫기</Text>
         </TouchableOpacity>
         <Text style={styles.text}>휴무일 지정하기</Text>
         <TouchableOpacity>

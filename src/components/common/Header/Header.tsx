@@ -51,6 +51,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: AppStyles.color.white,
+    zIndex: 10,
   },
   text: {
     ...Platform.select({

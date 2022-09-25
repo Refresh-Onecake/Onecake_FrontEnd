@@ -1,4 +1,5 @@
-import {useMutation} from 'react-query';
+import {QueryClient, useMutation, useQueryClient} from 'react-query';
+import {queryKeys} from '../../../enum';
 import {customAxios} from '../../../services/customAxios';
 
 export const fetchUserPhoneNumber = async (phoneNumber: string) => {
@@ -10,12 +11,14 @@ export const fetchUserPhoneNumber = async (phoneNumber: string) => {
 };
 
 export const useUserPhoneNumberMutate = () => {
+  const queryClient = useQueryClient();
   return useMutation(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     async (phoneNumber: string) => await fetchUserPhoneNumber(phoneNumber),
     {
       onSuccess: data => {
         console.log(data);
+        queryClient.invalidateQueries(queryKeys.PhoneNumber);
       },
     },
   );

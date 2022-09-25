@@ -10,12 +10,9 @@ export const getUserPhoneNumber = async () => {
 };
 
 export const useGetUserPhoneNumberQuery = () => {
-  const queryClient = useQueryClient();
-
   return useQuery(queryKeys.PhoneNumber, getUserPhoneNumber, {
     onSuccess: data => {
       console.log(data);
-      queryClient.invalidateQueries(queryKeys.PhoneNumber);
     },
   });
 };

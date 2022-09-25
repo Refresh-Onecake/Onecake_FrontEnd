@@ -10,3 +10,4 @@ export * from './timeFormatOnKorea';
 export * from './anniversaryKeywordTranslate';
 export * from './orderStateTranslate';
 export * from './orderStateConvertNumber';
+export * from './convertPhoneNumber';

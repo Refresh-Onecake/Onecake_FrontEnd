@@ -11,7 +11,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 import {AppStyles} from '../../../styles/AppStyles';
 import {CountryCodeModal} from '../CountryCodeModal';
-import {ICountryCode} from '../../../utils';
+import {convertPhoneNumber, ICountryCode} from '../../../utils';
 import {CountryCodeButton} from '../CountryCodeButton';
 import {ScreenBottomButton} from '../ScreenBottomButton';
 import {useGetUserPhoneNumberQuery} from '../../../hooks/Query/Common/useGetUserPhoneNumber';
@@ -23,11 +23,14 @@ export const ProfileInfoEdit = () => {
     dial_code: '+82',
     code: 'KR',
   });
-  const {data, status} = useGetUserPhoneNumberQuery();
+  const {data} = useGetUserPhoneNumberQuery();
   const mutation = useUserPhoneNumberMutate();
   //modal관련
   const [isModalVisible, setModalVisible] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(data);
+  const [phoneNumber, setPhoneNumber] = useState(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    convertPhoneNumber(data as string),
+  );
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -36,8 +39,8 @@ export const ProfileInfoEdit = () => {
   }, []);
 
   const submit = () => {
-    console.log(phoneNumber);
-    mutation.mutate(phoneNumber as string);
+    const data = `${selectedCountry.dial_code} ${phoneNumber}`;
+    mutation.mutate(data);
   };
   return (
     <SafeAreaView style={styles.container}>

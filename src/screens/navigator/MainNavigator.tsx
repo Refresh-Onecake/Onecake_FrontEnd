@@ -194,7 +194,7 @@ export const MainNavigator = () => {
               />
             );
           },
-          headerShown: true,
+          headerShown: false,
           headerTitle: role === 'SELLER' ? '마이페이지' : '설정',
           headerTitleAlign: 'center',
           headerTitleStyle: {
@@ -203,8 +203,7 @@ export const MainNavigator = () => {
             fontFamily: 'AppleSDGothicNeo-Bold',
           },
           headerStyle: {
-            borderBottomWidth: 5,
-            borderBottomColor: '#F4F4F4',
+            borderBottomColor: '#ffffff',
           },
           headerRight: () => {
             return (

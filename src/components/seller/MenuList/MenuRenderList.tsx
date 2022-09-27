@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {IMenuList} from '../../../services';
+import {IMenuList} from '../../../api';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';

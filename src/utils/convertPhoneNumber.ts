@@ -1,3 +1,7 @@
+import {assert} from './assert';
+
 export const convertPhoneNumber = (phoneNumber: string) => {
-  return phoneNumber.split(' ')[1];
+  if (phoneNumber) {
+    return phoneNumber.split(' ')[1];
+  }
 };

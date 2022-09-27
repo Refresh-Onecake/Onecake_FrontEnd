@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {useRecoilValue} from 'recoil';
 import {useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../enum';
-import {getOrderDetail, IOrderHistory} from '../../services/orderService';
+import {getOrderDetail, IOrderHistory} from '../../api/orderService';
 import {AppStyles} from '../../styles/AppStyles';
 import {orderHistoryIdState} from '../../recoil/atom';
 

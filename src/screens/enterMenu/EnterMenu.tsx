@@ -25,7 +25,7 @@ import {IStoreImg} from '../enterStore';
 import {handleImageUpload} from '../../utils';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {menuEditSheetInfoState, storeMenuState} from '../../recoil/atom';
-import {fetchEnterPicture, refetchToken} from '../../services';
+import {fetchEnterPicture, refetchToken} from '../../api';
 import {getMultipleData} from '../../../App';
 
 export const EnterMenu = ({

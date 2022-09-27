@@ -6,7 +6,7 @@ import {
   IOrderSheet,
   ISellerOrderList,
   setOrderSheetMemo,
-} from '../../services/orderService';
+} from '../../api/orderService';
 import {orderStatusKeys, queryKeys} from '../../enum';
 import {AppStyles} from '../../styles/AppStyles';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -15,7 +15,7 @@ import {OrderManageFooter} from '../../components';
 import {useRecoilValue} from 'recoil';
 import {orderSheetIdState} from '../../recoil/atom';
 import {getMultipleData} from '../../../App';
-import {refetchToken} from '../../services';
+import {refetchToken} from '../../api';
 import {parse} from 'dotenv';
 
 export const OrderSheet = () => {

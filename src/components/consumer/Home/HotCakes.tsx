@@ -14,7 +14,7 @@ import React, {useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useQuery, useQueryClient} from 'react-query';
-import {getHotCakeList, IHotCakeList} from '../../../services';
+import {getHotCakeList, IHotCakeList} from '../../../api';
 import {queryKeys} from '../../../enum';
 import InfoModal from '../../common/InfoModal';
 

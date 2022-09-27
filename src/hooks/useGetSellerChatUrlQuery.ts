@@ -1,7 +1,7 @@
 import {Linking} from 'react-native';
 import {QueryClient, useQuery} from 'react-query';
 import {appKeys, queryKeys} from '../enum';
-import {getSellerChatAddress} from '../services';
+import {getSellerChatAddress} from '../api';
 
 /**
  * @author min

@@ -15,7 +15,7 @@ import Modal from 'react-native-modal';
 import {AppStyles} from '../../styles/AppStyles';
 import {useMutation} from 'react-query';
 import {Controller, useForm} from 'react-hook-form';
-import {ISignIn, getUserData, IRefreshToken} from '../../services';
+import {ISignIn, getUserData, IRefreshToken} from '../../api';
 import {Button} from '../../components/common/Button';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';

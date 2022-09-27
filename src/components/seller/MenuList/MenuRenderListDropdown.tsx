@@ -27,7 +27,7 @@ import {IEditFetchMenu, IFetchMenu} from '../../../screens/enterMenu';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
-import {deleteMenu, refetchToken} from '../../../services';
+import {deleteMenu, refetchToken} from '../../../api';
 type MenuRenderListDropdownProps = {
   menuId: number;
   visible: boolean;

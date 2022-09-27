@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
-import {getKeyWordCakeList, IKeywordCakeList} from '../../../services';
+import {getKeyWordCakeList, IKeywordCakeList} from '../../../api';
 import {cakeKeywords, queryKeys} from '../../../enum';
 
 export const KeywordCakes = () => {

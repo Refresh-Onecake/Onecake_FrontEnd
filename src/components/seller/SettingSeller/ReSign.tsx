@@ -15,7 +15,7 @@ import {
   useGetMemberInfoQuery,
   useLogoutAndReSignQuery,
 } from '../../../hooks';
-import {fetchResign} from '../../../services';
+import {fetchResign} from '../../../api';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';

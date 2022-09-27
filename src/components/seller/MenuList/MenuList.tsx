@@ -13,7 +13,7 @@ import {Button} from '../../common/Button';
 import {RootStackParamList} from '../../../screens/navigator';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {IMenuList} from '../../../services/menuService';
+import {IMenuList} from '../../../api/menuService';
 import {MenuRenderList} from './MenuRenderList';
 
 export type MenuListProps = {

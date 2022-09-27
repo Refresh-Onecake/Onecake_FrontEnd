@@ -8,7 +8,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
 import {useLogoutAndReSignQuery} from '../../../hooks';
-import {fetchLogout, fetchResign} from '../../../services';
+import {fetchLogout, fetchResign} from '../../../api';
 import {useRecoilState} from 'recoil';
 import {profileEditState} from '../../../recoil/atom';
 import {useGetUserProfile} from '../../../hooks/Query/Common';

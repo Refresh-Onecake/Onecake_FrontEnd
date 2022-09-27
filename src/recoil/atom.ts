@@ -1,6 +1,6 @@
 import {atom, selector} from 'recoil';
 import {IEditFetchMenu, IFetchMenu} from '../screens/enterMenu';
-import {IMenuList, IRefreshToken} from '../services';
+import {IMenuList, IRefreshToken} from '../api';
 import moment from 'moment';
 import {appKeys, storeTabKeys} from '../enum';
 import {IMenuImageDetailsItem} from '../screens/menuImage';

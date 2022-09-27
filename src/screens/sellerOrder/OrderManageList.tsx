@@ -12,7 +12,7 @@ import React, {Dispatch, FC, SetStateAction} from 'react';
 import {
   getSellerOrderList,
   ISellerOrderList,
-} from '../../services/orderService';
+} from '../../api/orderService';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../styles/AppStyles';
 import {assert} from '../../utils';

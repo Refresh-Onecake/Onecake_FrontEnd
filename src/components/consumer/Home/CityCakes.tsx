@@ -12,7 +12,7 @@ import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {queryKeys} from '../../../enum';
 import {useQuery, useQueryClient} from 'react-query';
-import {getCityCakeList, ICityCakeList} from '../../../services';
+import {getCityCakeList, ICityCakeList} from '../../../api';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import {useSetRecoilState} from 'recoil';

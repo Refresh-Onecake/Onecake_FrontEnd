@@ -9,13 +9,22 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {DayOffCalendar} from './DayOffCalendar';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../../styles/AppStyles';
+import {useDayOffMutation} from '../../../hooks/Query/Seller/DayOff/useDayOffMutation';
+import {useDayOffQuery} from '../../../hooks/Query/Seller/DayOff/useDayOffQuery';
 
 type DayOffModalProps = {
   onDayOffModalToggle: () => void;
 };
 export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
-  const [selectedDate, setSelectedDate] = useState<string[]>([]);
+  const {data: markedDayOff, isSuccess} = useDayOffQuery();
+
+  const [selectedDate, setSelectedDate] = useState<string[]>(
+    markedDayOff !== undefined ? markedDayOff : [],
+  );
+
   const [markedDates, setMarkedDates] = useState({});
+
+  const dayOffMutation = useDayOffMutation();
 
   useEffect(() => {
     const obj = selectedDate.reduce(
@@ -40,6 +49,10 @@ export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
     [selectedDate],
   );
 
+  const onPressDayOff = () => {
+    dayOffMutation.mutate(selectedDate);
+  };
+
   return (
     <View style={styles.view}>
       <View style={styles.headerView}>
@@ -47,7 +60,7 @@ export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
           <Text style={styles.text}>닫기</Text>
         </TouchableOpacity>
         <Text style={styles.text}>휴무일 지정하기</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressDayOff}>
           <Text style={[styles.text, {color: AppStyles.color.hotPink}]}>
             추가
           </Text>

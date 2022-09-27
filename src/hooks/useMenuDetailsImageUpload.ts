@@ -1,7 +1,7 @@
 import {QueryClient, useMutation} from 'react-query';
 import {getMultipleData} from '../../App';
 import {queryKeys} from '../enum';
-import {refetchToken, setMenuDetailImageKeyword} from '../services';
+import {refetchToken, setMenuDetailImageKeyword} from '../api';
 
 export const useMenuDetailsImageUpload = (
   menuId: number,

@@ -1,8 +1,6 @@
-import {useQuery, UseQueryResult} from 'react-query';
-import {useRecoilState} from 'recoil';
+import {useQuery} from 'react-query';
 import {queryKeys} from '../../../enum';
-import {profileEditState} from '../../../recoil/atom';
-import {customAxios} from '../../../services/customAxios';
+import {customAxios} from '../../../api/customAxios';
 
 export type UserProfile = {
   profileImg: string;
@@ -19,8 +17,6 @@ export const getUserProfile = async () => {
  * @returns 수정 전 프로필이름과 사진 uri 를 반환한다.
  */
 export const useGetUserProfile = () => {
-  const [profileInfo, setProfileInfo] = useRecoilState(profileEditState);
-
   return useQuery(queryKeys.ProfileEdit, getUserProfile, {
     onSuccess: data => {
       // setProfileInfo(data);

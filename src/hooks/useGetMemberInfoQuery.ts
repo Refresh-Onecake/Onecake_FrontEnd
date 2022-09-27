@@ -1,6 +1,6 @@
 import {QueryClient, useQuery, UseQueryResult} from 'react-query';
 import {queryKeys} from '../enum';
-import {getMemberInfo} from '../services';
+import {getMemberInfo} from '../api';
 
 export type IMemberInfoType = {
   phoneNumber: string;

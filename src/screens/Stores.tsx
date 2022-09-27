@@ -19,7 +19,7 @@ import {getStringValueFromAsyncStorage} from '../utils';
 import {storeIdState} from '../recoil/atom';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {focusManager, useQuery, useQueryClient} from 'react-query';
-import {getMenuList, IMenuList} from '../services';
+import {getMenuList, IMenuList} from '../api';
 import {useIsFocused} from '@react-navigation/native';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {

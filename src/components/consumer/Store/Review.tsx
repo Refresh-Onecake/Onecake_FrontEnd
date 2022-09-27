@@ -12,7 +12,7 @@ import {useQuery, useQueryClient} from 'react-query';
 import {useRecoilValue} from 'recoil';
 import {storeIdState} from '../../../recoil/atom';
 import {queryKeys} from '../../../enum';
-import {getReviews, IReviews} from '../../../services/storeService';
+import {getReviews, IReviews} from '../../../api/storeService';
 import {AppStyles} from '../../../styles/AppStyles';
 
 export const Review: FC = () => {

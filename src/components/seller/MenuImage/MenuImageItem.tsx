@@ -18,7 +18,7 @@ import {useSetRecoilState} from 'recoil';
 import {menuImageDetailState} from '../../../recoil/atom';
 import {useMutation} from 'react-query';
 import {IStoreImg} from '../../../screens/enterStore';
-import {fetchEnterPicture, refetchToken} from '../../../services';
+import {fetchEnterPicture, refetchToken} from '../../../api';
 import {getMultipleData} from '../../../../App';
 
 type MenuImageItemProps = {

@@ -14,7 +14,7 @@ import {useAsync} from '../hooks';
 import {getStringValueFromAsyncStorage} from '../utils';
 import {appKeys, queryKeys} from '../enum';
 import {useQuery, useQueryClient} from 'react-query';
-import {getSellerChatAddress} from '../services';
+import {getSellerChatAddress} from '../api';
 import {useGetSellerChatUrlQuery} from '../hooks/useGetSellerChatUrlQuery';
 import InfoModal from '../components/common/InfoModal';
 import {Button} from '../components/common';

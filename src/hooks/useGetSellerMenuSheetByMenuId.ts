@@ -3,7 +3,7 @@ import {useSetRecoilState} from 'recoil';
 import {queryKeys} from '../enum';
 import {EditTargetMenuIdState, menuEditSheetInfoState} from '../recoil/atom';
 import {IEditFetchMenu} from '../screens/enterMenu';
-import {getMenuList} from '../services';
+import {getMenuList} from '../api';
 import {assert} from '../utils';
 
 /**

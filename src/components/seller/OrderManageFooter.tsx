@@ -9,10 +9,10 @@ import {AppStyles} from '../../styles/AppStyles';
 import {
   orderSheetCancel,
   orderSheetChangeState,
-} from '../../services/orderService';
+} from '../../api/orderService';
 import {useMutation, useQueryClient} from 'react-query';
 import {getMultipleData} from '../../../App';
-import {refetchToken} from '../../services';
+import {refetchToken} from '../../api';
 import {useRecoilValue} from 'recoil';
 import {ModalHeader, RadioList} from '../common';
 import {orderSheetIdState} from '../../recoil/atom';

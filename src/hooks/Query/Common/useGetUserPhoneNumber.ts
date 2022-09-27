@@ -1,6 +1,6 @@
 import {QueryClient, useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../../enum';
-import {customAxios} from '../../../services/customAxios';
+import {customAxios} from '../../../api/customAxios';
 
 export const getUserPhoneNumber = async () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks

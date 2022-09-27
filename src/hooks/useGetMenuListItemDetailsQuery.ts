@@ -1,6 +1,6 @@
 import {QueryClient, useQuery, UseQueryResult} from 'react-query';
 import {queryKeys} from '../enum';
-import {getSellerMenuListItemDetails, IMenuListItemDetails} from '../services';
+import {getSellerMenuListItemDetails, IMenuListItemDetails} from '../api';
 
 export const useGetMenuListItemDetailsQuery = (
   queryClient: QueryClient,

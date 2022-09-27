@@ -39,8 +39,10 @@ export const ProfileInfoEdit = () => {
   }, []);
 
   const submit = () => {
-    const data = `${selectedCountry.dial_code} ${phoneNumber}`;
-    mutation.mutate(data);
+    if (phoneNumber) {
+      const data = `${selectedCountry.dial_code} ${phoneNumber}`;
+      mutation.mutate(data);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>

@@ -1,6 +1,6 @@
 import {QueryClient, useMutation} from 'react-query';
 import {queryKeys} from '../../../enum';
-import {customAxios} from '../../../services/customAxios';
+import {customAxios} from '../../../api/customAxios';
 import {UserProfile} from './useGetUserProfile';
 
 export const setUserProfile = async ({nickname, profileImg}: UserProfile) => {

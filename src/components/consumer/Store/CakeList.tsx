@@ -13,7 +13,7 @@ import {useRecoilValue} from 'recoil';
 import {useQuery, useQueryClient} from 'react-query';
 import {storeIdState} from '../../../recoil/atom';
 import {queryKeys} from '../../../enum';
-import {getCakeList, ICakeList} from '../../../services/storeService';
+import {getCakeList, ICakeList} from '../../../api/storeService';
 import {AppStyles} from '../../../styles/AppStyles';
 
 export const CakeList: FC = () => {

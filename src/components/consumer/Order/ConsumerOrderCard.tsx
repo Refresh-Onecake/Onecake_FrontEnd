@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {FC} from 'react';
-import {IConsumerOrderHistoryType} from '../../../services/Consumer';
+import {IConsumerOrderHistoryType} from '../../../api/Consumer';
 import {commonStyles} from '../../../styles/commonStyles';
 import {AppStyles} from '../../../styles/AppStyles';
 import {orderStateTranslate} from '../../../utils';

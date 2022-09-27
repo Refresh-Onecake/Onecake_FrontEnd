@@ -10,7 +10,7 @@ import {RootStackParamList} from './src/screens/navigator/navigationStackTypes';
 import {MainNavigator, StackNavigator} from './src/screens/navigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from './src/enum';
-import {refetchToken} from './src/services';
+import {refetchToken} from './src/api';
 import {StatusBar} from 'react-native';
 import codePush from 'react-native-code-push';
 

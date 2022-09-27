@@ -28,7 +28,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {assert, regEx} from '../../utils';
 import {AppStyles} from '../../styles/AppStyles';
 import {ICountryCode} from '../../utils';
-import {fetchSignUp, getUserData, ISignIn, ISignUp} from '../../services';
+import {fetchSignUp, getUserData, ISignIn, ISignUp} from '../../api';
 import {RootStackParamList} from '../navigator';
 import {appKeys} from '../../enum';
 import {AutoFocusProvider, useAutoFocus} from '../../contexts';

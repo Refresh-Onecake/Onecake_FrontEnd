@@ -26,7 +26,7 @@ import {AutoFocusProvider} from '../../contexts';
 import {styles as EnterStoreStyles} from '../enterStore/EnterStore';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {fetchStoreEnterMenu} from '../../services';
+import {fetchStoreEnterMenu} from '../../api';
 import {useMutation, useQueryClient} from 'react-query';
 import {IFetchMenu} from './types';
 import {StackScreenProps} from '@react-navigation/stack';

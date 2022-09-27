@@ -3,7 +3,7 @@ import React from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useQuery, useQueryClient} from 'react-query';
 import {queryKeys} from '../../../enum';
-import {getStoreInfo, IStoreInfo} from '../../../services/storeService';
+import {getStoreInfo, IStoreInfo} from '../../../api/storeService';
 import {styles} from '../../../screens/enterStore';
 import {useRecoilValue} from 'recoil';
 import {storeIdState} from '../../../recoil/atom';

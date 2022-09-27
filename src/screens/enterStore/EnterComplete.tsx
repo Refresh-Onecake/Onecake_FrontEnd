@@ -14,7 +14,7 @@ import {RootStackParamList} from '../navigator';
 import {styles as EnterStoreStyle} from './EnterStore';
 import {useNavigation} from '@react-navigation/native';
 import {useLogoutAndReSignQuery} from '../../hooks';
-import {fetchLogout} from '../../services';
+import {fetchLogout} from '../../api';
 
 export const EnterComplete = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();

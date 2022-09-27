@@ -1,6 +1,6 @@
 import {QueryClient, useMutation, useQueryClient} from 'react-query';
 import {queryKeys} from '../../../enum';
-import {customAxios} from '../../../services/customAxios';
+import {customAxios} from '../../../api/customAxios';
 
 export const fetchUserPhoneNumber = async (phoneNumber: string) => {
   const {data} = await customAxios().put('/api/v1/member/phoneNumber', {

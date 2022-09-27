@@ -12,7 +12,7 @@ import React, {FC, useRef, useEffect, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
 
 import {TabView} from './TabView';
-import {getCakeSize} from '../../services/storeService';
+import {getCakeSize} from '../../api/storeService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {appKeys} from '../../enum';
 import {StoreTitleInfo} from './StoreTitleInfo';

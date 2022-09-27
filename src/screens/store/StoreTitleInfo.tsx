@@ -10,7 +10,7 @@ import {
 import Modal from 'react-native-modal';
 import React, {FC, useState} from 'react';
 import {AppStyles} from '../../styles/AppStyles';
-import {getStoreTitleInfo, IStoreTitleInfo} from '../../services/storeService';
+import {getStoreTitleInfo, IStoreTitleInfo} from '../../api/storeService';
 import {useQuery, useQueryClient} from 'react-query';
 import {useRecoilValue} from 'recoil';
 import {storeIdState} from '../../recoil/atom';

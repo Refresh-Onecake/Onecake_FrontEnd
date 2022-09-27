@@ -24,4 +24,5 @@ export const queryKeys = {
   ConsumerOrderHistory: ['@ConsumerOrderHistory'] as const,
   ProfileEdit: ['@ProfileEdit'] as const,
   PhoneNumber: ['@PhoneNumber'] as const,
+  DayOff: ['@DayOff'] as const,
 };

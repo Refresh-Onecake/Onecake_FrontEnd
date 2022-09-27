@@ -29,7 +29,7 @@ import {
   fetchEnterStoreJson,
   fetchLogout,
   refetchToken,
-} from '../../services';
+} from '../../api';
 import {getMultipleData} from '../../../App';
 import {useLogoutAndReSignQuery} from '../../hooks';
 import {useNavigation} from '@react-navigation/native';

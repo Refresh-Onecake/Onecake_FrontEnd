@@ -1,6 +1,6 @@
 import {QueryClient, useQuery, UseQueryResult} from 'react-query';
 import {queryKeys} from '../enum';
-import {getMenuImageDetail, IMenuListItemDetails} from '../services';
+import {getMenuImageDetail, IMenuListItemDetails} from '../api';
 import {anniversaryKeywordTranslate} from '../utils';
 
 export type IMenuImageDetail = {

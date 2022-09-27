@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import React, {FC} from 'react';
-import {ISellerOrder, IStoreMenuListDto} from '../../services/orderService';
+import {ISellerOrder, IStoreMenuListDto} from '../../api/orderService';
 import {AppStyles} from '../../styles/AppStyles';
 import {priceFormatParser} from '../../utils';
 import {useRecoilState, useSetRecoilState} from 'recoil';

@@ -3,7 +3,7 @@ import {QueryClient, useMutation} from 'react-query';
 import {getMultipleData} from '../../App';
 import {queryKeys} from '../enum';
 import {RootStackParamList} from '../screens/navigator';
-import {getMenuImageDetail, refetchToken} from '../services';
+import {getMenuImageDetail, refetchToken} from '../api';
 
 export const useDeleteMenuImageDetailQuery = (
   menuId: number,

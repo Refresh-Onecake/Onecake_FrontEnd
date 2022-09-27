@@ -3,7 +3,7 @@ import {queryKeys} from '../../../enum';
 import {
   getConsumerOrderHistory,
   IConsumerOrderHistoryType,
-} from '../../../services/Consumer';
+} from '../../../api/Consumer';
 
 export const useGetConsumerOrderHistoryQuery = (
   queryClient: QueryClient,

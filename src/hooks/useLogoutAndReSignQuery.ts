@@ -4,7 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {useMutation} from 'react-query';
 import {getMultipleData} from '../../App';
 import {RootStackParamList} from '../screens/navigator';
-import { refetchToken} from '../services';
+import { refetchToken} from '../api';
 
 export const useLogoutAndReSignQuery = (
   fetch: () => Promise<Response | undefined>,

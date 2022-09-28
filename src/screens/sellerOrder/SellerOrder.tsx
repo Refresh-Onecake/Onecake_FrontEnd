@@ -1,4 +1,4 @@
-import {Dimensions, Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useQueryClient} from 'react-query';
@@ -11,6 +11,7 @@ import {currentYearState, orderListModalState} from '../../recoil/atom';
 import {OrderManageList} from './OrderManageList';
 import {BottomSheet, ScrollCalendar} from '../../components/common';
 import {DayOffModal} from '../../components/seller/DayOffCalendar';
+import {useDayOffQuery} from '../../hooks/Query/Seller/DayOff/useDayOffQuery';
 
 const WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
@@ -22,6 +23,7 @@ export const SellerOrder = () => {
   const [clickedDate, setClickedDate] = useState<DateData>();
   const [dayOffModalVisible, setDayOffModalVisible] = useState(false);
   const scrollYear = useRecoilValue(currentYearState);
+  const {data: markedDayOff, isSuccess} = useDayOffQuery();
 
   const queryClient = useQueryClient();
 
@@ -85,7 +87,10 @@ export const SellerOrder = () => {
         modalVisible={dayOffModalVisible}
         setModalVisible={setDayOffModalVisible}
         height={Platform.OS === 'ios' ? '100%' : '95%'}>
-        <DayOffModal onDayOffModalToggle={onDayOffModalToggle} />
+        <DayOffModal
+          onDayOffModalToggle={onDayOffModalToggle}
+          markedDayOff={markedDayOff}
+        />
       </BottomSheet>
     </View>
   );

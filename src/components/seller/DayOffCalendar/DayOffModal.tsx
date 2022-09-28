@@ -10,14 +10,15 @@ import {DayOffCalendar} from './DayOffCalendar';
 import {DateData} from 'react-native-calendars';
 import {AppStyles} from '../../../styles/AppStyles';
 import {useDayOffMutation} from '../../../hooks/Query/Seller/DayOff/useDayOffMutation';
-import {useDayOffQuery} from '../../../hooks/Query/Seller/DayOff/useDayOffQuery';
 
 type DayOffModalProps = {
   onDayOffModalToggle: () => void;
+  markedDayOff?: string[];
 };
-export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
-  const {data: markedDayOff, isSuccess} = useDayOffQuery();
-
+export const DayOffModal = ({
+  onDayOffModalToggle,
+  markedDayOff,
+}: DayOffModalProps) => {
   const [selectedDate, setSelectedDate] = useState<string[]>(
     markedDayOff !== undefined ? markedDayOff : [],
   );
@@ -35,7 +36,6 @@ export const DayOffModal = ({onDayOffModalToggle}: DayOffModalProps) => {
       {},
     );
     setMarkedDates(obj);
-    console.log(selectedDate);
   }, [selectedDate]);
 
   const handleOnDayPress = useCallback(

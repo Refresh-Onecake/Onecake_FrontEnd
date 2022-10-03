@@ -1,4 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
+import {AppStyles} from './AppStyles';
 
 export const commonStyles = StyleSheet.create({
   shadow: {
@@ -34,6 +35,27 @@ export const commonStyles = StyleSheet.create({
         shadowRadius: 9,
         shadowOffset: {height: -20, width: 0},
         shadowOpacity: 0.05,
+      },
+    }),
+  },
+  fontBold: {
+    ...Platform.select({
+      android: {
+        fontFamily: AppStyles.fontFamily.bold,
+      },
+    }),
+  },
+  fontMedium: {
+    ...Platform.select({
+      android: {
+        fontFamily: AppStyles.fontFamily.medium,
+      },
+    }),
+  },
+  fontLight: {
+    ...Platform.select({
+      android: {
+        fontFamily: AppStyles.fontFamily.light,
       },
     }),
   },

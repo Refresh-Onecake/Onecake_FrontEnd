@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import {LineChart} from 'react-native-chart-kit';
 import {AppStyles} from '../../../styles/AppStyles';
 import ChartBubble from '../../../asset/chart_bubble.svg';
+import {useRecoilState} from 'recoil';
+import {chartCurrMonthState} from '../../../recoil/atom';
 
 type ChartProps = {
   monthSaleData: number[];
@@ -10,6 +12,8 @@ type ChartProps = {
 };
 export const Chart = ({monthSaleData, month}: ChartProps) => {
   const [chartIdx, setChartIdx] = useState(monthSaleData.length - 1);
+  const [chartCurrMonth, setChartCurrMonth] =
+    useRecoilState(chartCurrMonthState);
   return (
     <LineChart
       data={{
@@ -45,11 +49,13 @@ export const Chart = ({monthSaleData, month}: ChartProps) => {
       width={Dimensions.get('window').width} // from react-native
       height={233.82}
       yAxisSuffix="개"
+      formatXLabel={xValue => `${xValue}월`}
       segments={2}
       formatYLabel={yValue => parseInt(yValue).toString()}
       withHorizontalLines={false}
       onDataPointClick={({index}) => {
         setChartIdx(index);
+        setChartCurrMonth(month[index]);
       }}
       chartConfig={{
         color: (opacity = 0.25) => `rgba(255, 49, 150, ${opacity})`,

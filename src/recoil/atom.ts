@@ -103,3 +103,9 @@ export const profileEditState = atom({
     nickname: '원게익',
   },
 });
+
+//판매 데이터에서 현재 월
+export const chartCurrMonthState = atom({
+  key: 'chartCurrMonthState',
+  default: `${moment().month() + 1}`,
+});

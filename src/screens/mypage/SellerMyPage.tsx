@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ProfileCard from '../../components/seller/SellerMyPage/ProfileCard';
 import {Header} from '../../components/common/Header';
 import {useNavigation} from '@react-navigation/native';
@@ -15,16 +15,35 @@ import {RootStackParamList} from '../navigator';
 import {AppStyles} from '../../styles/AppStyles';
 import {Chart} from '../../components/seller/Chart';
 import Sales from '../../components/seller/Sales/Sales';
+import moment from 'moment';
+import {useRecoilValue} from 'recoil';
+import {chartCurrMonthState} from '../../recoil/atom';
 
 const monthSaleData = [40, 60, 45, 20, 10];
-const month = ['6월', '7월', '8월', '9월', '10월'];
+const month = ['6', '7', '8', '9', '10'];
 
 export const SellerMyPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
+  const chartCurrMonth = useRecoilValue(chartCurrMonthState);
+  const [compareStr, setCompareStr] = useState('');
   const rightHeaderHandler = () => {
     navigation.navigate('Setting');
   };
+  const compareSaleMonth = useCallback(() => {
+    const currMonthIdx = month.findIndex(m => m === chartCurrMonth);
+    if (currMonthIdx > 0) {
+      monthSaleData[currMonthIdx - 1] > monthSaleData[currMonthIdx]
+        ? setCompareStr(() => '지난달보다 매출이 감소했어요!')
+        : setCompareStr(() => '지난달보다 매출이 증가했어요!');
+    } else {
+      setCompareStr(() => '판매 데이터의 마지막 달 입니다.');
+    }
+  }, [chartCurrMonth]);
+
+  useEffect(() => {
+    compareSaleMonth();
+  }, [compareSaleMonth]);
+
   return (
     <SafeAreaView>
       <Header
@@ -35,9 +54,7 @@ export const SellerMyPage = () => {
         <ProfileCard />
         <View style={styles.salesTextView}>
           <Text style={styles.salesHeaderText}>판매 데이터 분석</Text>
-          <Text style={styles.salesHeaderSubText}>
-            지난달보다 매출이 감소했어요!
-          </Text>
+          <Text style={styles.salesHeaderSubText}>{compareStr}</Text>
         </View>
         <Chart monthSaleData={monthSaleData} month={month} />
         <View style={styles.salesView}>

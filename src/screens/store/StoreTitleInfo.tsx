@@ -110,10 +110,6 @@ export const StoreTitleInfo = () => {
               android: {
                 height: '20%',
               },
-              ios: {
-                paddingTop: 30,
-                marginBottom: role !== undefined && role === 'SELLER' ? 20 : 90,
-              },
             }),
           },
         ]}
@@ -131,9 +127,7 @@ export const StoreTitleInfo = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
-                    lineHeight: 16,
                   },
-                  ios: {},
                 }),
               },
             ]}>
@@ -159,9 +153,7 @@ export const StoreTitleInfo = () => {
                   ...Platform.select({
                     android: {
                       fontFamily: 'AppleSDGothicNeoM',
-                      lineHeight: 20,
                     },
-                    ios: {},
                   }),
                 },
               ]}>
@@ -172,9 +164,7 @@ export const StoreTitleInfo = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
-                    lineHeight: 20,
                   },
-                  ios: {},
                 }),
               }}>
               {likedNum}
@@ -197,9 +187,7 @@ export const StoreTitleInfo = () => {
                 ...Platform.select({
                   android: {
                     fontFamily: 'AppleSDGothicNeoM',
-                    lineHeight: 20,
                   },
-                  ios: {},
                 }),
               }}>
               상담하기
@@ -299,6 +287,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     ...Platform.select({
       ios: {
+        top: '28%',
         shadowColor: '#000000',
         shadowRadius: 7,
         shadowOffset: {height: 1, width: 1},

@@ -21,6 +21,7 @@ import {MenuImageDetailHeaderDelete} from '../../components/seller/MenuImageDeta
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from './navigationStackTypes';
+import {SettingSeller} from '../../components/seller/SettingSeller';
 
 const Tab = createBottomTabNavigator();
 
@@ -180,7 +181,7 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="마이페이지"
-        component={MyPage}
+        component={role === 'SELLER' ? MyPage : SettingSeller}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -194,7 +195,7 @@ export const MainNavigator = () => {
               />
             );
           },
-          headerShown: false,
+          headerShown: role === 'SELLER' ? false : true,
           headerTitle: role === 'SELLER' ? '마이페이지' : '설정',
           headerTitleAlign: 'center',
           headerTitleStyle: {

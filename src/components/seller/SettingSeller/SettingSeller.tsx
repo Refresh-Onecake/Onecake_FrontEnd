@@ -2,16 +2,12 @@ import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {AppStyles} from '../../../styles/AppStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../screens/navigator';
 import InfoModal from '../../common/InfoModal';
 import {useLogoutAndReSignQuery} from '../../../hooks';
-import {fetchLogout, fetchResign} from '../../../api';
-import {useRecoilState} from 'recoil';
-import {profileEditState} from '../../../recoil/atom';
-import {useGetUserProfile} from '../../../hooks/Query/Common';
+import {fetchLogout} from '../../../api';
 
 export const SettingSeller = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);

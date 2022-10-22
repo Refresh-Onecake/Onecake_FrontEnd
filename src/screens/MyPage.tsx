@@ -21,15 +21,9 @@ const MyPage = () => {
 
   return (
     <SafeAreaView style={styles.view}>
-      {role === appKeys.seller ? (
-        <View>
-          <SellerMyPage />
-        </View>
-      ) : (
-        <View>
-          <SettingSeller />
-        </View>
-      )}
+      <View>
+        <SellerMyPage />
+      </View>
     </SafeAreaView>
   );
 };

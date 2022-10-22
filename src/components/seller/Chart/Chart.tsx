@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {LineChart} from 'react-native-chart-kit';
 import {AppStyles} from '../../../styles/AppStyles';
 import ChartBubble from '../../../asset/chart_bubble.svg';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useSetRecoilState} from 'recoil';
 import {chartCurrMonthState} from '../../../recoil/atom';
 
 type ChartProps = {

@@ -28,13 +28,13 @@ export const Chart = ({monthSaleData, month}: ChartProps) => {
           },
         ],
       }}
-      renderDotContent={({x, y, indexData}) => (
+      renderDotContent={data => (
         <View
-          key={`indexData_${x}`}
+          key={`indexData_${data.x}`}
           style={{
             position: 'absolute',
-            top: y - 60,
-            left: x - 66,
+            top: data.y - 60,
+            left: data.x - 66,
             ...Platform.select({
               android: {
                 elevation: 3,
@@ -47,7 +47,7 @@ export const Chart = ({monthSaleData, month}: ChartProps) => {
               },
             }),
           }}>
-          {indexData === monthSaleData[chartIdx] && <ChartBubble />}
+          {data.index === chartIdx && <ChartBubble />}
         </View>
       )}
       width={Dimensions.get('window').width} // from react-native

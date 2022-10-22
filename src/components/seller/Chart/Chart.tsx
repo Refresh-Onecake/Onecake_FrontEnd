@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {LineChart} from 'react-native-chart-kit';
 import {AppStyles} from '../../../styles/AppStyles';
 import ChartBubble from '../../../asset/chart_bubble.svg';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {chartCurrMonthState} from '../../../recoil/atom';
 
 type ChartProps = {
@@ -12,8 +12,12 @@ type ChartProps = {
 };
 export const Chart = ({monthSaleData, month}: ChartProps) => {
   const [chartIdx, setChartIdx] = useState(monthSaleData.length - 1);
-  const [chartCurrMonth, setChartCurrMonth] =
-    useRecoilState(chartCurrMonthState);
+  const setChartCurrMonth = useSetRecoilState(chartCurrMonthState);
+
+  const onHandleDataPointClick = (index: number) => {
+    setChartIdx(index);
+    setChartCurrMonth(month[index]);
+  };
   return (
     <LineChart
       data={{
@@ -26,7 +30,7 @@ export const Chart = ({monthSaleData, month}: ChartProps) => {
       }}
       renderDotContent={({x, y, indexData}) => (
         <View
-          key={indexData}
+          key={`indexData_${x}`}
           style={{
             position: 'absolute',
             top: y - 60,
@@ -53,10 +57,8 @@ export const Chart = ({monthSaleData, month}: ChartProps) => {
       segments={2}
       formatYLabel={yValue => parseInt(yValue).toString()}
       withHorizontalLines={false}
-      onDataPointClick={({index}) => {
-        setChartIdx(index);
-        setChartCurrMonth(month[index]);
-      }}
+      // TODO:
+      onDataPointClick={({index}) => onHandleDataPointClick(index)}
       chartConfig={{
         color: (opacity = 0.25) => `rgba(255, 49, 150, ${opacity})`,
         fillShadowGradientTo: '#D2D2D2',

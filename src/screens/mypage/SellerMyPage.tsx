@@ -18,17 +18,17 @@ import Sales from '../../components/seller/Sales/Sales';
 import moment from 'moment';
 import {useRecoilValue} from 'recoil';
 import {chartCurrMonthState} from '../../recoil/atom';
+import {useGetChartStatistics} from '../../hooks/Query/Seller/Statistics/useChartStatistics';
 
-const monthSaleData = [40, 60, 45, 20, 10];
 const month = ['6', '7', '8', '9', '10'];
 
 export const SellerMyPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const chartCurrMonth = useRecoilValue(chartCurrMonthState);
+  const currentMonth = moment().format('YYYY-MM');
+  const [monthSaleData, setMonthSaleData] = useState<number[]>([]);
   const [compareStr, setCompareStr] = useState('');
-  const rightHeaderHandler = () => {
-    navigation.navigate('Setting');
-  };
+  const chartCurrMonth = useRecoilValue(chartCurrMonthState);
+
   const compareSaleMonth = useCallback(() => {
     const currMonthIdx = month.findIndex(m => m === chartCurrMonth);
     if (currMonthIdx > 0) {
@@ -38,11 +38,38 @@ export const SellerMyPage = () => {
     } else {
       setCompareStr(() => '판매 데이터의 마지막 달 입니다.');
     }
-  }, [chartCurrMonth]);
+  }, [chartCurrMonth, monthSaleData]);
 
-  useEffect(() => {
-    compareSaleMonth();
-  }, [compareSaleMonth]);
+  const initMonthList = useCallback(() => {
+    const curMonth = new Date().getMonth() + 1;
+    const monthList = [];
+    for (let i = 4; i >= 0; i--) {
+      curMonth - i <= 0
+        ? monthList.push((curMonth - i + 12).toString())
+        : monthList.push((curMonth - i).toString());
+    }
+    return monthList;
+  }, []);
+
+  const rightHeaderHandler = useCallback(() => {
+    navigation.navigate('Setting');
+  }, [navigation]);
+
+  const chartStatisticsResult = useGetChartStatistics(currentMonth, {
+    onSuccess: data => {
+      const tmp = [];
+      tmp.push(data.monthMinusOne);
+      tmp.push(data.monthMinusTwo);
+      tmp.push(data.monthMinusThree);
+      tmp.push(data.monthMinusFour);
+      setMonthSaleData(tmp);
+      console.log(tmp);
+      compareSaleMonth();
+    },
+    onError: e => {
+      console.log(e);
+    },
+  });
 
   return (
     <SafeAreaView>
@@ -56,7 +83,10 @@ export const SellerMyPage = () => {
           <Text style={styles.salesHeaderText}>판매 데이터 분석</Text>
           <Text style={styles.salesHeaderSubText}>{compareStr}</Text>
         </View>
-        <Chart monthSaleData={monthSaleData} month={month} />
+        {monthSaleData.length > 0 ? (
+          <Chart monthSaleData={monthSaleData} month={initMonthList()} />
+        ) : null}
+
         <View style={styles.salesView}>
           <Sales />
         </View>

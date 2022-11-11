@@ -117,7 +117,7 @@ export const MainNavigator = () => {
               />
             );
           },
-          headerShown: true,
+          headerShown: role === 'CoNSUMER' ? true : false,
           headerTitle: role === 'CONSUMER' ? '' : '메뉴 관리',
           headerTitleAlign: 'center',
           headerTitleStyle: {

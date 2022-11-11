@@ -25,7 +25,7 @@ export type BottomSheetProps = {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
   children: ReactElement;
-  height: string;
+  height: string | number;
 };
 
 /**

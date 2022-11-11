@@ -21,6 +21,7 @@ import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {focusManager, useQuery, useQueryClient} from 'react-query';
 import {getMenuList, IMenuList} from '../api';
 import {useIsFocused} from '@react-navigation/native';
+import ConsumerStoreScreen from './consumer-store-screen';
 
 const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
   const queryClient = useQueryClient();
@@ -65,6 +66,7 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
     },
   );
   const isFocused = useIsFocused();
+
   useEffect(() => {
     focusManager.setFocused(isFocused);
   }, [isFocused]);
@@ -76,19 +78,8 @@ const Stores = ({navigation}: StackScreenProps<RootStackParamList>) => {
           <MenuList data={data} />
         </>
       ) : (
-        <View style={styles.flex}>
-          <View>
-            <Image
-              style={{
-                width: 250,
-                height: 250,
-              }}
-              source={require('../asset/cake.png')}
-            />
-          </View>
-          <Text style={styles.title}>
-            런칭 준비중입니다. 조금만 기다려 주세요.
-          </Text>
+        <View style={{flex: 1}}>
+          <ConsumerStoreScreen />
         </View>
       )}
     </SafeAreaView>
@@ -113,12 +104,6 @@ const styles = StyleSheet.create({
   liked: {
     marginTop: 5,
     flexDirection: 'row',
-  },
-  flex: {
-    marginTop: 100,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
     marginTop: 20,

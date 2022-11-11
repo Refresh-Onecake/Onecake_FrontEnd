@@ -38,8 +38,6 @@ export const CityCakes = () => {
     {
       refetchOnMount: 'always',
       refetchOnWindowFocus: true,
-      staleTime: 5000,
-      cacheTime: Infinity,
       onError: err => {
         console.log('err');
         const response = err as Error;
